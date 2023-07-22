@@ -2,7 +2,7 @@ package java_pos_system;
 
 import java.util.Scanner;
 
-public class receiver {
+public class Receiver {
 
     public int getInt(String prompt, int minval, int maxval) {
         int i = -999;
@@ -50,7 +50,7 @@ public class receiver {
         return d;
     }
 
-    public boolean getChar_YN(String prompt) {
+    public boolean getYN(String prompt) {
         char c = '-';
         while (c != 'Y' && c != 'N') {
             try {
@@ -116,5 +116,44 @@ public class receiver {
             }
         }
         return str;
+    }
+
+    public Date getDate(String prompt) {
+        Date doi = new Date();
+        while (true) {
+            Scanner s = new Scanner(System.in);
+            try {
+                System.out.print(prompt);
+                String dateStr = s.nextLine();
+                String[] splitedDate = dateStr.split("/");
+                doi.day = Integer.parseInt(splitedDate[0]);
+                doi.month = Integer.parseInt(splitedDate[1]);
+                doi.year = Integer.parseInt(splitedDate[2]);
+                if (doi.year < 1900 || doi.year > 2023) {
+                    throw new Exception();
+                }
+                if (doi.month < 1 || doi.month > 12) {
+                    throw new Exception();
+                }
+                if (doi.day < 1 || doi.day > 31) {
+                    throw new Exception();
+                }
+                if ((doi.month == 4 || doi.month == 6 || doi.month == 9 || doi.month == 11) && doi.day > 30) {
+                    throw new Exception();
+                }
+                if (doi.month == 2) {
+                    boolean isLeapYear = ((doi.year % 4 == 0 && doi.year % 100 != 0) || doi.year % 400 == 0);
+                    if (isLeapYear && doi.day > 29) {
+                        throw new Exception();
+                    }
+                    if (!isLeapYear && doi.day > 28) {
+                        throw new Exception();
+                    }
+                }
+                return doi;
+            } catch (Exception e) {
+                System.out.println("Invalid date, please try again.");
+            }
+        }
     }
 }
