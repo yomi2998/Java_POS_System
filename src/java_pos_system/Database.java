@@ -9,11 +9,10 @@ public class Database {
     private Connection conn;
     private ResultSet result;
 
-    Database() throws SQLException {
-        this.conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/pos_system", "root", "");
-    }
-
     public void runCommand(String cmd) throws SQLException {
+        if(!this.conn.isClosed())
+            this.conn.close();
+        this.conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/pos_system", "root", "");
         Statement statement = conn.createStatement();
         this.result = statement.executeQuery(cmd);
     }
