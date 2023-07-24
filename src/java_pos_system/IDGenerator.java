@@ -18,6 +18,7 @@ public class IDGenerator {
         int newID = Integer.parseInt(lastID.substring(4)) + 1;
         DecimalFormat format = new DecimalFormat("000000");
         String formedID = this.type.substring(0,4) + format.format(newID);
+        data.closeConnection();
         return formedID;
     }
 }

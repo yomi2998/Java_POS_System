@@ -4,6 +4,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+// This code uses XAMPP MySQL
+
 public class Database {
 
     private Connection conn;

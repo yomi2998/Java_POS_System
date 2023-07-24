@@ -1,7 +1,10 @@
 package java_pos_system;
 
-import java.util.Deque;
 import java.time.LocalDate;
+import java.sql.*;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.List;
 
 public class Sales {
 
@@ -11,16 +14,27 @@ public class Sales {
         DEBIT_CARD
     }
     Receiver r = new Receiver();
-    private String salesID;
+    private final String salesID;
     private String customer;
-    private Deque<Item> item;
+    private Map item;
     private Date salesDate;
     private double totalPrice;
     private int paymentMethod;
+    
+    private boolean checkSufficientItem(Map item, String itemID) throws SQLException{
+        int amount = (int)item.get(itemID);
+        Database data = new Database();
+        data.runCommand("SELECT * FROM ITEM WHERE itemID = '" + itemID + "'");
+        List<Integer> stocks = data.getInt("itemAmount");
+        int stock = stocks.get(0);
+        data.closeConnection();
+        return stock >= amount;
+    }
 
     Sales(String salesID, String customer) {
         this.salesID = salesID;
         this.customer = customer;
+        this.item = new HashMap();
         LocalDate now = LocalDate.now();
         this.salesDate = new Date(now.getDayOfMonth(), now.getMonthValue(), now.getYear());
         this.totalPrice = 0.0;
@@ -40,12 +54,18 @@ public class Sales {
         this.customer = r.getStr("Enter customer's name: ", 2, 150);
     }
 
-    public Deque<Item> getItemOrdered() {
+    public Map getItemOrdered() {
         return this.item;
     }
 
-    public void setItemOrdered() {
-        // WIP
+    public void setItemOrdered(Item item, int orderAmount) throws SQLException {
+        Map targetItem = new HashMap();
+        targetItem.put(item.getItemID(), orderAmount);
+        if(checkSufficientItem(targetItem, item.getItemID())){
+            this.item.putAll(targetItem);
+        } else {
+            //order too much!!!!
+        }
     }
 
     public double getTotalPrice() {
@@ -65,11 +85,14 @@ public class Sales {
         return this.salesDate;
     }
 
-    private boolean checkItem(Item item, int amount) {
-        return !(amount > item.getItemAmount());
+    public void submitSales() throws SQLException {
+        Database data = new Database();
+        data.runCommand("INSERT INTO SALE... ");
+        
+        //WIP
     }
-
-    public void submitSales() {
-        // WIP
+    
+    public void salesInfoCheckAndSubmit() {
+        
     }
 }
