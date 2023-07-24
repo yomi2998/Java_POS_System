@@ -25,7 +25,7 @@ public class Item {
     }
 
     public void setItemName() {
-        System.out.println("Setting item name for item " + this.itemID);
+        System.out.println("Setting item name for " + this.itemID);
         this.itemName = receiver.getStr("Enter item name: ", 3, 50);
         System.out.println("Details for item " + this.itemID + " has been set!");
     }
@@ -35,7 +35,7 @@ public class Item {
     }
 
     public void setItemPrice() {
-        System.out.println("Setting item price for item " + this.itemID);
+        System.out.println("Setting item price for " + this.itemID);
         this.itemPrice = receiver.getDouble("Enter price for the item: ", 0.0, 999999999.0);
         System.out.println("Details for item " + this.itemID + " has been set!");
     }
@@ -45,7 +45,7 @@ public class Item {
     }
 
     public void setItemDescription() {
-        System.out.println("Setting item description for item " + this.itemID);
+        System.out.println("Setting item description for " + this.itemID);
         this.itemDescription = receiver.getStr("Enter item description: ", 0, 99999);
         System.out.println("Details for item " + this.itemID + " has been set!");
     }
@@ -55,7 +55,7 @@ public class Item {
     }
 
     public void setItemSupplier() {
-        System.out.println("Setting item supplier for item " + this.itemID);
+        System.out.println("Setting item supplier for " + this.itemID);
         this.itemSupplier = receiver.getStr("Enter supplier's name: ", 0, 100);
         System.out.println("Details for item " + this.itemID + " has been set!");
     }
@@ -65,7 +65,7 @@ public class Item {
     }
 
     public void setItemAmount() {
-        System.out.println("Setting item amount for item " + this.itemID);
+        System.out.println("Setting item amount for " + this.itemID);
         this.itemAvailable = receiver.getInt("Enter amount of item available: ", 0, 999999);
         System.out.println("Details for item " + this.itemID + " has been set!");
     }
@@ -75,7 +75,7 @@ public class Item {
     }
 
     public void setForSale() {
-        System.out.println("Setting item for sale for item " + this.itemID);
+        System.out.println("Setting item for sale for " + this.itemID);
         this.forSale = receiver.getYN("Item for sale? (Y/N): ");
         System.out.println("Details for item " + this.itemID + " has been set!");
     }
@@ -85,7 +85,7 @@ public class Item {
     }
 
     public void setImportDate() {
-        System.out.println("Setting item import date for item " + this.itemID);
+        System.out.println("Setting item import date for " + this.itemID);
         this.dateImported = receiver.getDate("Enter import date (dd/mm/yyyy): ");
         System.out.println("Details for item " + this.itemID + " has been set!");
     }
