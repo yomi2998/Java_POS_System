@@ -3,7 +3,7 @@ package java_pos_system;
 import java.time.LocalDate;
 import java.sql.*;
 import java.util.Map;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class Sales {
@@ -16,13 +16,13 @@ public class Sales {
     Receiver r = new Receiver();
     private final String salesID;
     private String customer;
-    private Map item;
+    private LinkedHashMap<String, Integer> item;
     private Date salesDate;
     private double totalPrice;
     private int paymentMethod;
-    
-    private boolean checkSufficientItem(Map item, String itemID) throws SQLException{
-        int amount = (int)item.get(itemID);
+
+    private boolean checkSufficientItem(Map item, String itemID) throws SQLException {
+        int amount = (int) item.get(itemID);
         Database data = new Database();
         data.runCommand("SELECT * FROM ITEM WHERE itemID = '" + itemID + "'");
         List<Integer> stocks = data.getInt("itemAmount");
@@ -34,7 +34,7 @@ public class Sales {
     Sales(String salesID, String customer) {
         this.salesID = salesID;
         this.customer = customer;
-        this.item = new HashMap();
+        this.item = new LinkedHashMap();
         LocalDate now = LocalDate.now();
         this.salesDate = new Date(now.getDayOfMonth(), now.getMonthValue(), now.getYear());
         this.totalPrice = 0.0;
@@ -54,17 +54,17 @@ public class Sales {
         this.customer = r.getStr("Enter customer's name: ", 2, 150);
     }
 
-    public Map getItemOrdered() {
+    public LinkedHashMap getItemOrdered() {
         return this.item;
     }
 
     public void setItemOrdered(Item item, int orderAmount) throws SQLException {
-        Map targetItem = new HashMap();
+        LinkedHashMap<String, Integer> targetItem = new LinkedHashMap();
         targetItem.put(item.getItemID(), orderAmount);
-        if(checkSufficientItem(targetItem, item.getItemID())){
+        if (checkSufficientItem(targetItem, item.getItemID())) {
             this.item.putAll(targetItem);
         } else {
-            //order too much!!!!
+            //order too much, what will happen?
         }
     }
 
@@ -88,11 +88,11 @@ public class Sales {
     public void submitSales() throws SQLException {
         Database data = new Database();
         data.runCommand("INSERT INTO SALE... ");
-        
+
         //WIP
     }
-    
+
     public void salesInfoCheckAndSubmit() {
-        
+
     }
 }
