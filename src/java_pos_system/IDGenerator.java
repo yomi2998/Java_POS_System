@@ -15,9 +15,12 @@ public class IDGenerator {
         for(String s : out) {
             lastID = s;
         }
+        if(lastID.equals("")) {
+            lastID = "0000000000";
+        } 
         int newID = Integer.parseInt(lastID.substring(4)) + 1;
         DecimalFormat format = new DecimalFormat("000000");
-        String formedID = this.type.substring(0,4) + format.format(newID);
+        String formedID = this.type.substring(0,4).toUpperCase() + format.format(newID);
         data.closeConnection();
         return formedID;
     }

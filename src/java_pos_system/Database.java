@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 // This code uses XAMPP MySQL
-
 public class Database {
 
     private Connection conn;
@@ -16,11 +15,23 @@ public class Database {
     }
 
     public void runCommand(String cmd) throws SQLException {
-        if (this.conn.isClosed()) {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (Exception ex) {
+            System.out.println("err");
+        }
+        if (this.conn == null || this.conn.isClosed()) {
             this.conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/pos_system", "root", "");
         }
         Statement statement = this.conn.createStatement();
-        this.result = statement.executeQuery(cmd);
+
+        if (statement.execute(cmd)) {
+            // Process the result set if needed
+            this.result = statement.getResultSet();
+        } else {
+            // No result set, e.g., for INSERT, UPDATE, or DELETE statements
+            this.result = null;
+        }
     }
 
     public List<String> getString(String col) throws SQLException {
