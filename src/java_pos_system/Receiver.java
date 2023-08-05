@@ -11,6 +11,7 @@ public class Receiver {
                 Scanner s = new Scanner(System.in);
                 System.out.print(prompt);
                 i = s.nextInt();
+                s.close();
                 if (i <= minval || i > maxval) {
                     throw new Exception();
                 }
@@ -34,6 +35,7 @@ public class Receiver {
                 Scanner s = new Scanner(System.in);
                 System.out.print(prompt);
                 d = s.nextDouble();
+                s.close();
                 if (d <= minval || d > maxval) {
                     throw new Exception();
                 }
@@ -57,6 +59,7 @@ public class Receiver {
                 Scanner s = new Scanner(System.in);
                 System.out.print(prompt);
                 c = Character.toUpperCase(s.next().charAt(0));
+                s.close();
                 if (c != 'Y' && c != 'N') {
                     throw new Exception();
                 }
@@ -74,6 +77,7 @@ public class Receiver {
                 Scanner s = new Scanner(System.in);
                 System.out.print(prompt);
                 c = s.next().charAt(0);
+                s.close();
                 if (exclusion) {
                     for (char chk : constraint.toCharArray()) {
                         if (chk == c) {
@@ -104,6 +108,7 @@ public class Receiver {
                 Scanner s = new Scanner(System.in);
                 System.out.print(prompt);
                 str = s.nextLine();
+                s.close();
                 if (str.length() > maxlen || str.length() <= minlen) {
                     throw new Exception();
                 }
@@ -121,10 +126,11 @@ public class Receiver {
     public Date getDate(String prompt) {
         Date doi = new Date();
         while (true) {
-            Scanner s = new Scanner(System.in);
             try {
+                Scanner s = new Scanner(System.in);
                 System.out.print(prompt);
                 String dateStr = s.nextLine();
+                s.close();
                 String[] splitedDate = dateStr.split("/");
                 doi.day = Integer.parseInt(splitedDate[0]);
                 doi.month = Integer.parseInt(splitedDate[1]);

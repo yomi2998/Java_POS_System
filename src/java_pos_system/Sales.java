@@ -13,6 +13,7 @@ public class Sales {
         CREDIT_CARD,
         DEBIT_CARD
     }
+
     Receiver r = new Receiver();
     private final String salesID;
     private String customer;

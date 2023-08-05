@@ -1,17 +1,15 @@
 package java_pos_system;
 
-import java.util.*;
 import java.awt.*;
 import javax.swing.JLabel;
 import javax.swing.JFrame;
 
 public class WelcomePage {
     
-    JFrame frame = new JFrame();
-    JLabel welcomeLabel = new JLabel("Hello!");
+    private static JFrame frame = new JFrame();
+    private static JLabel welcomeLabel = new JLabel("Hello!");
 
-    WelcomePage(){
-
+    public static void startSession() {
         welcomeLabel.setBounds(0,0,200,35);
         welcomeLabel.setFont(new Font(null,Font.PLAIN,25));
 

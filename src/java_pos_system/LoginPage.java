@@ -8,19 +8,15 @@ import java.util.List;
 
 public class LoginPage implements ActionListener {
 
-    JFrame frame = new JFrame();
-    JButton loginButton = new JButton("Login");
-    JButton regButton = new JButton("Register");
-    JTextField userIDField = new JTextField();
-    JPasswordField userPasswordField = new JPasswordField();
-    JLabel userIDLabel = new JLabel("Staff ID:");
-    JLabel userPasswordLabel = new JLabel("Password:");
+    private static JFrame frame = new JFrame();
+    private static JButton loginButton = new JButton("Login");
+    private static JButton regButton = new JButton("Register");
+    private static JTextField userIDField = new JTextField();
+    private static JPasswordField userPasswordField = new JPasswordField();
+    private static JLabel userIDLabel = new JLabel("Staff ID:");
+    private static JLabel userPasswordLabel = new JLabel("Password:");
 
-    HashMap<String, String> logininfo = new HashMap<String, String>();
-
-    LoginPage(HashMap<String, String> loginInfoOriginal) {
-        logininfo = loginInfoOriginal;
-
+    public static void startSession() {
         userIDLabel.setBounds(10, 10, 75, 25);
         userPasswordLabel.setBounds(10, 40, 75, 25);
 
@@ -29,11 +25,11 @@ public class LoginPage implements ActionListener {
 
         loginButton.setBounds(50, 80, 100, 25);
         loginButton.setFocusable(false);
-        loginButton.addActionListener(this);
+        loginButton.addActionListener(new LoginPage());
 
         regButton.setBounds(150, 80, 100, 25);
         regButton.setFocusable(false);
-        regButton.addActionListener(this);
+        regButton.addActionListener(new LoginPage());
 
         frame.add(userIDLabel);
         frame.add(userPasswordLabel);
@@ -83,7 +79,7 @@ public class LoginPage implements ActionListener {
             if (info.size() == 1) {
                 if (info.get(0).equals(password)) {
                     frame.setVisible(false);
-                    WelcomePage welcomePage = new WelcomePage();
+                    WelcomePage.startSession();
                 } else {
                     JOptionPane.showMessageDialog(frame, "Login failed! Please check your password.", "Login",
                 JOptionPane.ERROR_MESSAGE);

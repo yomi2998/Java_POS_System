@@ -48,8 +48,8 @@ public class RegPage implements ActionListener {
     }
 
     public static boolean checkPassword() {
-        String password = userPasswordField.getText();
-        String confirm = userConfirmPasswordField.getText();
+        String password = userPasswordField.getPassword().toString();
+        String confirm = userConfirmPasswordField.getPassword().toString();
         if (!password.equals(confirm)) {
             return reportFailRegistration("Password and confirm password must be the same!");
         }
