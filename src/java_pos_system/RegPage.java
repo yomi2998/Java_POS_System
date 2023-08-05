@@ -1,13 +1,8 @@
 package java_pos_system;
 
 import java.awt.event.ActionEvent;
-import java.util.*;
 import java.awt.event.ActionListener;
 import javax.swing.*;
-import javax.xml.crypto.Data;
-
-import java.awt.*;
-import java.sql.SQLException;
 
 public class RegPage implements ActionListener {
     private static JFrame frame = new JFrame();
@@ -22,7 +17,6 @@ public class RegPage implements ActionListener {
     private static JLabel userPasswordLabel = new JLabel("Password:");
     private static JLabel userConfirmPasswordLabel = new JLabel("Confirm password:");
     private static JLabel staffContactNoLabel = new JLabel("Contact No:");
-    private static JTextField staffID = new JTextField();
 
     public static void resetField() {
         userIDField.setText("");
@@ -34,7 +28,7 @@ public class RegPage implements ActionListener {
 
     public static boolean reportFailRegistration(String err) {
         JOptionPane.showMessageDialog(frame, "Registration failed! " + err, "Registration",
-                        JOptionPane.ERROR_MESSAGE);
+                JOptionPane.ERROR_MESSAGE);
         return false;
     }
 
@@ -77,7 +71,7 @@ public class RegPage implements ActionListener {
                 hasDigit = true;
             }
         }
-        if(!hasUpper || !hasLower || !hasDigit) {
+        if (!hasUpper || !hasLower || !hasDigit) {
             return reportFailRegistration("Password must contain at least 1 uppercase, 1 lowercase, and 1 digit!");
         }
         return hasUpper && hasLower && hasDigit;
@@ -91,16 +85,22 @@ public class RegPage implements ActionListener {
         for (int i = 0; i < contactNo.length(); i++) {
             char c = contactNo.charAt(i);
             if (!Character.isDigit(c)) {
-                return reportFailRegistration("Contact No must only contain digits! (Use 01234... format instead of +60 format)");
+                return reportFailRegistration(
+                        "Contact No must only contain digits! (Use 01234... format instead of +60 format)");
             }
         }
         return true;
     }
 
-    public static void register() throws SQLException {
+    public static void register() {
         resetField();
-        IDGenerator idgen = new IDGenerator("staff");
-        String id = idgen.getID("staffID");
+        String id = "";
+        try {
+            IDGenerator idgen = new IDGenerator("staff");
+            id = idgen.getID("staffID");
+        } catch (Exception err) {
+            System.out.println(err);
+        }
         regButton.addActionListener(new RegPage());
         frame.setTitle("Register Staff ID: " + id);
         frame.setSize(350, 250);
@@ -151,16 +151,17 @@ public class RegPage implements ActionListener {
             String password = String.valueOf(userPasswordField.getPassword());
             if (checkContactNo() && checkName() && checkPassword()) {
                 try {
-                String sql = "INSERT INTO staff (staffID, staffName, staffContactNo, staffPassword) VALUES ('" + staffID
-                        + "', '" + staffName + "', '" + staffContactNo + "', '" + password + "')";
-                Database db = new Database();
-                db.runCommand(sql);
-                db.closeConnection();
-                JOptionPane.showMessageDialog(frame, "Registration successful!", "Success",
-                        JOptionPane.INFORMATION_MESSAGE);
-                frame.dispose();
+                    String sql = "INSERT INTO staff (staffID, staffName, staffContactNo, staffPassword) VALUES ('"
+                            + staffID
+                            + "', '" + staffName + "', '" + staffContactNo + "', '" + password + "')";
+                    Database db = new Database();
+                    db.runCommand(sql);
+                    db.closeConnection();
+                    JOptionPane.showMessageDialog(frame, "Registration successful!", "Success",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    frame.dispose();
                 } catch (Exception err) {
-                    System.out.println(err.getMessage());
+                    System.out.println(err);
                 }
             }
         }

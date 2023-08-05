@@ -24,3 +24,5 @@ replay_pid*
 /build/
 *.TXT
 *.properties
+*.xml
+nbproject/private/private.properties
