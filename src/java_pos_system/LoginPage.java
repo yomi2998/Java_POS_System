@@ -11,17 +11,17 @@ public class LoginPage implements ActionListener {
     private static JFrame frame = new JFrame();
     private static JButton loginButton = new JButton("Login");
     private static JButton regButton = new JButton("Register");
-    private static JTextField userIDField = new JTextField();
-    private static JPasswordField userPasswordField = new JPasswordField();
-    private static JLabel userIDLabel = new JLabel("Staff ID:");
-    private static JLabel userPasswordLabel = new JLabel("Password:");
+    private static JTextField staffIDField = new JTextField();
+    private static JPasswordField staffPasswordField = new JPasswordField();
+    private static JLabel staffIDLabel = new JLabel("Staff ID:");
+    private static JLabel staffPasswordLabel = new JLabel("Password:");
 
     public static void startSession() {
-        userIDLabel.setBounds(10, 10, 75, 25);
-        userPasswordLabel.setBounds(10, 40, 75, 25);
+        staffIDLabel.setBounds(10, 10, 75, 25);
+        staffPasswordLabel.setBounds(10, 40, 75, 25);
 
-        userIDField.setBounds(85, 10, 200, 25);
-        userPasswordField.setBounds(85, 40, 200, 25);
+        staffIDField.setBounds(85, 10, 200, 25);
+        staffPasswordField.setBounds(85, 40, 200, 25);
 
         loginButton.setBounds(50, 80, 100, 25);
         loginButton.setFocusable(false);
@@ -31,10 +31,10 @@ public class LoginPage implements ActionListener {
         regButton.setFocusable(false);
         regButton.addActionListener(new LoginPage());
 
-        frame.add(userIDLabel);
-        frame.add(userPasswordLabel);
-        frame.add(userIDField);
-        frame.add(userPasswordField);
+        frame.add(staffIDLabel);
+        frame.add(staffPasswordLabel);
+        frame.add(staffIDField);
+        frame.add(staffPasswordField);
         frame.add(loginButton);
         frame.add(regButton);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -58,10 +58,10 @@ public class LoginPage implements ActionListener {
 
         if (e.getSource() == loginButton) {
 
-            String userID = userIDField.getText();
-            String password = String.valueOf(userPasswordField.getPassword());
+            String staffID = staffIDField.getText();
+            String password = String.valueOf(staffPasswordField.getPassword());
 
-            if(userID.equals("") || password.equals("")) {
+            if(staffID.equals("") || password.equals("")) {
                 JOptionPane.showMessageDialog(frame, "Login failed! Please fill in all the fields.", "Login",
                 JOptionPane.ERROR_MESSAGE);
                 return;
@@ -70,7 +70,7 @@ public class LoginPage implements ActionListener {
             Database db = new Database();
             List<String> info = new LinkedList<String>();
             try {
-                db.runCommand("SELECT * FROM staff WHERE staffID = '" + userID + "'");
+                db.runCommand("SELECT * FROM staff WHERE staffID = '" + staffID + "'");
                 info = db.getString("staffPassword");
                 db.closeConnection();
             } catch (Exception err) {
@@ -86,11 +86,11 @@ public class LoginPage implements ActionListener {
                 }
             } else {
                 if (info.size() == 0) {
-                    JOptionPane.showMessageDialog(frame, "Login failed! No such user.", "Login",
+                    JOptionPane.showMessageDialog(frame, "Login failed! No such staff.", "Login",
                             JOptionPane.ERROR_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(frame,
-                            "Login failed! Multiple account with staff ID detected, please contact database administrator.",
+                            "Login failed! Multiple account with the same staff ID detected, please contact database administrator.",
                             "Login",
                             JOptionPane.ERROR_MESSAGE);
                 }

@@ -3,26 +3,28 @@ package java_pos_system;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class RegPage implements ActionListener {
     private static JFrame frame = new JFrame();
     private static JButton regButton = new JButton("Register");
-    private static JTextField userIDField = new JTextField();
+    private static JTextField staffIDField = new JTextField();
     private static JTextField staffNameField = new JTextField();
-    private static JPasswordField userPasswordField = new JPasswordField();
-    private static JPasswordField userConfirmPasswordField = new JPasswordField();
+    private static JPasswordField staffPasswordField = new JPasswordField();
+    private static JPasswordField staffConfirmPasswordField = new JPasswordField();
     private static JTextField staffContactNoField = new JTextField();
-    private static JLabel userIDLabel;
+    private static JLabel staffIDLabel = new JLabel("Staff ID:");
     private static JLabel staffNameLabel = new JLabel("Staff Name:");
-    private static JLabel userPasswordLabel = new JLabel("Password:");
-    private static JLabel userConfirmPasswordLabel = new JLabel("Confirm password:");
+    private static JLabel staffPasswordLabel = new JLabel("Password:");
+    private static JLabel staffConfirmPasswordLabel = new JLabel("Confirm password:");
     private static JLabel staffContactNoLabel = new JLabel("Contact No:");
 
     public static void resetField() {
-        userIDField.setText("");
+        staffIDField.setText("");
         staffNameField.setText("");
-        userPasswordField.setText("");
-        userConfirmPasswordField.setText("");
+        staffPasswordField.setText("");
+        staffConfirmPasswordField.setText("");
         staffContactNoField.setText("");
     }
 
@@ -48,8 +50,8 @@ public class RegPage implements ActionListener {
     }
 
     public static boolean checkPassword() {
-        String password = userPasswordField.getPassword().toString();
-        String confirm = userConfirmPasswordField.getPassword().toString();
+        String password = new String(staffPasswordField.getPassword());
+        String confirm = new String(staffConfirmPasswordField.getPassword());
         if (!password.equals(confirm)) {
             return reportFailRegistration("Password and confirm password must be the same!");
         }
@@ -79,8 +81,8 @@ public class RegPage implements ActionListener {
 
     public static boolean checkContactNo() {
         String contactNo = staffContactNoField.getText();
-        if (contactNo.length() < 10) {
-            return reportFailRegistration("Contact No's length must be at least 10 characters!");
+        if (contactNo.length() < 10 || contactNo.length() > 11) {
+            return reportFailRegistration("Contact No's length must be at least 10 and not more than 11 characters!");
         }
         for (int i = 0; i < contactNo.length(); i++) {
             char c = contactNo.charAt(i);
@@ -101,37 +103,43 @@ public class RegPage implements ActionListener {
         } catch (Exception err) {
             System.out.println(err);
         }
-        regButton.addActionListener(new RegPage());
         frame.setTitle("Register Staff ID: " + id);
         frame.setSize(350, 250);
-        userIDLabel = new JLabel("Staff ID:");
-        userIDLabel.setBounds(10, 10, 10, 10);
-        userIDField.setText(id);
-        userIDField.setEditable(false);
+        staffIDLabel.setBounds(10, 10, 10, 10);
+        staffIDField.setText(id);
+        staffIDField.setEditable(false);
 
-        userIDLabel.setBounds(10, 10, 110, 25);
+        staffIDLabel.setBounds(10, 10, 110, 25);
         staffNameLabel.setBounds(10, 40, 110, 25);
-        userPasswordLabel.setBounds(10, 70, 110, 25);
-        userConfirmPasswordLabel.setBounds(10, 100, 110, 25);
+        staffPasswordLabel.setBounds(10, 70, 110, 25);
+        staffConfirmPasswordLabel.setBounds(10, 100, 110, 25);
         staffContactNoLabel.setBounds(10, 130, 110, 25);
 
-        userIDField.setBounds(130, 10, 200, 25);
+        staffIDField.setBounds(130, 10, 200, 25);
         staffNameField.setBounds(130, 40, 200, 25);
-        userPasswordField.setBounds(130, 70, 200, 25);
-        userConfirmPasswordField.setBounds(130, 100, 200, 25);
+        staffPasswordField.setBounds(130, 70, 200, 25);
+        staffConfirmPasswordField.setBounds(130, 100, 200, 25);
         staffContactNoField.setBounds(130, 130, 200, 25);
 
         regButton.setBounds(120, 165, 100, 25);
 
-        frame.add(userIDLabel);
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                frame.dispose();
+            }
+        });
+        regButton.addActionListener(new RegPage());
+
+        frame.add(staffIDLabel);
         frame.add(staffNameLabel);
-        frame.add(userPasswordLabel);
-        frame.add(userConfirmPasswordLabel);
+        frame.add(staffPasswordLabel);
+        frame.add(staffConfirmPasswordLabel);
         frame.add(staffContactNoLabel);
-        frame.add(userIDField);
+        frame.add(staffIDField);
         frame.add(staffNameField);
-        frame.add(userPasswordField);
-        frame.add(userConfirmPasswordField);
+        frame.add(staffPasswordField);
+        frame.add(staffConfirmPasswordField);
         frame.add(staffContactNoField);
         frame.add(regButton);
 
@@ -145,10 +153,10 @@ public class RegPage implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == regButton) {
             System.out.println("Registering...");
-            String staffID = userIDField.getText();
+            String staffID = staffIDField.getText();
             String staffName = staffNameField.getText();
             String staffContactNo = staffContactNoField.getText();
-            String password = String.valueOf(userPasswordField.getPassword());
+            String password = String.valueOf(staffPasswordField.getPassword());
             if (checkContactNo() && checkName() && checkPassword()) {
                 try {
                     String sql = "INSERT INTO staff (staffID, staffName, staffContactNo, staffPassword) VALUES ('"
