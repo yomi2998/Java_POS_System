@@ -22,7 +22,7 @@ public class Sales {
     private double totalPrice;
     private int paymentMethod;
 
-    private boolean checkSufficientItem(Map item, String itemID) throws SQLException {
+    private boolean checkSufficientItem(Map<String, Integer> item, String itemID) throws SQLException {
         int amount = (int) item.get(itemID);
         Database data = new Database();
         data.runCommand("SELECT * FROM ITEM WHERE itemID = '" + itemID + "'");
@@ -35,7 +35,7 @@ public class Sales {
     Sales(String salesID, String customer) {
         this.salesID = salesID;
         this.customer = customer;
-        this.item = new LinkedHashMap();
+        this.item = new LinkedHashMap<>();
         LocalDate now = LocalDate.now();
         this.salesDate = new Date(now.getDayOfMonth(), now.getMonthValue(), now.getYear());
         this.totalPrice = 0.0;
@@ -55,12 +55,12 @@ public class Sales {
         this.customer = r.getStr("Enter customer's name: ", 2, 150);
     }
 
-    public LinkedHashMap getItemOrdered() {
+    public LinkedHashMap<String, Integer> getItemOrdered() {
         return this.item;
     }
 
     public void setItemOrdered(Item item, int orderAmount) throws SQLException {
-        LinkedHashMap<String, Integer> targetItem = new LinkedHashMap();
+        LinkedHashMap<String, Integer> targetItem = new LinkedHashMap<>();
         targetItem.put(item.getItemID(), orderAmount);
         if (checkSufficientItem(targetItem, item.getItemID())) {
             this.item.putAll(targetItem);

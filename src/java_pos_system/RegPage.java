@@ -20,7 +20,7 @@ public class RegPage implements ActionListener {
     private static JLabel staffConfirmPasswordLabel = new JLabel("Confirm password:");
     private static JLabel staffContactNoLabel = new JLabel("Contact No:");
 
-    public static void resetField() {
+    private static void resetField() {
         staffIDField.setText("");
         staffNameField.setText("");
         staffPasswordField.setText("");
@@ -28,13 +28,13 @@ public class RegPage implements ActionListener {
         staffContactNoField.setText("");
     }
 
-    public static boolean reportFailRegistration(String err) {
+    private static boolean reportFailRegistration(String err) {
         JOptionPane.showMessageDialog(frame, "Registration failed! " + err, "Registration",
                 JOptionPane.ERROR_MESSAGE);
         return false;
     }
 
-    public static boolean checkName() {
+    private static boolean checkName() {
         String name = staffNameField.getText();
         if (name.length() < 1) {
             return reportFailRegistration("Name's length must be at least 1 character!");
@@ -49,7 +49,7 @@ public class RegPage implements ActionListener {
         return true;
     }
 
-    public static boolean checkPassword() {
+    private static boolean checkPassword() {
         String password = new String(staffPasswordField.getPassword());
         String confirm = new String(staffConfirmPasswordField.getPassword());
         if (!password.equals(confirm)) {
@@ -79,7 +79,7 @@ public class RegPage implements ActionListener {
         return hasUpper && hasLower && hasDigit;
     }
 
-    public static boolean checkContactNo() {
+    private static boolean checkContactNo() {
         String contactNo = staffContactNoField.getText();
         if (contactNo.length() < 10 || contactNo.length() > 11) {
             return reportFailRegistration("Contact No's length must be at least 10 and not more than 11 characters!");
@@ -94,7 +94,36 @@ public class RegPage implements ActionListener {
         return true;
     }
 
-    public static void register() {
+    private static void register() {
+        String staffID = staffIDField.getText();
+        String staffName = staffNameField.getText();
+        String staffContactNo = staffContactNoField.getText();
+        String password = String.valueOf(staffPasswordField.getPassword());
+        if (checkContactNo() && checkName() && checkPassword()) {
+            try {
+                String sql = "INSERT INTO staff (staffID, staffName, staffContactNo, staffPassword) VALUES ('"
+                        + staffID
+                        + "', '" + staffName + "', '" + staffContactNo + "', '" + password + "')";
+                Database db = new Database();
+                db.runCommand(sql);
+                db.closeConnection();
+                JOptionPane.showMessageDialog(frame, "Registration successful!", "Success",
+                        JOptionPane.INFORMATION_MESSAGE);
+                frame.dispose();
+            } catch (Exception err) {
+                System.out.println(err);
+            }
+        }
+    }
+
+    private static Action registerAction = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            register();
+        }
+    };
+
+    public static void startSession() {
         resetField();
         String id = "";
         try {
@@ -146,32 +175,18 @@ public class RegPage implements ActionListener {
         frame.setResizable(false);
         frame.setLayout(null);
         frame.setLocationRelativeTo(null);
+
+        KeyStroke enterKeyStroke = KeyStroke.getKeyStroke("ENTER");
+        regButton.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(enterKeyStroke, "register");
+        regButton.getActionMap().put("register", registerAction);
+
         frame.setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == regButton) {
-            System.out.println("Registering...");
-            String staffID = staffIDField.getText();
-            String staffName = staffNameField.getText();
-            String staffContactNo = staffContactNoField.getText();
-            String password = String.valueOf(staffPasswordField.getPassword());
-            if (checkContactNo() && checkName() && checkPassword()) {
-                try {
-                    String sql = "INSERT INTO staff (staffID, staffName, staffContactNo, staffPassword) VALUES ('"
-                            + staffID
-                            + "', '" + staffName + "', '" + staffContactNo + "', '" + password + "')";
-                    Database db = new Database();
-                    db.runCommand(sql);
-                    db.closeConnection();
-                    JOptionPane.showMessageDialog(frame, "Registration successful!", "Success",
-                            JOptionPane.INFORMATION_MESSAGE);
-                    frame.dispose();
-                } catch (Exception err) {
-                    System.out.println(err);
-                }
-            }
+            register();
         }
     }
 }

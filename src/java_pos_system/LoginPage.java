@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.util.*;
 import java.awt.event.ActionListener;
 import javax.swing.*;
-import java.util.List;
 
 public class LoginPage implements ActionListener {
 
@@ -15,6 +14,53 @@ public class LoginPage implements ActionListener {
     private static JPasswordField staffPasswordField = new JPasswordField();
     private static JLabel staffIDLabel = new JLabel("Staff ID:");
     private static JLabel staffPasswordLabel = new JLabel("Password:");
+
+    private static void login() {
+        String staffID = staffIDField.getText();
+        String password = String.valueOf(staffPasswordField.getPassword());
+
+        if (staffID.equals("") || password.equals("")) {
+            JOptionPane.showMessageDialog(frame, "Login failed! Please fill in all the fields.", "Login",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        Database db = new Database();
+        List<String> info = new LinkedList<String>();
+        try {
+            db.runCommand("SELECT * FROM staff WHERE staffID = '" + staffID + "'");
+            info = db.getString("staffPassword");
+            db.closeConnection();
+        } catch (Exception err) {
+            System.out.println(err);
+        }
+        if (info.size() == 1) {
+            if (info.get(0).equals(password)) {
+                frame.setVisible(false);
+                WelcomePage.startSession();
+            } else {
+                JOptionPane.showMessageDialog(frame, "Login failed! Please check your password.", "Login",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            if (info.size() == 0) {
+                JOptionPane.showMessageDialog(frame, "Login failed! No such staff.", "Login",
+                        JOptionPane.ERROR_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(frame,
+                        "Login failed! Multiple account with the same staff ID detected, please contact database administrator.",
+                        "Login",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    private static Action loginAction = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            login();
+        }
+    };
 
     public static void startSession() {
         staffIDLabel.setBounds(10, 10, 75, 25);
@@ -43,6 +89,10 @@ public class LoginPage implements ActionListener {
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setTitle("Login - Pos System");
+
+        KeyStroke enterKeyStroke = KeyStroke.getKeyStroke("ENTER");
+        loginButton.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(enterKeyStroke, "login");
+        loginButton.getActionMap().put("login", loginAction);
         frame.setVisible(true);
     }
 
@@ -50,51 +100,16 @@ public class LoginPage implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == regButton) {
             try {
-                RegPage.register();
+                frame.setFocusable(false);
+                RegPage.startSession();
+                frame.setFocusable(true);
             } catch (Exception ex) {
                 System.out.println(ex);
             }
         }
 
         if (e.getSource() == loginButton) {
-
-            String staffID = staffIDField.getText();
-            String password = String.valueOf(staffPasswordField.getPassword());
-
-            if(staffID.equals("") || password.equals("")) {
-                JOptionPane.showMessageDialog(frame, "Login failed! Please fill in all the fields.", "Login",
-                JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            Database db = new Database();
-            List<String> info = new LinkedList<String>();
-            try {
-                db.runCommand("SELECT * FROM staff WHERE staffID = '" + staffID + "'");
-                info = db.getString("staffPassword");
-                db.closeConnection();
-            } catch (Exception err) {
-                System.out.println(err);
-            }
-            if (info.size() == 1) {
-                if (info.get(0).equals(password)) {
-                    frame.setVisible(false);
-                    WelcomePage.startSession();
-                } else {
-                    JOptionPane.showMessageDialog(frame, "Login failed! Please check your password.", "Login",
-                JOptionPane.ERROR_MESSAGE);
-                }
-            } else {
-                if (info.size() == 0) {
-                    JOptionPane.showMessageDialog(frame, "Login failed! No such staff.", "Login",
-                            JOptionPane.ERROR_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(frame,
-                            "Login failed! Multiple account with the same staff ID detected, please contact database administrator.",
-                            "Login",
-                            JOptionPane.ERROR_MESSAGE);
-                }
-            }
+            login();
         }
     }
 }
