@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 25, 2023 at 11:11 AM
+-- Generation Time: Sep 24, 2023 at 04:13 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -41,6 +41,22 @@ CREATE TABLE `item` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `member`
+--
+
+CREATE TABLE `member` (
+  `memberid` varchar(10) NOT NULL,
+  `password` varchar(16) NOT NULL,
+  `membername` text NOT NULL,
+  `memberaddress` text NOT NULL,
+  `memberphone` varchar(12) NOT NULL,
+  `memberemail` varchar(50) NOT NULL,
+  `memberbalance` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `sale`
 --
 
@@ -52,6 +68,13 @@ CREATE TABLE `sale` (
   `totalPrice` double NOT NULL,
   `paymentMethod` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `sale`
+--
+
+INSERT INTO `sale` (`salesID`, `salesItemID`, `customer`, `salesDate`, `totalPrice`, `paymentMethod`) VALUES
+('A123123123', 'A123123123', 0, '2022-10-10', 1000, 1);
 
 -- --------------------------------------------------------
 
@@ -65,6 +88,13 @@ CREATE TABLE `sales_item_list` (
   `orderAmount` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
+--
+-- Dumping data for table `sales_item_list`
+--
+
+INSERT INTO `sales_item_list` (`salesItemID`, `itemID`, `orderAmount`) VALUES
+('A123123123', 'A123123123', 123);
+
 -- --------------------------------------------------------
 
 --
@@ -72,12 +102,22 @@ CREATE TABLE `sales_item_list` (
 --
 
 CREATE TABLE `staff` (
-  `staffID` varchar(10) NOT NULL,
-  `staffName` varchar(50) NOT NULL,
-  `staffPassword` varchar(16) NOT NULL,
-  `staffContactNo` varchar(11) NOT NULL,
-  `staffSalary` double NOT NULL
+  `staffid` varchar(10) NOT NULL,
+  `staffpassword` varchar(16) NOT NULL,
+  `staffname` varchar(50) NOT NULL,
+  `staffaddress` text NOT NULL,
+  `staffphone` varchar(12) NOT NULL,
+  `staffemail` varchar(50) NOT NULL,
+  `staffsalary` float NOT NULL,
+  `staffposition` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `staff`
+--
+
+INSERT INTO `staff` (`staffid`, `staffpassword`, `staffname`, `staffaddress`, `staffphone`, `staffemail`, `staffsalary`, `staffposition`) VALUES
+('STAF000001', 'fqjwiJ2123', 'Super', 'Superioldexiaorqjgiqwn', '012314566787', 'gay@gay.gay', 1234.45, 'Gay Manager');
 
 --
 -- Indexes for dumped tables
@@ -88,6 +128,12 @@ CREATE TABLE `staff` (
 --
 ALTER TABLE `item`
   ADD PRIMARY KEY (`itemID`);
+
+--
+-- Indexes for table `member`
+--
+ALTER TABLE `member`
+  ADD PRIMARY KEY (`memberid`);
 
 --
 -- Indexes for table `sale`
@@ -106,7 +152,7 @@ ALTER TABLE `sales_item_list`
 -- Indexes for table `staff`
 --
 ALTER TABLE `staff`
-  ADD PRIMARY KEY (`staffID`);
+  ADD PRIMARY KEY (`staffid`);
 
 --
 -- Constraints for dumped tables

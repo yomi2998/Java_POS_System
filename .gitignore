@@ -26,3 +26,4 @@ replay_pid*
 *.properties
 *.xml
 nbproject/private/private.properties
+/dist/

@@ -23,7 +23,7 @@ public class Database {
         if (this.conn == null || this.conn.isClosed()) {
             this.conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/pos_system", "root", "");
         }
-        Statement statement = this.conn.createStatement();
+        PreparedStatement statement = this.conn.prepareStatement(cmd, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
         if (statement.execute(cmd)) {
             // Process the result set if needed
@@ -34,7 +34,16 @@ public class Database {
         }
     }
 
-    public List<String> getString(String col) throws SQLException {
+    public boolean hasResult() throws SQLException {
+        if(!result.next()) {
+            return false;
+        } else {
+            result.previous();
+            return true;
+        }
+    }
+
+    public List<String> getStringList(String col) throws SQLException {
         List<String> str = new ArrayList<>();
         while (this.result.next()) {
             str.add(this.result.getString(col));
@@ -42,7 +51,7 @@ public class Database {
         return str;
     }
 
-    public List<Integer> getInt(String col) throws SQLException {
+    public List<Integer> getIntList(String col) throws SQLException {
         List<Integer> i = new ArrayList<>();
         while (this.result.next()) {
             i.add(this.result.getInt(col));
@@ -50,7 +59,7 @@ public class Database {
         return i;
     }
 
-    public List<Double> getDouble(String col) throws SQLException {
+    public List<Double> getDoubleList(String col) throws SQLException {
         List<Double> d = new ArrayList<>();
         while (this.result.next()) {
             d.add(this.result.getDouble(col));
@@ -58,11 +67,27 @@ public class Database {
         return d;
     }
 
-    public List<Boolean> getBoolean(String col) throws SQLException {
+    public List<Boolean> getBooleanList(String col) throws SQLException {
         List<Boolean> b = new ArrayList<>();
         while (this.result.next()) {
             b.add(this.result.getBoolean(col));
         }
         return b;
+    }
+
+    public String getString(String col) throws SQLException {
+        return this.result.getString(col);
+    }
+
+    public int getInt(String col) throws SQLException {
+        return this.result.getInt(col);
+    }
+
+    public double getDouble(String col) throws SQLException {
+        return this.result.getDouble(col);
+    }
+
+    public boolean getBoolean(String col) throws SQLException {
+        return this.result.getBoolean(col);
     }
 }

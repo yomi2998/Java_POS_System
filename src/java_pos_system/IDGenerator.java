@@ -10,7 +10,7 @@ public class IDGenerator {
     public String getID(String targetCol) throws SQLException {
         Database data = new Database();
         data.runCommand("SELECT * FROM " + type);
-        List<String> out = data.getString(targetCol);
+        List<String> out = data.getStringList(targetCol);
         String lastID = "";
         for(String s : out) {
             lastID = s;
