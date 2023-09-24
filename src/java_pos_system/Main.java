@@ -3,7 +3,6 @@ package java_pos_system;
 import java.util.Scanner;
 
 public class Main {
-    private String userID;
     public static void main(String[] args) {
         while (true) {
             Scanner sc = new Scanner(System.in);
@@ -55,21 +54,27 @@ public class Main {
                             LoginMember loginMember = new LoginMember();
                             if (loginMember.performLoginOperation()) {
                                 System.out.println("Login successful");
+                                System.out.print("Press enter to continue...");
+                                sc.nextLine();
+                                MemberMenu memberMenu = new MemberMenu(loginMember.getUserID(), loginMember.getUserName());
                             } else {
                                 System.out.println("Login cancelled");
+                                System.out.print("Press enter to continue...");
+                                sc.nextLine();
                             }
-                            System.out.print("Press enter to continue...");
-                            sc.nextLine();
                         }
                         case 2 -> {
                             LoginStaff loginStaff = new LoginStaff();
                             if (loginStaff.performLoginOperation()) {
                                 System.out.println("Login successful");
+                                System.out.print("Press enter to continue...");
+                                sc.nextLine();
+                                StaffMenu staffMenu = new StaffMenu(loginStaff.getUserID(), loginStaff.getUserName());
                             } else {
                                 System.out.println("Login cancelled");
+                                System.out.print("Press enter to continue...");
+                                sc.nextLine();
                             }
-                            System.out.print("Press enter to continue...");
-                            sc.nextLine();
                         }
                     }
                 }

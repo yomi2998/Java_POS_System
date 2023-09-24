@@ -35,12 +35,7 @@ public class Database {
     }
 
     public boolean hasResult() throws SQLException {
-        if(!result.next()) {
-            return false;
-        } else {
-            result.previous();
-            return true;
-        }
+        return this.result != null && this.result.next();
     }
 
     public List<String> getStringList(String col) throws SQLException {

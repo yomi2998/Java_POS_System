@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 24, 2023 at 04:13 PM
+-- Generation Time: Sep 24, 2023 at 06:05 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -52,6 +52,22 @@ CREATE TABLE `member` (
   `memberphone` varchar(12) NOT NULL,
   `memberemail` varchar(50) NOT NULL,
   `memberbalance` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product`
+--
+
+CREATE TABLE `product` (
+  `productid` varchar(10) NOT NULL,
+  `productbrand` varchar(50) NOT NULL,
+  `productname` varchar(50) NOT NULL,
+  `productprice` float NOT NULL,
+  `productdescription` text NOT NULL,
+  `productcategory` varchar(50) NOT NULL,
+  `productquantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
@@ -134,6 +150,12 @@ ALTER TABLE `item`
 --
 ALTER TABLE `member`
   ADD PRIMARY KEY (`memberid`);
+
+--
+-- Indexes for table `product`
+--
+ALTER TABLE `product`
+  ADD PRIMARY KEY (`productid`);
 
 --
 -- Indexes for table `sale`

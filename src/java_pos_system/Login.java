@@ -4,13 +4,8 @@ import java.util.Scanner;
 
 public abstract class Login {
     private String userID;
+    private String userName;
     private String userPassword;
-    private String userType;
-
-    public Login(String userID, String userPassword) {
-        this.userID = userID;
-        this.userPassword = userPassword;
-    }
 
     public Login() {
     }
@@ -19,24 +14,24 @@ public abstract class Login {
         return this.userID;
     }
 
-    public String getUserPassword() {
-        return this.userPassword;
+    public String getUserName() {
+        return this.userName;
     }
 
-    public String getUserType() {
-        return this.userType;
+    public String getUserPassword() {
+        return this.userPassword;
     }
 
     public void setUserID(String userID) {
         this.userID = userID;
     }
 
-    public void setUserPassword(String userPassword) {
-        this.userPassword = userPassword;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public void setUserType(String userType) {
-        this.userType = userType;
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
     }
 }
 
@@ -68,6 +63,7 @@ class LoginMember extends Login {
                     sc.nextLine();
                     continue;
                 }
+                setUserName(db.getString("membername"));
                 return true;
             } catch (Exception e) {
                 System.out.println(e);
@@ -107,6 +103,7 @@ class LoginStaff extends Login {
                     sc.nextLine();
                     continue;
                 }
+                setUserName(db.getString("staffname"));
                 return true;
             } catch (Exception e) {
                 System.out.println(e);
