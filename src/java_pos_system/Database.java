@@ -43,7 +43,7 @@ public class Database {
     }
 
     public boolean hasResult() throws SQLException {
-        return this.result != null && this.result.next();
+        return this.result.isBeforeFirst();
     }
 
     public List<String> getStringList(String col) throws SQLException {

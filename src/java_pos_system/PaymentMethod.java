@@ -12,7 +12,6 @@ public class PaymentMethod {
     private String expiryDate;
     private String cvv;
     private String methods[] = {
-            "Cash On Delivery",
             "Credit Card",
             "Debit Card"
     };
@@ -99,27 +98,6 @@ public class PaymentMethod {
         }
     }
 
-    private boolean submitPaymentMethod_NoCard() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-        try {
-            Database db = new Database();
-            db.runCommand("SELECT * FROM payment_method WHERE memberid = '" + this.userID + "' AND paymentmethod = 'Cash On Delivery'");
-            if (db.hasResult()) {
-                db.closeConnection();
-                System.out.println("You already have a Cash On Delivery payment method registered.");
-                return false;
-            }
-            db.runCommand("INSERT INTO payment_method VALUES ('" + this.paymentID + "', '" + this.userID + "', '"
-                    + this.paymentMethod + "', NULL, NULL, NULL)");
-            db.closeConnection();
-            return true;
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-            return false;
-        }
-    }
-
     public boolean performRegisterPaymentMethodOperation() {
         while (true) {
             IDGenerator idg = new IDGenerator("payment_method");
@@ -155,17 +133,23 @@ public class PaymentMethod {
                 sc.nextLine();
                 continue;
             }
-            if (this.paymentMethod.equals("Cash On Delivery")) {
-                return submitPaymentMethod_NoCard();
-            } else {
+            while (true) {
                 System.out.print("Enter card number: ");
                 this.cardNumber = sc.nextLine();
-                System.out.print("Enter expiry date (MM/YY): ");
-                this.expiryDate = sc.nextLine();
-                System.out.print("Enter CVV: ");
-                this.cvv = sc.nextLine();
-                return submitPaymentMethod_Card();
+                if (this.cardNumber.length() != 16) {
+                    System.out.println("Invalid card number, please try again.");
+                    System.out.print("Press enter to continue...");
+                    sc.nextLine();
+                    continue;
+                } else {
+                    break;
+                }
             }
+            System.out.print("Enter expiry date (MM/YY): ");
+            this.expiryDate = sc.nextLine();
+            System.out.print("Enter CVV: ");
+            this.cvv = sc.nextLine();
+            return submitPaymentMethod_Card();
         }
     }
 
@@ -180,20 +164,16 @@ public class PaymentMethod {
                 PaymentMethod paymentMethod = new PaymentMethod();
                 paymentMethod.setPaymentID(db.getString("paymentid"));
                 paymentMethod.setPaymentMethod(db.getString("paymentmethod"));
-                if (!paymentMethod.getPaymentMethod().equals("Cash On Delivery"))
-                    paymentMethod.setCardNumber(db.getString("cardnumber"));
+                paymentMethod.setCardNumber(db.getString("cardnumber"));
                 paymentMethodList.add(paymentMethod);
                 results++;
             }
             if (results != 0) {
                 System.out.println("Payment Methods:");
                 for (int i = 0; i < paymentMethodList.size(); i++) {
-                    if (paymentMethodList.get(i).getPaymentMethod().equals("Cash On Delivery")) {
-                        System.out.println(paymentMethodList.get(i).getPaymentMethod());
-                    } else {
-                        System.out.println(paymentMethodList.get(i).getPaymentMethod() + " - "
-                                + paymentMethodList.get(i).getCensoredCardNumber());
-                    }
+                    System.out.println(paymentMethodList.get(i).getPaymentMethod() + " - "
+                            + paymentMethodList.get(i).getCensoredCardNumber());
+
                 }
             } else {
                 System.out.println("No payment methods registered");
@@ -224,8 +204,7 @@ public class PaymentMethod {
                     PaymentMethod paymentMethod = new PaymentMethod();
                     paymentMethod.setPaymentID(db.getString("paymentid"));
                     paymentMethod.setPaymentMethod(db.getString("paymentmethod"));
-                    if (!paymentMethod.getPaymentMethod().equals("Cash On Delivery"))
-                        paymentMethod.setCardNumber(db.getString("cardnumber"));
+                    paymentMethod.setCardNumber(db.getString("cardnumber"));
                     paymentMethodList.add(paymentMethod);
                 }
                 db.closeConnection();
@@ -237,12 +216,8 @@ public class PaymentMethod {
             }
             System.out.println("Payment Methods:");
             for (int i = 0; i < paymentMethodList.size(); i++) {
-                if (paymentMethodList.get(i).getPaymentMethod().equals("Cash On Delivery")) {
-                    System.out.println((i + 1) + ". " + paymentMethodList.get(i).getPaymentMethod());
-                } else {
-                    System.out.println((i + 1) + ". " + paymentMethodList.get(i).getPaymentMethod() + " - "
-                            + paymentMethodList.get(i).getCensoredCardNumber());
-                }
+                System.out.println((i + 1) + ". " + paymentMethodList.get(i).getPaymentMethod() + " - "
+                        + paymentMethodList.get(i).getCensoredCardNumber());
             }
             System.out.println("-1. Cancel");
             System.out.print("Which to delete?: ");

@@ -7,6 +7,7 @@ import java.util.List;
 public class TopUp {
     private String userID;
     private String paymentID;
+
     public TopUp(String userID) {
         this.userID = userID;
     }
@@ -39,7 +40,7 @@ public class TopUp {
             System.out.flush();
             if (!isPaymentMethodAvailable()) {
                 System.out.println("No payment method available.");
-                System.out.println("Please register a payment method first.");
+                System.out.println("Please add a payment method first.");
                 System.out.print("Press enter to continue...");
                 sc.nextLine();
                 return false;
@@ -48,19 +49,19 @@ public class TopUp {
             System.out.println("------");
             System.out.println("User ID: " + this.userID);
             double topUpAmount = 0;
-            while(true)
-            try {
-                System.out.print("Enter top up amount (-1 to cancel): RM ");
-                topUpAmount = Double.parseDouble(sc.nextLine());
-                if (topUpAmount == -1) {
-                    return false;
-                } else if (topUpAmount < 0) {
-                    throw new Exception();
+            while (true)
+                try {
+                    System.out.print("Enter top up amount (-1 to cancel): RM ");
+                    topUpAmount = Double.parseDouble(sc.nextLine());
+                    if (topUpAmount == -1) {
+                        return false;
+                    } else if (topUpAmount < 0) {
+                        throw new Exception();
+                    }
+                    break;
+                } catch (Exception e) {
+                    System.out.println("Invalid top up amount.");
                 }
-                break;
-            } catch (Exception e) {
-                System.out.println("Invalid top up amount.");
-            }
             List<PaymentMethod> paymentMethodList = new ArrayList<PaymentMethod>();
             System.out.println("Payment Methods:");
             try {
@@ -70,8 +71,7 @@ public class TopUp {
                     PaymentMethod paymentMethod = new PaymentMethod();
                     paymentMethod.setPaymentID(db.getString("paymentid"));
                     paymentMethod.setPaymentMethod(db.getString("paymentmethod"));
-                    if (!paymentMethod.getPaymentMethod().equals("Cash On Delivery"))
-                        paymentMethod.setCardNumber(db.getString("cardnumber"));
+                    paymentMethod.setCardNumber(db.getString("cardnumber"));
                     paymentMethodList.add(paymentMethod);
                 }
                 db.closeConnection();
@@ -79,37 +79,41 @@ public class TopUp {
                 System.out.println("Error: " + e.getMessage());
             }
             for (int i = 0; i < paymentMethodList.size(); i++) {
-                if(paymentMethodList.get(i).getPaymentMethod().equals("Cash On Delivery")) {
-                    System.out.println((i + 1) + ". " + paymentMethodList.get(i).getPaymentMethod());
-                } else {
-                    System.out.println((i + 1) + ". " + paymentMethodList.get(i).getPaymentMethod() + " - " + paymentMethodList.get(i).getCensoredCardNumber());
-                }
+                System.out.println((i + 1) + ". " + paymentMethodList.get(i).getPaymentMethod() + " - "
+                        + paymentMethodList.get(i).getCensoredCardNumber());
             }
             System.out.println("-1. Cancel");
             System.out.print("Choose payment method: ");
             int choice = 0;
-            try {
-                choice = Integer.parseInt(sc.nextLine());
-                if (choice == -1) {
-                    return false;
-                } else if (choice > paymentMethodList.size() || choice < 1) {
-                    throw new Exception();
+            while (true) {
+                try {
+                    choice = Integer.parseInt(sc.nextLine());
+                    if (choice == -1) {
+                        return false;
+                    } else if (choice > paymentMethodList.size() || choice < 1) {
+                        throw new Exception();
+                    }
+                    break;
+                } catch (Exception e) {
+                    System.out.println("Invalid choice, please try again.");
                 }
-            } catch (Exception e) {
-                System.out.println("Invalid choice.");
             }
             paymentID = paymentMethodList.get(choice - 1).getPaymentID();
             try {
                 Database db = new Database();
-                db.runCommand("UPDATE member SET memberbalance = memberbalance + " + topUpAmount + " WHERE memberid = '" + this.userID + "'");
                 IDGenerator idg = new IDGenerator("topup_transaction");
                 String transactionID = idg.getID("transactionid");
                 db.runCommand("SELECT * FROM member WHERE memberid = '" + this.userID + "'");
+                db.next();
                 double newBalance = db.getDouble("memberbalance") + topUpAmount;
-                db.runCommand("INSERT INTO topup_transaction VALUES ('" + transactionID + "', '" + this.userID + "', '" + paymentID + "', " + topUpAmount + ", " + newBalance + ")");
+                db.runCommand("UPDATE member SET memberbalance = memberbalance + " + topUpAmount + " WHERE memberid = '"
+                        + this.userID + "'");
+                db.runCommand("INSERT INTO topup_transaction VALUES ('" + transactionID + "', '" + this.userID + "', '"
+                        + paymentID + "', " + topUpAmount + ", " + newBalance + ")");
                 return true;
             } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
+                sc.nextLine();
                 return false;
             }
         }

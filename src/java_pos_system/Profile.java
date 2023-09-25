@@ -157,6 +157,7 @@ class MemberProfile extends Profile {
             Database db = new Database();
             db.runCommand("SELECT * FROM member WHERE memberid = '" + getUserID() + "'");
             if (db.hasResult()) {
+                db.next();
                 setUserName(db.getString("membername"));
                 setUserAddress(db.getString("memberaddress"));
                 setUserPhone(db.getString("memberphone"));
@@ -400,6 +401,7 @@ class StaffProfile extends Profile {
             Database db = new Database();
             db.runCommand("SELECT * FROM staff WHERE staffid = '" + getUserID() + "'");
             if (db.hasResult()) {
+                db.next();
                 setUserName(db.getString("staffname"));
                 setUserAddress(db.getString("staffaddress"));
                 setUserPhone(db.getString("staffphone"));

@@ -63,6 +63,7 @@ class LoginMember extends Login {
                     sc.nextLine();
                     continue;
                 }
+                db.next();
                 setUserName(db.getString("membername"));
                 return true;
             } catch (Exception e) {
@@ -103,6 +104,7 @@ class LoginStaff extends Login {
                     sc.nextLine();
                     continue;
                 }
+                db.next();
                 setUserName(db.getString("staffname"));
                 return true;
             } catch (Exception e) {

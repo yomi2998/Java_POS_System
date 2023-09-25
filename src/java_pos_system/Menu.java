@@ -156,7 +156,15 @@ class MemberMenu extends Menu {
                 }
                 case 5 -> {
                     TopUp topUp = new TopUp(getUserID());
-                    topUp.performTopUpOperation();
+                    if (topUp.performTopUpOperation()) {
+                        System.out.println("Top up successful");
+                        System.out.print("Press enter to continue...");
+                        sc.nextLine();
+                    } else {
+                        System.out.println("Top up cancelled");
+                        System.out.print("Press enter to continue...");
+                        sc.nextLine();
+                    }
                 }
                 case 6 -> {
                     PaymentMethod paymentMethod = new PaymentMethod(getUserID());
@@ -282,6 +290,34 @@ class StaffMenu extends Menu {
                         sc.nextLine();
                     } else {
                         System.out.println("Profile update cancelled");
+                        System.out.print("Press enter to continue...");
+                        sc.nextLine();
+                    }
+                }
+                case 3 -> {
+                    Product viewProduct = new Product();
+                    viewProduct.startViewProductSession();
+                }
+                case 4 -> {
+                    Product addProduct = new Product();
+                    if (addProduct.performRegisterProductOperation()) {
+                        System.out.println("Product added successfully");
+                        System.out.print("Press enter to continue...");
+                        sc.nextLine();
+                    } else {
+                        System.out.println("Product add cancelled");
+                        System.out.print("Press enter to continue...");
+                        sc.nextLine();
+                    }
+                }
+                case 5 -> {
+                    Product editProduct = new Product();
+                    if (editProduct.performEditProductOperation()) {
+                        System.out.println("Product edited successfully");
+                        System.out.print("Press enter to continue...");
+                        sc.nextLine();
+                    } else {
+                        System.out.println("Product edit cancelled");
                         System.out.print("Press enter to continue...");
                         sc.nextLine();
                     }
