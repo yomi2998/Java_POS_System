@@ -254,11 +254,7 @@ class StaffMenu extends Menu {
         System.out.println("4. Add product");
         System.out.println("5. Edit product");
         System.out.println("6. Delete product");
-        System.out.println("7. View members");
-        System.out.println("8. Add member");
-        System.out.println("9. Edit member");
-        System.out.println("10. Delete member");
-        System.out.println("11. Logout");
+        System.out.println("7. Log out");
         System.out.print("Enter your choice: ");
     }
 
@@ -269,7 +265,7 @@ class StaffMenu extends Menu {
             int choice = 0;
             try {
                 choice = Integer.parseInt(sc.nextLine());
-                if (choice > 11 || choice < 1)
+                if (choice > 7 || choice < 1)
                     throw new Exception();
             } catch (Exception e) {
                 System.out.println("Invalid choice, please try again.");
@@ -321,6 +317,24 @@ class StaffMenu extends Menu {
                         System.out.print("Press enter to continue...");
                         sc.nextLine();
                     }
+                }
+                case 6 -> {
+                    Product deleteProduct = new Product();
+                    if (deleteProduct.performDeleteProductOperation()) {
+                        System.out.println("Product deleted successfully");
+                        System.out.print("Press enter to continue...");
+                        sc.nextLine();
+                    } else {
+                        System.out.println("Product delete cancelled");
+                        System.out.print("Press enter to continue...");
+                        sc.nextLine();
+                    }
+                }
+                case 7 -> {
+                    System.out.println("Logout successful");
+                    System.out.print("Press enter to continue...");
+                    sc.nextLine();
+                    return;
                 }
             }
         }

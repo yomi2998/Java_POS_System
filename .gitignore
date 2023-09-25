@@ -27,3 +27,4 @@ replay_pid*
 *.xml
 nbproject/private/private.properties
 /dist/
+/.VSCodeCounter/

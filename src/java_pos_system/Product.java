@@ -849,4 +849,102 @@ public class Product {
             }
         }
     }
+
+    public boolean performDeleteProductOperation() {
+        while (true) {
+            List<Product> prods = new ArrayList<>();
+            try {
+                Database db = new Database();
+                db.runCommand("SELECT * FROM product");
+                if (db.hasResult()) {
+                    System.out.print("\033[H\033[2J");
+                    System.out.flush();
+                    System.out.print("    ");
+                    for (int i = 0; i < 142; i++)
+                        System.out.print("-");
+                    System.out.println();
+                    System.out.printf("    |%-10s|%-20s|%-50s|%-20s|%-15s|%-20s|\n", "Product ID", "Product Brand",
+                            "Product Name", "Product Category", "Product Price", "Product Quantity");
+                    System.out.print("    ");
+                    for (int i = 0; i < 142; i++)
+                        System.out.print("-");
+                    System.out.println();
+                    int count = 0;
+                    while (db.next()) {
+                        ++count;
+                        System.out.printf("%-3d.|%-10s|%-20s|%-50s|%-20s|RM %-12.2f|%-20d|\n", count,
+                                db.getString("productid"),
+                                db.getString("productbrand"), db.getString("productname"),
+                                db.getString("productcategory"), db.getDouble("productprice"),
+                                db.getInt("productquantity"));
+                        prods.add(new Product(db.getString("productid"), db.getString("productbrand"),
+                                db.getString("productname"), db.getString("productcategory"),
+                                db.getString("productdescription"), db.getDouble("productprice"),
+                                db.getInt("productquantity")));
+                    }
+                    System.out.print("    ");
+                    for (int i = 0; i < 142; i++)
+                        System.out.print("-");
+                    System.out.println();
+                    System.out.println();
+                    System.out.print("Select product 1-" + count
+                            + " to delete (-1 to cancel): ");
+                } else {
+                    System.out.println("No product found.");
+                    return false;
+                }
+                db.closeConnection();
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+            int choice = 0;
+            int selectedProd = 0;
+            Scanner sc = new Scanner(System.in);
+            try {
+                selectedProd = Integer.parseInt(sc.nextLine());
+                if (selectedProd > prods.size() || (selectedProd != -1 && selectedProd < 1))
+                    throw new Exception();
+            } catch (Exception e) {
+                System.out.println("Invalid choice, please try again.");
+                System.out.print("Press enter to continue...");
+                sc.nextLine();
+                continue;
+            }
+            if (selectedProd == -1)
+                return false;
+            while (true) {
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+                prods.get(selectedProd - 1).displayProductInfo();
+                String confirm = "";
+                try {
+                    System.out.print("Confirm product deletion? (Y/N): ");
+                    confirm = sc.nextLine();
+                    if (!confirm.toUpperCase().equals("Y") && !confirm.toUpperCase().equals("N")) {
+                        throw new Exception();
+                    }
+                } catch (Exception e) {
+                    System.out.println("Invalid choice, please try again.");
+                    System.out.print("Press enter to continue...");
+                    sc.nextLine();
+                    continue;
+                }
+                if (confirm.toUpperCase().equals("Y")) {
+                    try {
+                        Database db = new Database();
+                        db.runCommand("DELETE FROM product WHERE productid = '"
+                                + prods.get(selectedProd - 1).getProductID() + "'");
+                        db.closeConnection();
+                        return true;
+                    } catch (Exception e) {
+                        System.out.println("Error: " + e.getMessage());
+                        System.out.print("Press enter to continue...");
+                        sc.nextLine();
+                        return false;
+                    }
+                }
+                break;
+            }
+        }
+    }
 }
