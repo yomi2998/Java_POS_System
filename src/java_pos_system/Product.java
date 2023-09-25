@@ -5,6 +5,8 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
 
+//next trip, member order
+
 import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 
 public class Product {
@@ -897,7 +899,6 @@ public class Product {
             } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
             }
-            int choice = 0;
             int selectedProd = 0;
             Scanner sc = new Scanner(System.in);
             try {

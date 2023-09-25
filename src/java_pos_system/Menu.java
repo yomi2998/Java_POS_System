@@ -73,6 +73,7 @@ class MemberMenu extends Menu {
             if (!db.hasResult()) {
                 return false;
             }
+            db.next();
             setUserName(db.getString("membername"));
             setUserAddress(db.getString("memberaddress"));
             setUserPhone(db.getString("memberphone"));
@@ -81,6 +82,10 @@ class MemberMenu extends Menu {
             db.closeConnection();
             return true;
         } catch (Exception e) {
+            System.out.println("Error: " + e);
+            System.out.println("Press enter key to continue...");
+            Scanner sc = new Scanner(System.in);
+            sc.nextLine();
             return false;
         }
     }
@@ -116,6 +121,7 @@ class MemberMenu extends Menu {
 
     public void startMemberSession() {
         while (true) {
+            retrieveUserInfo();
             displayMemberMenu();
             Scanner sc = new Scanner(System.in);
             int choice = 0;
