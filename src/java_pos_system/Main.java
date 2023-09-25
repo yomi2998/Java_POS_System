@@ -57,6 +57,7 @@ public class Main {
                                 System.out.print("Press enter to continue...");
                                 sc.nextLine();
                                 MemberMenu memberMenu = new MemberMenu(loginMember.getUserID(), loginMember.getUserName());
+                                memberMenu.startMemberSession();
                             } else {
                                 System.out.println("Login cancelled");
                                 System.out.print("Press enter to continue...");
@@ -70,6 +71,7 @@ public class Main {
                                 System.out.print("Press enter to continue...");
                                 sc.nextLine();
                                 StaffMenu staffMenu = new StaffMenu(loginStaff.getUserID(), loginStaff.getUserName());
+                                staffMenu.startStaffSession();
                             } else {
                                 System.out.println("Login cancelled");
                                 System.out.print("Press enter to continue...");

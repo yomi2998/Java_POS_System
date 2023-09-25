@@ -14,6 +14,14 @@ public class Database {
         this.conn.close();
     }
 
+    public boolean next() {
+        try {
+            return this.result.next();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     public void runCommand(String cmd) throws SQLException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");

@@ -43,20 +43,20 @@ class LoginMember extends Login {
             System.out.println("Login - member");
             Scanner sc = new Scanner(System.in);
             System.out.print("Enter User ID (-1 to cancel): ");
-            String userID = sc.nextLine();
-            if (userID.equals("-1")) {
+            setUserID(sc.nextLine());
+            if (getUserID().equals("-1")) {
                 return false;
             }
             System.out.print("Enter Password (-1 to cancel): ");
-            String userPassword = sc.nextLine();
-            if (userPassword.equals("-1")) {
+            setUserPassword(sc.nextLine());
+            if (getUserPassword().equals("-1")) {
                 return false;
             }
 
             try {
                 Database db = new Database();
-                db.runCommand("SELECT * FROM member WHERE memberid = '" + userID
-                        + "' AND memberpassword = '" + userPassword + "'");
+                db.runCommand("SELECT * FROM member WHERE memberid = '" + getUserID()
+                        + "' AND memberpassword = '" + getUserPassword() + "'");
                 if (!db.hasResult()) {
                     System.out.println("Invalid user ID or password");
                     System.out.print("Press enter to continue...");
@@ -82,20 +82,20 @@ class LoginStaff extends Login {
             System.out.println("Login - staff");
             Scanner sc = new Scanner(System.in);
             System.out.print("Enter User ID (-1 to cancel): ");
-            String userID = sc.nextLine();
-            if (userID.equals("-1")) {
+            setUserID(sc.nextLine());
+            if (getUserID().equals("-1")) {
                 return false;
             }
             System.out.print("Enter Password (-1 to cancel): ");
-            String userPassword = sc.nextLine();
-            if (userPassword.equals("-1")) {
+            setUserPassword(sc.nextLine());
+            if (getUserPassword().equals("-1")) {
                 return false;
             }
 
             try {
                 Database db = new Database();
                 db.runCommand(
-                        "SELECT * FROM staff WHERE staffid = '" + userID + "' AND staffpassword = '" + userPassword
+                        "SELECT * FROM staff WHERE staffid = '" + getUserID() + "' AND staffpassword = '" + getUserPassword()
                                 + "'");
                 if (!db.hasResult()) {
                     System.out.println("Invalid user ID or password");

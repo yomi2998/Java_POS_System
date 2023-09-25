@@ -29,7 +29,8 @@ public class Product {
         "GameSir",
         "FlyDigi",
         "iQOO",
-        "Black Shark"
+        "Black Shark",
+        "Others"
     };
     private String categories[] = {
         "Screen Protector",
@@ -46,6 +47,7 @@ public class Product {
         "Tempered Glass",
         "OTG Cable",
         "USB-C to 3.5mm Jack",
+        "Others"
     };
     public Product() {
     }
@@ -174,6 +176,7 @@ public class Product {
         for(int i = 0; i < brands.length; i++) {
             System.out.println((i + 1) + ". " + brands[i]);
         }
+        System.out.println("-1. Cancel");
         System.out.print("Enter your choice: ");
         int choice = 0;
         try {
@@ -186,6 +189,7 @@ public class Product {
             sc.nextLine();
             return false;
         }
+        if(choice == -1) return false;
         setProductBrand(brands[choice - 1]);
         System.out.print("Enter product name: ");
         setProductName(sc.nextLine());
@@ -194,6 +198,7 @@ public class Product {
         for(int i = 0; i < categories.length; i++) {
             System.out.println((i + 1) + ". " + categories[i]);
         }
+        System.out.println("-1. Cancel");
         System.out.print("Enter your choice: ");
         choice = 0;
         try {
@@ -206,6 +211,7 @@ public class Product {
             sc.nextLine();
             return false;
         }
+        if(choice == -1) return false;
         setProductCategory(categories[choice - 1]);
         System.out.print("Enter product description: ");
         setProductDescription(sc.nextLine());

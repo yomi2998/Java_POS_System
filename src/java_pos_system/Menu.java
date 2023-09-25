@@ -100,14 +100,17 @@ class MemberMenu extends Menu {
     }
 
     private void displayMemberMenu() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
         System.out.println("Welcome, " + getUserName());
-        System.out.println("Your balance: " + getUserBalance());
+        System.out.printf("Your balance: RM %.2f\n", getUserBalance());
         System.out.println("1. Buy products");
         System.out.println("2. View cart");
         System.out.println("3. View profile");
         System.out.println("4. Edit profile");
         System.out.println("5. Top up");
-        System.out.println("6. Logout");
+        System.out.println("6. Payment methods");
+        System.out.println("7. Logout");
         System.out.print("Enter your choice: ");
     }
 
@@ -118,13 +121,53 @@ class MemberMenu extends Menu {
             int choice = 0;
             try {
                 choice = Integer.parseInt(sc.nextLine());
-                if (choice > 6 || choice < 1)
+                if (choice > 7 || choice < 1)
                     throw new Exception();
             } catch (Exception e) {
                 System.out.println("Invalid choice, please try again.");
                 System.out.print("Press enter to continue...");
                 sc.nextLine();
                 continue;
+            }
+            switch (choice) {
+                // case 1 -> {
+                // BuyProduct buyProduct = new BuyProduct(getUserID(), getUserName());
+                // buyProduct.performBuyProductOperation();
+                // }
+                // case 2 -> {
+                // ViewCart viewCart = new ViewCart(getUserID(), getUserName());
+                // viewCart.performViewCartOperation();
+                // }
+                case 3 -> {
+                    MemberProfile viewProfile = new MemberProfile(getUserID());
+                    viewProfile.startViewProfileSession();
+                }
+                case 4 -> {
+                    MemberProfile viewProfile = new MemberProfile(getUserID());
+                    if (viewProfile.startEditProfileSession()) {
+                        System.out.println("Profile updated successfully");
+                        System.out.print("Press enter to continue...");
+                        sc.nextLine();
+                    } else {
+                        System.out.println("Profile update cancelled");
+                        System.out.print("Press enter to continue...");
+                        sc.nextLine();
+                    }
+                }
+                case 5 -> {
+                    TopUp topUp = new TopUp(getUserID());
+                    topUp.performTopUpOperation();
+                }
+                case 6 -> {
+                    PaymentMethod paymentMethod = new PaymentMethod(getUserID());
+                    paymentMethod.startPaymentMethodSession();
+                }
+                case 7 -> {
+                    System.out.println("Logout successful");
+                    System.out.print("Press enter to continue...");
+                    sc.nextLine();
+                    return;
+                }
             }
         }
     }
@@ -186,6 +229,64 @@ class StaffMenu extends Menu {
             return true;
         } catch (Exception e) {
             return false;
+        }
+    }
+
+    private void displayStaffMenu() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+        System.out.println("Welcome, " + getUserName());
+        for (int i = 0; i < 9 + getUserName().length(); i++) {
+            System.out.print("-");
+        }
+        System.out.println();
+        System.out.println("1. View profile");
+        System.out.println("2. Edit profile");
+        System.out.println("3. View products");
+        System.out.println("4. Add product");
+        System.out.println("5. Edit product");
+        System.out.println("6. Delete product");
+        System.out.println("7. View members");
+        System.out.println("8. Add member");
+        System.out.println("9. Edit member");
+        System.out.println("10. Delete member");
+        System.out.println("11. Logout");
+        System.out.print("Enter your choice: ");
+    }
+
+    public void startStaffSession() {
+        while (true) {
+            displayStaffMenu();
+            Scanner sc = new Scanner(System.in);
+            int choice = 0;
+            try {
+                choice = Integer.parseInt(sc.nextLine());
+                if (choice > 11 || choice < 1)
+                    throw new Exception();
+            } catch (Exception e) {
+                System.out.println("Invalid choice, please try again.");
+                System.out.print("Press enter to continue...");
+                sc.nextLine();
+                continue;
+            }
+            switch (choice) {
+                case 1 -> {
+                    StaffProfile viewProfile = new StaffProfile(getUserID());
+                    viewProfile.startViewProfileSession();
+                }
+                case 2 -> {
+                    StaffProfile editProfile = new StaffProfile(getUserID());
+                    if (editProfile.startEditProfileSession()) {
+                        System.out.println("Profile updated successfully");
+                        System.out.print("Press enter to continue...");
+                        sc.nextLine();
+                    } else {
+                        System.out.println("Profile update cancelled");
+                        System.out.print("Press enter to continue...");
+                        sc.nextLine();
+                    }
+                }
+            }
         }
     }
 }
