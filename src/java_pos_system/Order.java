@@ -5,17 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Order {
-    private String orderID;
     private String userID;
-    private List<CartItem> orderedItems = new ArrayList<CartItem>();
-
-    public String getOrderID() {
-        return orderID;
-    }
-
-    public void setOrderID(String orderID) {
-        this.orderID = orderID;
-    }
+    private List<CartItem> addedItems = new ArrayList<CartItem>();
 
     public String getUserID() {
         return userID;
@@ -25,22 +16,16 @@ public class Order {
         this.userID = userID;
     }
 
-    public List<CartItem> getOrderedItems() {
-        return orderedItems;
+    public List<CartItem> getAddedItems() {
+        return addedItems;
     }
 
-    public void setOrderedItems(List<CartItem> orderedItems) {
-        this.orderedItems = orderedItems;
+    public void setAddedItems(List<CartItem> addedItems) {
+        this.addedItems = addedItems;
     }
 
     public Order(String memberID) {
         setUserID(memberID);
-        try {
-            IDGenerator idGenerator = new IDGenerator("order");
-            setOrderID(idGenerator.getID("orderid"));
-        } catch (Exception e) {
-            System.out.println(e);
-        }
     }
 
     private List<Product> getProducts() {
@@ -157,7 +142,7 @@ public class Order {
                 String confirm = sc.nextLine();
                 if (confirm.equalsIgnoreCase("Y")) {
                     CartItem cartItem = new CartItem(products.get(productIndex), quantity);
-                    getOrderedItems().add(cartItem);
+                    getAddedItems().add(cartItem);
                     try {
                         Database db = new Database();
                         db.runCommand("INSERT INTO cart VALUES ('" + getUserID() + "', '"
