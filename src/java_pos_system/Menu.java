@@ -109,8 +109,8 @@ class MemberMenu extends Menu {
         System.out.flush();
         System.out.println("Welcome, " + getUserName());
         System.out.printf("Your balance: RM %.2f\n", getUserBalance());
-        System.out.println("1. Buy products");
-        System.out.println("2. View cart");
+        System.out.println("1. Browse products");
+        System.out.println("2. View cart/checkout");
         System.out.println("3. View profile");
         System.out.println("4. Edit profile");
         System.out.println("5. Top up");
@@ -136,10 +136,18 @@ class MemberMenu extends Menu {
                 continue;
             }
             switch (choice) {
-                // case 1 -> {
-                // BuyProduct buyProduct = new BuyProduct(getUserID(), getUserName());
-                // buyProduct.performBuyProductOperation();
-                // }
+                case 1 -> {
+                    Order order = new Order(getUserID());
+                    if (order.startOrderItemSession()) {
+                        System.out.println("Order successful");
+                        System.out.print("Press enter to continue...");
+                        sc.nextLine();
+                    } else {
+                        System.out.println("Order cancelled");
+                        System.out.print("Press enter to continue...");
+                        sc.nextLine();
+                    }
+                }
                 // case 2 -> {
                 // ViewCart viewCart = new ViewCart(getUserID(), getUserName());
                 // viewCart.performViewCartOperation();
