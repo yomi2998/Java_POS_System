@@ -136,6 +136,7 @@ public class Product {
         try {
             db.runCommand("SELECT * FROM product WHERE productid = '" + getProductID() + "'");
             if (db.hasResult()) {
+                db.next();
                 setProductBrand(db.getString("productbrand"));
                 setProductName(db.getString("productname"));
                 setProductCategory(db.getString("productcategory"));

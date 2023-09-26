@@ -148,10 +148,10 @@ class MemberMenu extends Menu {
                         sc.nextLine();
                     }
                 }
-                // case 2 -> {
-                // ViewCart viewCart = new ViewCart(getUserID(), getUserName());
-                // viewCart.performViewCartOperation();
-                // }
+                case 2 -> {
+                    Cart cart = new Cart(getUserID());
+                    cart.startCheckCartSession();
+                }
                 case 3 -> {
                     MemberProfile viewProfile = new MemberProfile(getUserID());
                     viewProfile.startViewProfileSession();
@@ -227,6 +227,7 @@ class StaffMenu extends Menu {
             if (!db.hasResult()) {
                 return false;
             }
+            db.next();
             setUserName(db.getString("staffname"));
             setUserAddress(db.getString("staffaddress"));
             setUserPhone(db.getString("staffphone"));

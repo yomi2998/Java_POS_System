@@ -2,10 +2,13 @@ package java_pos_system;
 
 public class CartItem {
 
-    private Product product;
+    private Product product = new Product();
     private int quantity;
     private double subtotal;
 
+    public CartItem() {
+    }
+    
     public CartItem(Product product, int quantity) {
         this.product = product;
         this.quantity = quantity;
@@ -26,6 +29,7 @@ public class CartItem {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+        this.subtotal = product.getProductPrice() * quantity;
     }
 
     public double getSubtotal() {
@@ -34,5 +38,10 @@ public class CartItem {
 
     public void setSubtotal(double subtotal) {
         this.subtotal = subtotal;
+    }
+
+    public void setProductID(String productID) {
+        this.product.setProductID(productID);
+        this.product.retrieveProductInfo();
     }
 }

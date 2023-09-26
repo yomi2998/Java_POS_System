@@ -160,14 +160,15 @@ public class PaymentMethod {
             Database db = new Database();
             db.runCommand("SELECT * FROM payment_method WHERE memberid = '" + this.userID + "'");
             List<PaymentMethod> paymentMethodList = new ArrayList<PaymentMethod>();
-            while (db.hasResult()) {
-                PaymentMethod paymentMethod = new PaymentMethod();
-                paymentMethod.setPaymentID(db.getString("paymentid"));
-                paymentMethod.setPaymentMethod(db.getString("paymentmethod"));
-                paymentMethod.setCardNumber(db.getString("cardnumber"));
-                paymentMethodList.add(paymentMethod);
-                results++;
-            }
+            if (db.hasResult())
+                while (db.next()) {
+                    PaymentMethod paymentMethod = new PaymentMethod();
+                    paymentMethod.setPaymentID(db.getString("paymentid"));
+                    paymentMethod.setPaymentMethod(db.getString("paymentmethod"));
+                    paymentMethod.setCardNumber(db.getString("cardnumber"));
+                    paymentMethodList.add(paymentMethod);
+                    results++;
+                }
             if (results != 0) {
                 System.out.println("Payment Methods:");
                 for (int i = 0; i < paymentMethodList.size(); i++) {
@@ -200,13 +201,14 @@ public class PaymentMethod {
             try {
                 Database db = new Database();
                 db.runCommand("SELECT * FROM payment_method WHERE memberid = '" + this.userID + "'");
-                while (db.hasResult()) {
-                    PaymentMethod paymentMethod = new PaymentMethod();
-                    paymentMethod.setPaymentID(db.getString("paymentid"));
-                    paymentMethod.setPaymentMethod(db.getString("paymentmethod"));
-                    paymentMethod.setCardNumber(db.getString("cardnumber"));
-                    paymentMethodList.add(paymentMethod);
-                }
+                if (db.hasResult())
+                    while (db.next()) {
+                        PaymentMethod paymentMethod = new PaymentMethod();
+                        paymentMethod.setPaymentID(db.getString("paymentid"));
+                        paymentMethod.setPaymentMethod(db.getString("paymentmethod"));
+                        paymentMethod.setCardNumber(db.getString("cardnumber"));
+                        paymentMethodList.add(paymentMethod);
+                    }
                 db.closeConnection();
             } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());

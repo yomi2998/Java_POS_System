@@ -67,13 +67,14 @@ public class TopUp {
             try {
                 Database db = new Database();
                 db.runCommand("SELECT * FROM payment_method WHERE memberid = '" + this.userID + "'");
-                while (db.hasResult()) {
-                    PaymentMethod paymentMethod = new PaymentMethod();
-                    paymentMethod.setPaymentID(db.getString("paymentid"));
-                    paymentMethod.setPaymentMethod(db.getString("paymentmethod"));
-                    paymentMethod.setCardNumber(db.getString("cardnumber"));
-                    paymentMethodList.add(paymentMethod);
-                }
+                if (db.hasResult())
+                    while (db.next()) {
+                        PaymentMethod paymentMethod = new PaymentMethod();
+                        paymentMethod.setPaymentID(db.getString("paymentid"));
+                        paymentMethod.setPaymentMethod(db.getString("paymentmethod"));
+                        paymentMethod.setCardNumber(db.getString("cardnumber"));
+                        paymentMethodList.add(paymentMethod);
+                    }
                 db.closeConnection();
             } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
