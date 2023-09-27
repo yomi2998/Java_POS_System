@@ -173,8 +173,7 @@ class MemberProfile extends Profile {
     public void displayProfile() {
         Screen.cls();
 
-        System.out.println("Profile");
-        System.out.println("-------");
+        Title.print("Profile");
         System.out.println("   User ID: " + getUserID());
         System.out.printf("   Balance: RM %.2f\n", getUserBalance());
         System.out.println("1. Name: " + getUserName());
@@ -408,8 +407,7 @@ class StaffProfile extends Profile {
     public void displayProfile() {
         Screen.cls();
 
-        System.out.println("Profile");
-        System.out.println("-------");
+        Title.print("Profile");
         System.out.println("   User ID: " + getUserID());
         System.out.printf("   Salary: RM %.2f\n", getUserSalary());
         System.out.println("   Position: " + getUserPosition());

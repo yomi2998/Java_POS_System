@@ -43,8 +43,7 @@ public class TopUp {
                 Screen.pause();
                 return false;
             }
-            System.out.println("Top Up");
-            System.out.println("------");
+            Title.print("Top Up");
             System.out.println("User ID: " + this.userID);
             double topUpAmount = 0;
             while (true)

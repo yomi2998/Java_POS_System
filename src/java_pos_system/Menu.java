@@ -2,7 +2,14 @@ package java_pos_system;
 
 import java.util.Scanner;
 
-public abstract class Menu {
+interface UserInterface {
+    public String getUserID();
+    public String getUserName();
+    public void setUserID(String userID);
+    public void setUserName(String userName);
+}
+
+public abstract class Menu implements UserInterface {
     private String userID;
     private String userName;
     private String userAddress;
@@ -88,33 +95,37 @@ class MemberMenu extends Menu {
         }
     }
 
-    private boolean updateUserInfo() {
-        Database db = new Database();
+    private int getMessageCount() {
         try {
-            db.runCommand("UPDATE member SET membername = '" + getUserName() + "', memberaddress = '"
-                    + getUserAddress() + "', memberphone = '" + getUserPhone() + "', memberemail = '"
-                    + getUserEmail() + "', memberbalance = " + getUserBalance() + " WHERE memberid = '"
-                    + getUserID() + "'");
+            Database db = new Database();
+            int messageCount = 0;
+            db.runCommand("SELECT * FROM notification WHERE memberid = '" + getUserID() + "'");
+            while (db.next()) {
+                messageCount++;
+            }
             db.closeConnection();
-            return true;
+            return messageCount;
         } catch (Exception e) {
-            return false;
+            System.out.println("Error: " + e);
+            Screen.pause();
+            return 0;
         }
     }
 
     private void displayMemberMenu() {
         Screen.cls();
         
-        System.out.println("Welcome, " + getUserName());
-        System.out.printf("Your balance: RM %.2f\n", getUserBalance());
+        Title.print(String.format("Welcome, " + getUserName() + "\nYour balance: RM%.2f", getUserBalance()));
         System.out.println("1. Browse products");
         System.out.println("2. View cart/checkout");
         System.out.println("3. View profile");
         System.out.println("4. Edit profile");
         System.out.println("5. Top up");
         System.out.println("6. Payment methods");
-        System.out.println("7. View order");
-        System.out.println("8. Logout");
+        System.out.println("7. Order history");
+        System.out.println("8. Help");
+        System.out.println("9. View Messages" + (getMessageCount() > 0 ? " [" + getMessageCount() + "]" : ""));
+        System.out.println("10. Logout");
         System.out.print("Enter your choice: ");
     }
 
@@ -126,7 +137,7 @@ class MemberMenu extends Menu {
             int choice = 0;
             try {
                 choice = Integer.parseInt(sc.nextLine());
-                if (choice > 7 || choice < 1)
+                if (choice > 10 || choice < 1)
                     throw new Exception();
             } catch (Exception e) {
                 System.out.println("Invalid choice, please try again.");
@@ -181,6 +192,28 @@ class MemberMenu extends Menu {
                     order.startViewOrderSession();
                 }
                 case 8 -> {
+                    Help help = new Help(getUserID(), getUserName());
+                    help.startHelpSession();
+                }
+                case 9 -> {
+                    Screen.cls();
+                    Title.print("View Messages");
+                    if(getMessageCount() == 0) {
+                        System.out.println("No messages found.");
+                        Screen.pause();
+                    } else {
+                        System.out.println("Your request from contact support has been mark as resolved, if you had requested any order cancellation, please check balance if the amount has been refunded.");
+                        Screen.pause();
+                        try {
+                            Database db = new Database();
+                            db.runCommand("DELETE FROM notification WHERE memberid = '" + getUserID() + "'");
+                        } catch (Exception e) {
+                            System.out.println("Error: " + e);
+                            Screen.pause();
+                        }
+                    }
+                }
+                case 10 -> {
                     System.out.println("Logout successful");
                     Screen.pause();
                     return;
@@ -236,27 +269,10 @@ class StaffMenu extends Menu {
         }
     }
 
-    private boolean updateUserInfo() {
-        Database db = new Database();
-        try {
-            db.runCommand("UPDATE staff SET staffname = '" + getUserName() + "', staffaddress = '"
-                    + getUserAddress() + "', staffphone = '" + getUserPhone() + "', staffemail = '"
-                    + getUserEmail() + "', staffsalary = " + getUserSalary() + ", staffposition = '"
-                    + getUserPosition() + "' WHERE staffid = '" + getUserID() + "'");
-            db.closeConnection();
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
     private void displayStaffMenu() {
         Screen.cls();
-        
-        System.out.println("Welcome, " + getUserName());
-        for (int i = 0; i < 9 + getUserName().length(); i++) {
-            System.out.print("-");
-        }
+        retrieveUserInfo();
+        Title.print("Welcome, " + getUserName() + "\nYour position: " + getUserPosition());
         System.out.println();
         System.out.println("1. View profile");
         System.out.println("2. Edit profile");
@@ -264,7 +280,9 @@ class StaffMenu extends Menu {
         System.out.println("4. Add product");
         System.out.println("5. Edit product");
         System.out.println("6. Delete product");
-        System.out.println("7. Log out");
+        System.out.println("7. Manage order");
+        System.out.println("8. Member's request");
+        System.out.println("9. Log out");
         System.out.print("Enter your choice: ");
     }
 
@@ -275,7 +293,7 @@ class StaffMenu extends Menu {
             int choice = 0;
             try {
                 choice = Integer.parseInt(sc.nextLine());
-                if (choice > 7 || choice < 1)
+                if (choice > 9 || choice < 1)
                     throw new Exception();
             } catch (Exception e) {
                 System.out.println("Invalid choice, please try again.");
@@ -344,6 +362,14 @@ class StaffMenu extends Menu {
                     }
                 }
                 case 7 -> {
+                    ManageOrderedItems manageOrder = new ManageOrderedItems(getUserID());
+                    manageOrder.startManageOrderSession();
+                }
+                case 8 -> {
+                    StaffSupport staffSupport = new StaffSupport();
+                    staffSupport.startCheckMessageSession();
+                }
+                case 9 -> {
                     System.out.println("Logout successful");
                     Screen.pause();
                     return;

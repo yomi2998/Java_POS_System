@@ -109,8 +109,7 @@ public class PaymentMethod {
             }
             Scanner sc = new Scanner(System.in);
             Screen.cls();
-            System.out.println("Register Payment Method");
-            System.out.println("-----------------------");
+            Title.print("Register Payment Method");
             System.out.println("User ID: " + this.userID);
             System.out.println("Payment Methods:");
             for (int i = 0; i < this.methods.length; i++) {
@@ -152,7 +151,7 @@ public class PaymentMethod {
 
     public void displayPaymentMethods() {
         Screen.cls();
-
+        Title.print("Payment Methods");
         try {
             Database db = new Database();
             db.runCommand("SELECT * FROM payment_method WHERE memberid = '" + this.userID + "'");
@@ -212,6 +211,7 @@ public class PaymentMethod {
                 Screen.pause();
                 return false;
             }
+            Title.print("Delete Payment Method");
             System.out.println("Payment Methods:");
             for (int i = 0; i < paymentMethodList.size(); i++) {
                 System.out.println((i + 1) + ". " + paymentMethodList.get(i).getPaymentMethod() + " - "

@@ -1,5 +1,7 @@
 package java_pos_system;
 
+import java.util.Scanner;
+
 public class Screen {
     public static void cls() {
         try {
@@ -17,7 +19,8 @@ public class Screen {
     public static void pause() {
         try {
             System.out.println("\nPress enter to continue...");
-            System.in.read();
+            Scanner s = new Scanner(System.in);
+            s.nextLine();
         } catch (Exception e) {
             System.out.println(e);
         }

@@ -135,8 +135,7 @@ class RegisterMember extends Register {
     }
 
     public boolean performRegisterOperation() {
-        System.out.println("Register - member");
-        System.out.println("-------------------");
+        Title.print("Register - member");
         Scanner sc = new Scanner(System.in);
         IDGenerator idgen = new IDGenerator("member");
         try {
@@ -390,8 +389,8 @@ class RegisterStaff extends Register {
     }
 
     public boolean performRegisterOperation() {
-        System.out.println("Register - staff");
-        System.out.println("-------------------");
+        Screen.cls();
+        Title.print("Register - staff");
         Scanner sc = new Scanner(System.in);
         IDGenerator idgen = new IDGenerator("staff");
         try {

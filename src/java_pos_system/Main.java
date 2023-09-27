@@ -7,8 +7,7 @@ public class Main {
         while (true) {
             Scanner sc = new Scanner(System.in);
             Screen.cls();
-            System.out.println("Welcome to POS System");
-            System.out.println("---------------------");
+            Title.print("Welcome to POS System\nHave fun shopping!");
             System.out.println("1. Login");
             System.out.println("2. Register");
             System.out.println("3. About");
@@ -29,8 +28,8 @@ public class Main {
                     int choice2 = 0;
                     while (true) {
                         Screen.cls();
-                        
-                        System.out.println("Login as");
+
+                        Title.print("Login as");
                         System.out.println("1. Member");
                         System.out.println("2. Staff");
                         System.out.println("3. Back");
@@ -52,7 +51,8 @@ public class Main {
                             if (loginMember.performLoginOperation()) {
                                 System.out.println("Login successful");
                                 Screen.pause();
-                                MemberMenu memberMenu = new MemberMenu(loginMember.getUserID(), loginMember.getUserName());
+                                MemberMenu memberMenu = new MemberMenu(loginMember.getUserID(),
+                                        loginMember.getUserName());
                                 memberMenu.startMemberSession();
                             } else {
                                 System.out.println("Login cancelled");
@@ -77,7 +77,7 @@ public class Main {
                     int choice3 = 0;
                     while (true) {
                         Screen.cls();
-                        System.out.println("Register as");
+                        Title.print("Register as");
                         System.out.println("1. Member");
                         System.out.println("2. Staff");
                         System.out.println("3. Back");
@@ -96,7 +96,7 @@ public class Main {
                     switch (choice3) {
                         case 1 -> {
                             Screen.cls();
-                            
+
                             RegisterMember registerMember = new RegisterMember();
                             if (registerMember.performRegisterOperation()) {
                                 System.out.println("Member registered successfully");
@@ -118,16 +118,21 @@ public class Main {
                 }
                 case 3 -> {
                     Screen.cls();
-                    
+                    Title.print("About POS System");
                     System.out.println("POS System is a system that sells phone accessories.");
                     System.out.println("It is developed by:");
+                    System.out.println("1. Ham Khai Shuan");
+                    System.out.println("2. Siew Jun Hong");
+                    System.out.println("3. Ishwar");
+                    System.out.println("4. Eugene(?)");
                     Screen.pause();
                 }
                 case 4 -> {
                     Screen.cls();
-                    
+
                     System.out.println("Thank you for using POS System.");
                     Screen.pause();
+                    System.exit(0);
                 }
             }
         }

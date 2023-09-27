@@ -39,7 +39,7 @@ class LoginMember extends Login {
     public boolean performLoginOperation() {
         while (true) {
             Screen.cls();
-            System.out.println("Login - member");
+            Title.print("Login - member");
             Scanner sc = new Scanner(System.in);
             System.out.print("Enter User ID (-1 to cancel): ");
             setUserID(sc.nextLine());
@@ -77,7 +77,7 @@ class LoginStaff extends Login {
     public boolean performLoginOperation() {
         while (true) {
             Screen.cls();
-            System.out.println("Login - staff");
+            Title.print("Login - staff");
             Scanner sc = new Scanner(System.in);
             System.out.print("Enter User ID (-1 to cancel): ");
             setUserID(sc.nextLine());

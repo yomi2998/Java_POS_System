@@ -78,22 +78,6 @@ public class Cart {
         }
     }
 
-    private void printSpecificCartItem(CartItem cartItem) {
-        Screen.cls();
-
-        System.out.println("Product ID: " + cartItem.getProduct().getProductID());
-        System.out.println("Product Brand: " + cartItem.getProduct().getProductBrand());
-        System.out.println("Product Name: " + cartItem.getProduct().getProductName());
-        System.out.println("Product Category: " + cartItem.getProduct().getProductCategory());
-        System.out.printf("Product Price: RM %.2f\n", cartItem.getProduct().getProductPrice());
-        System.out.println("Product Quantity: " + cartItem.getProduct().getProductQuantity());
-        System.out.println("Quantity: " + cartItem.getQuantity());
-        System.out.printf("Subtotal: RM %.2f\n", cartItem.getSubtotal());
-        if (cartItem.getReminder()) {
-            System.out.println("[!]: Quantity exceeds product quantity, quantity has been adjusted.");
-        }
-    }
-
     private void printCartTable() {
         boolean hasReminder = false;
         boolean hasZeroQuantity = false;
@@ -179,6 +163,7 @@ public class Cart {
             Scanner sc = new Scanner(System.in);
             int choice = 0;
             Screen.cls();
+            Title.print("Remove item");
             printCartTable();
             System.out.println("Select items to delete, select again to remove selection.");
             try {
@@ -250,7 +235,7 @@ public class Cart {
 
     private void clearCartOperation() {
         Screen.cls();
-
+        Title.print("Clear cart");
         loadCart();
         if (getAddedItems().isEmpty()) {
             System.out.println("Your cart is empty, aborting clear cart operation.");
@@ -292,6 +277,7 @@ public class Cart {
     private boolean checkout() {
         while (true) {
             Screen.cls();
+            Title.print("Checkout");
             loadCart();
             if (getAddedItems().isEmpty()) {
                 System.out.println("Your cart is empty, aborting clear cart operation.");
@@ -407,7 +393,7 @@ public class Cart {
                                                     "INSERT INTO checkout (checkoutid, memberid, productid, productquantity, productsubtotal, paymentmethod, checkoutdatetime) VALUES ('"
                                                             + checkoutID + "', '" + getUserID() + "', '"
                                                             + addedItems.get(i).getProduct().getProductID() + "', "
-                                                            + addedItems.get(i).getProduct().getProductQuantity() + ", "
+                                                            + addedItems.get(i).getQuantity() + ", "
                                                             + addedItems.get(i).getSubtotal()
                                                             + ", 'Cash On Delivery', NOW())");
                                             db.runCommand("DELETE FROM cart WHERE memberid = '" + getUserID()
@@ -473,7 +459,7 @@ public class Cart {
                                                     "INSERT INTO checkout (checkoutid, memberid, productid, productquantity, productsubtotal, paymentmethod, checkoutdatetime) VALUES ('"
                                                             + checkoutID + "', '" + getUserID() + "', '"
                                                             + addedItems.get(i).getProduct().getProductID() + "', "
-                                                            + addedItems.get(i).getProduct().getProductQuantity() + ", "
+                                                            + addedItems.get(i).getQuantity() + ", "
                                                             + addedItems.get(i).getSubtotal()
                                                             + ", 'Balance', NOW())");
                                             db.runCommand("DELETE FROM cart WHERE memberid = '" + getUserID()
@@ -532,7 +518,7 @@ public class Cart {
                                                             + paymentMethods.get(paymentChoice - 3).getPaymentID()
                                                             + "', '"
                                                             + addedItems.get(i).getProduct().getProductID() + "', "
-                                                            + addedItems.get(i).getProduct().getProductQuantity()
+                                                            + addedItems.get(i).getQuantity()
                                                             + ", '"
                                                             + addedItems.get(i).getSubtotal() + "', '"
                                                             + paymentMethods.get(paymentChoice - 3).getPaymentMethod()
@@ -683,7 +669,7 @@ public class Cart {
                                                     "INSERT INTO checkout (checkoutid, memberid, productid, productquantity, productsubtotal, paymentmethod, checkoutdatetime) VALUES ('"
                                                             + checkoutID + "', '" + getUserID() + "', '"
                                                             + addedItems.get(i).getProduct().getProductID() + "', "
-                                                            + addedItems.get(i).getProduct().getProductQuantity() + ", "
+                                                            + addedItems.get(i).getQuantity() + ", "
                                                             + addedItems.get(i).getSubtotal()
                                                             + ", 'Cash On Delivery', NOW())");
                                             db.runCommand("DELETE FROM cart WHERE memberid = '" + getUserID()
@@ -751,7 +737,7 @@ public class Cart {
                                                     "INSERT INTO checkout (checkoutid, memberid, productid, productquantity, productsubtotal, paymentmethod, checkoutdatetime) VALUES ('"
                                                             + checkoutID + "', '" + getUserID() + "', '"
                                                             + addedItems.get(i).getProduct().getProductID() + "', "
-                                                            + addedItems.get(i).getProduct().getProductQuantity() + ", "
+                                                            + addedItems.get(i).getQuantity() + ", "
                                                             + addedItems.get(i).getSubtotal()
                                                             + ", 'Balance', NOW())");
                                             db.runCommand("DELETE FROM cart WHERE memberid = '" + getUserID()
@@ -812,7 +798,7 @@ public class Cart {
                                                             + paymentMethods.get(paymentChoice - 3).getPaymentID()
                                                             + "', '"
                                                             + addedItems.get(i).getProduct().getProductID() + "', "
-                                                            + addedItems.get(i).getProduct().getProductQuantity() + ", "
+                                                            + addedItems.get(i).getQuantity() + ", "
                                                             + addedItems.get(i).getSubtotal()
                                                             + ", '"
                                                             + paymentMethods.get(paymentChoice - 3).getPaymentMethod()
@@ -841,6 +827,7 @@ public class Cart {
     public boolean startCheckCartSession() {
         while (true) {
             Screen.cls();
+            Title.print("View Cart");
             loadCart();
             if (getAddedItems().isEmpty()) {
                 System.out.println("Your cart is empty, returning to member menu...");
