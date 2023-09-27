@@ -150,8 +150,8 @@ public class Product {
     }
 
     public void displayProductInfo() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+        Screen.cls();
+        
         System.out.println("Product ID: " + getProductID());
         System.out.println("1. Product Brand: " + getProductBrand());
         System.out.println("2. Product Name: " + getProductName());
@@ -195,8 +195,7 @@ public class Product {
     public void startViewProductSession() {
         while (true) {
             Scanner sc = new Scanner(System.in);
-            System.out.print("\033[H\033[2J");
-            System.out.flush();
+            Screen.cls();
             System.out.println("Sort by:");
             System.out.println("1. Product ID");
             System.out.println("2. Product Brand");
@@ -246,8 +245,8 @@ public class Product {
                     Database db = new Database();
                     db.runCommand(cmd);
                     if (db.hasResult()) {
-                        System.out.print("\033[H\033[2J");
-                        System.out.flush();
+                        Screen.cls();
+                        
                         System.out.print("    ");
                         for (int i = 0; i < 142; i++)
                             System.out.print("-");
@@ -306,8 +305,8 @@ public class Product {
                     return;
                 else if (choice == -2)
                     break;
-                System.out.print("\033[H\033[2J");
-                System.out.flush();
+                Screen.cls();
+                
                 System.out.println(prods.get(choice - 1));
                 System.out.print("Press enter to continue...");
                 sc.nextLine();
@@ -322,8 +321,8 @@ public class Product {
                 Database db = new Database();
                 db.runCommand("SELECT * FROM product");
                 if (db.hasResult()) {
-                    System.out.print("\033[H\033[2J");
-                    System.out.flush();
+                    Screen.cls();
+                    
                     System.out.print("    ");
                     for (int i = 0; i < 142; i++)
                         System.out.print("-");
@@ -379,8 +378,8 @@ public class Product {
                 return false;
             while (true) {
                 while (true) {
-                    System.out.print("\033[H\033[2J");
-                    System.out.flush();
+                    Screen.cls();
+                    
                     prods.get(selectedProd - 1).displayProductInfo();
                     System.out.print("Which field do you want to edit? (1-6, -1 to cancel): ");
                     try {
@@ -423,9 +422,10 @@ public class Product {
                     }
                     case 2 -> {
                         System.out.print("Enter product name (-1 to cancel): ");
-                        prods.get(selectedProd - 1).setProductName(sc.nextLine());
-                        if (prods.get(selectedProd - 1).getProductName().equals("-1"))
+                        String name = sc.nextLine();
+                        if (name.equals("-1"))
                             break;
+                        prods.get(selectedProd - 1).setProductName(name);
                     }
                     case 3 -> {
                         System.out.println("Select product category: ");
@@ -438,6 +438,8 @@ public class Product {
                         choice = 0;
                         try {
                             choice = Integer.parseInt(sc.nextLine());
+                            if (choice == -1)
+                                break;
                             if (choice > categories.length || choice < 1)
                                 throw new Exception();
                         } catch (Exception e) {
@@ -446,13 +448,14 @@ public class Product {
                             sc.nextLine();
                             break;
                         }
-                        if (choice == -1)
-                            break;
                         prods.get(selectedProd - 1).setProductCategory(categories[choice - 1]);
                     }
                     case 4 -> {
-                        System.out.print("Enter product description: ");
-                        prods.get(selectedProd - 1).setProductDescription(sc.nextLine());
+                        System.out.print("Enter product description (-1 to cancel): ");
+                        String desc = sc.nextLine();
+                        if (desc.equals("-1"))
+                            break;
+                        prods.get(selectedProd - 1).setProductDescription(desc);
                     }
                     case 5 -> {
                         while (true) {
@@ -553,9 +556,10 @@ public class Product {
                         }
                         case 2 -> {
                             System.out.print("Enter product name (-1 to cancel): ");
-                            prods.get(selectedProd - 1).setProductName(sc.nextLine());
-                            if (prods.get(selectedProd - 1).getProductName().equals("-1"))
+                            String name = sc.nextLine();
+                            if (name.equals("-1"))
                                 break;
+                            prods.get(selectedProd - 1).setProductName(name);
                         }
                         case 3 -> {
                             System.out.println("Select product category: ");
@@ -568,6 +572,8 @@ public class Product {
                             choice = 0;
                             try {
                                 choice = Integer.parseInt(sc.nextLine());
+                                if (choice == -1)
+                                    break;
                                 if (choice > categories.length || choice < 1)
                                     throw new Exception();
                             } catch (Exception e) {
@@ -576,13 +582,14 @@ public class Product {
                                 sc.nextLine();
                                 break;
                             }
-                            if (choice == -1)
-                                break;
                             prods.get(selectedProd - 1).setProductCategory(categories[choice - 1]);
                         }
                         case 4 -> {
-                            System.out.print("Enter product description: ");
-                            prods.get(selectedProd - 1).setProductDescription(sc.nextLine());
+                            System.out.print("Enter product description (-1 to cancel): ");
+                            String desc = sc.nextLine();
+                            if (desc.equals("-1"))
+                                break;
+                            prods.get(selectedProd - 1).setProductDescription(desc);
                         }
                         case 5 -> {
                             while (true) {
@@ -629,8 +636,8 @@ public class Product {
     }
 
     public boolean performRegisterProductOperation() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+        Screen.cls();
+        
         System.out.println("Register product");
         System.out.println("----------------");
         try {
@@ -652,6 +659,8 @@ public class Product {
         int choice = 0;
         try {
             choice = Integer.parseInt(sc.nextLine());
+            if (choice == -1)
+                return false;
             if (choice > brands.length || choice < 1)
                 throw new Exception();
         } catch (Exception e) {
@@ -660,8 +669,6 @@ public class Product {
             sc.nextLine();
             return false;
         }
-        if (choice == -1)
-            return false;
         setProductBrand(brands[choice - 1]);
         System.out.print("Enter product name (-1 to cancel): ");
         setProductName(sc.nextLine());
@@ -677,6 +684,8 @@ public class Product {
         choice = 0;
         try {
             choice = Integer.parseInt(sc.nextLine());
+            if (choice == -1)
+                return false;
             if (choice > categories.length || choice < 1)
                 throw new Exception();
         } catch (Exception e) {
@@ -685,8 +694,6 @@ public class Product {
             sc.nextLine();
             return false;
         }
-        if (choice == -1)
-            return false;
         setProductCategory(categories[choice - 1]);
         System.out.print("Enter product description: ");
         setProductDescription(sc.nextLine());
@@ -768,6 +775,8 @@ public class Product {
                     choice = 0;
                     try {
                         choice = Integer.parseInt(sc.nextLine());
+                        if (choice == -1)
+                            break;
                         if (choice > brands.length || choice < 1)
                             throw new Exception();
                     } catch (Exception e) {
@@ -776,15 +785,14 @@ public class Product {
                         sc.nextLine();
                         break;
                     }
-                    if (choice == -1)
-                        break;
                     setProductBrand(brands[choice - 1]);
                 }
                 case 2 -> {
                     System.out.print("Enter product name (-1 to cancel): ");
-                    setProductName(sc.nextLine());
-                    if (getProductName().equals("-1"))
+                    String name = sc.nextLine();
+                    if (name.equals("-1"))
                         break;
+                    setProductName(name);
                 }
                 case 3 -> {
                     System.out.println("Select product category: ");
@@ -797,6 +805,8 @@ public class Product {
                     choice = 0;
                     try {
                         choice = Integer.parseInt(sc.nextLine());
+                        if (choice == -1)
+                            break;
                         if (choice > categories.length || choice < 1)
                             throw new Exception();
                     } catch (Exception e) {
@@ -810,18 +820,22 @@ public class Product {
                     setProductCategory(categories[choice - 1]);
                 }
                 case 4 -> {
-                    System.out.print("Enter product description: ");
-                    setProductDescription(sc.nextLine());
+                    System.out.print("Enter product description (-1 to cancel): ");
+                    String desc = sc.nextLine();
+                    if (desc.equals("-1"))
+                        break;
+                    setProductDescription(desc);
                 }
                 case 5 -> {
                     while (true) {
                         System.out.print("Enter product price (-1 to cancel): RM ");
                         try {
-                            setProductPrice(Double.parseDouble(sc.nextLine()));
-                            if (getProductPrice() == -1)
+                            double price = Double.parseDouble(sc.nextLine());
+                            if (price == -1)
                                 break;
-                            if (getProductPrice() < 0)
+                            if (price < 0)
                                 throw new Exception();
+                            setProductPrice(price);
                             break;
                         } catch (Exception e) {
                             System.out.println("Invalid price, please try again.");
@@ -835,11 +849,12 @@ public class Product {
                     while (true) {
                         System.out.print("Enter product quantity (-1 to cancel): ");
                         try {
-                            setProductQuantity(Integer.parseInt(sc.nextLine()));
-                            if (getProductQuantity() == -1)
+                            int q = Integer.parseInt(sc.nextLine());
+                            if (q == -1)
                                 break;
-                            if (getProductQuantity() < 0)
+                            if (q < 0)
                                 throw new Exception();
+                            setProductQuantity(q);
                             break;
                         } catch (Exception e) {
                             System.out.println("Invalid quantity, please try again.");
@@ -860,8 +875,8 @@ public class Product {
                 Database db = new Database();
                 db.runCommand("SELECT * FROM product");
                 if (db.hasResult()) {
-                    System.out.print("\033[H\033[2J");
-                    System.out.flush();
+                    Screen.cls();
+                    
                     System.out.print("    ");
                     for (int i = 0; i < 142; i++)
                         System.out.print("-");
@@ -915,8 +930,8 @@ public class Product {
             if (selectedProd == -1)
                 return false;
             while (true) {
-                System.out.print("\033[H\033[2J");
-                System.out.flush();
+                Screen.cls();
+                
                 prods.get(selectedProd - 1).displayProductInfo();
                 String confirm = "";
                 try {

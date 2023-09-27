@@ -172,8 +172,8 @@ class MemberProfile extends Profile {
     }
 
     public void displayProfile() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+        Screen.cls();
+        
         System.out.println("Profile");
         System.out.println("-------");
         System.out.println("   User ID: " + getUserID());
@@ -417,8 +417,8 @@ class StaffProfile extends Profile {
     }
 
     public void displayProfile() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+        Screen.cls();
+        
         System.out.println("Profile");
         System.out.println("-------");
         System.out.println("   User ID: " + getUserID());

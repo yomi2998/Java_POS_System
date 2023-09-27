@@ -83,8 +83,8 @@ public class PaymentMethod {
     }
 
     private boolean submitPaymentMethod_Card() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+        Screen.cls();
+        
         try {
             Database db = new Database();
             db.runCommand("INSERT INTO payment_method VALUES ('" + this.paymentID + "', '" + this.userID + "', '"
@@ -108,8 +108,7 @@ public class PaymentMethod {
                 return false;
             }
             Scanner sc = new Scanner(System.in);
-            System.out.print("\033[H\033[2J");
-            System.out.flush();
+            Screen.cls();
             System.out.println("Register Payment Method");
             System.out.println("-----------------------");
             System.out.println("User ID: " + this.userID);
@@ -154,8 +153,8 @@ public class PaymentMethod {
     }
 
     public void displayPaymentMethods() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+        Screen.cls();
+        
         try {
             Database db = new Database();
             db.runCommand("SELECT * FROM payment_method WHERE memberid = '" + this.userID + "'");
@@ -189,8 +188,8 @@ public class PaymentMethod {
     }
 
     public boolean performDeletePaymentMethodOperation() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+        Screen.cls();
+        
         if (results == 0) {
             System.out.println("No payment methods registered");
             return false;

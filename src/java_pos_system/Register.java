@@ -108,8 +108,8 @@ class RegisterMember extends Register {
     }
 
     private void printFullMemberInfo() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+        Screen.cls();
+        
         System.out.println("Registration details");
         System.out.println("--------------------");
         System.out.println("ID: " + getUserID());
@@ -361,8 +361,8 @@ class RegisterStaff extends Register {
     }
 
     public void printFullStaffInfo() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+        Screen.cls();
+        
         System.out.println("Registration details");
         System.out.println("--------------------");
         System.out.println("ID: " + getUserID());
@@ -506,8 +506,7 @@ class RegisterStaff extends Register {
             System.out.print("Confirm registration? (Y/N): ");
             String confirm = sc.nextLine();
             if (confirm.equalsIgnoreCase("Y")) {
-                System.out.print("\033[H\033[2J");
-                System.out.flush();
+                Screen.cls();
                 return submitStaffRegistration();
             } else {
                 System.out.print("Which information do you want to change? (1-7, -1 to cancel): ");

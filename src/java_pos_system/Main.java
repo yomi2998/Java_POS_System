@@ -6,8 +6,7 @@ public class Main {
     public static void main(String[] args) {
         while (true) {
             Scanner sc = new Scanner(System.in);
-            System.out.print("\033[H\033[2J");
-            System.out.flush();
+            Screen.cls();
             System.out.println("Welcome to POS System");
             System.out.println("---------------------");
             System.out.println("1. Login");
@@ -30,8 +29,8 @@ public class Main {
                 case 1 -> {
                     int choice2 = 0;
                     while (true) {
-                        System.out.print("\033[H\033[2J");
-                        System.out.flush();
+                        Screen.cls();
+                        
                         System.out.println("Login as");
                         System.out.println("1. Member");
                         System.out.println("2. Staff");
@@ -83,8 +82,7 @@ public class Main {
                 case 2 -> {
                     int choice3 = 0;
                     while (true) {
-                        System.out.print("\033[H\033[2J");
-                        System.out.flush();
+                        Screen.cls();
                         System.out.println("Register as");
                         System.out.println("1. Member");
                         System.out.println("2. Staff");
@@ -104,8 +102,8 @@ public class Main {
                     }
                     switch (choice3) {
                         case 1 -> {
-                            System.out.print("\033[H\033[2J");
-                            System.out.flush();
+                            Screen.cls();
+                            
                             RegisterMember registerMember = new RegisterMember();
                             if (registerMember.performRegisterOperation()) {
                                 System.out.println("Member registered successfully");
@@ -128,16 +126,16 @@ public class Main {
                     }
                 }
                 case 3 -> {
-                    System.out.print("\033[H\033[2J");
-                    System.out.flush();
+                    Screen.cls();
+                    
                     System.out.println("POS System is a system that sells phone accessories.");
                     System.out.println("It is developed by:");
                     System.out.print("Press enter to continue...");
                     sc.nextLine();
                 }
                 case 4 -> {
-                    System.out.print("\033[H\033[2J");
-                    System.out.flush();
+                    Screen.cls();
+                    
                     System.out.println("Thank you for using POS System.");
                     System.out.print("Press enter to continue...");
                     sc.nextLine();

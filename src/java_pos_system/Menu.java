@@ -105,8 +105,8 @@ class MemberMenu extends Menu {
     }
 
     private void displayMemberMenu() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+        Screen.cls();
+        
         System.out.println("Welcome, " + getUserName());
         System.out.printf("Your balance: RM %.2f\n", getUserBalance());
         System.out.println("1. Browse products");
@@ -256,8 +256,8 @@ class StaffMenu extends Menu {
     }
 
     private void displayStaffMenu() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+        Screen.cls();
+        
         System.out.println("Welcome, " + getUserName());
         for (int i = 0; i < 9 + getUserName().length(); i++) {
             System.out.print("-");
@@ -310,39 +310,51 @@ class StaffMenu extends Menu {
                     viewProduct.startViewProductSession();
                 }
                 case 4 -> {
-                    Product addProduct = new Product();
-                    if (addProduct.performRegisterProductOperation()) {
-                        System.out.println("Product added successfully");
-                        System.out.print("Press enter to continue...");
-                        sc.nextLine();
-                    } else {
-                        System.out.println("Product add cancelled");
-                        System.out.print("Press enter to continue...");
-                        sc.nextLine();
+                    while (true) {
+                        Product addProduct = new Product();
+                        if (addProduct.performRegisterProductOperation()) {
+                            System.out.println("Product added successfully");
+                            System.out.print("Press enter to continue...");
+                            sc.nextLine();
+                            continue;
+                        } else {
+                            System.out.println("Product add cancelled");
+                            System.out.print("Press enter to continue...");
+                            sc.nextLine();
+                            break;
+                        }
                     }
                 }
                 case 5 -> {
-                    Product editProduct = new Product();
-                    if (editProduct.performEditProductOperation()) {
-                        System.out.println("Product edited successfully");
-                        System.out.print("Press enter to continue...");
-                        sc.nextLine();
-                    } else {
-                        System.out.println("Product edit cancelled");
-                        System.out.print("Press enter to continue...");
-                        sc.nextLine();
+                    while (true) {
+                        Product editProduct = new Product();
+                        if (editProduct.performEditProductOperation()) {
+                            System.out.println("Product edited successfully");
+                            System.out.print("Press enter to continue...");
+                            sc.nextLine();
+                            continue;
+                        } else {
+                            System.out.println("Product edit cancelled");
+                            System.out.print("Press enter to continue...");
+                            sc.nextLine();
+                            break;
+                        }
                     }
                 }
                 case 6 -> {
-                    Product deleteProduct = new Product();
-                    if (deleteProduct.performDeleteProductOperation()) {
-                        System.out.println("Product deleted successfully");
-                        System.out.print("Press enter to continue...");
-                        sc.nextLine();
-                    } else {
-                        System.out.println("Product delete cancelled");
-                        System.out.print("Press enter to continue...");
-                        sc.nextLine();
+                    while (true) {
+                        Product deleteProduct = new Product();
+                        if (deleteProduct.performDeleteProductOperation()) {
+                            System.out.println("Product deleted successfully");
+                            System.out.print("Press enter to continue...");
+                            sc.nextLine();
+                            continue;
+                        } else {
+                            System.out.println("Product delete cancelled");
+                            System.out.print("Press enter to continue...");
+                            sc.nextLine();
+                            break;
+                        }
                     }
                 }
                 case 7 -> {

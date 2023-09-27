@@ -43,7 +43,8 @@ public class Order {
                     product.setProductQuantity(db.getInt("productquantity"));
                     product.setProductName(db.getString("productname"));
                     product.setProductPrice(db.getDouble("productprice"));
-                    products.add(product);
+                    if (product.getProductQuantity() > 0)
+                        products.add(product);
                 }
         } catch (Exception e) {
             System.out.println(e);
@@ -53,8 +54,8 @@ public class Order {
     }
 
     private void printProducts(List<Product> products) {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+        Screen.cls();
+        
         System.out.print("    ");
         for (int i = 0; i < 142; i++)
             System.out.print("-");
@@ -79,8 +80,8 @@ public class Order {
     }
 
     private void printSpecificProduct(Product product) {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+        Screen.cls();
+        
         System.out.println("Product ID: " + product.getProductID());
         System.out.println("Product Brand: " + product.getProductBrand());
         System.out.println("Product Name: " + product.getProductName());

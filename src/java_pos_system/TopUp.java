@@ -36,8 +36,7 @@ public class TopUp {
     public boolean performTopUpOperation() {
         while (true) {
             Scanner sc = new Scanner(System.in);
-            System.out.print("\033[H\033[2J");
-            System.out.flush();
+            Screen.cls();
             if (!isPaymentMethodAvailable()) {
                 System.out.println("No payment method available.");
                 System.out.println("Please add a payment method first.");

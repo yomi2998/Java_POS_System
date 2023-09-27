@@ -38,8 +38,7 @@ public abstract class Login {
 class LoginMember extends Login {
     public boolean performLoginOperation() {
         while (true) {
-            System.out.print("\033[H\033[2J");
-            System.out.flush();
+            Screen.cls();
             System.out.println("Login - member");
             Scanner sc = new Scanner(System.in);
             System.out.print("Enter User ID (-1 to cancel): ");
@@ -78,8 +77,7 @@ class LoginMember extends Login {
 class LoginStaff extends Login {
     public boolean performLoginOperation() {
         while (true) {
-            System.out.print("\033[H\033[2J");
-            System.out.flush();
+            Screen.cls();
             System.out.println("Login - staff");
             Scanner sc = new Scanner(System.in);
             System.out.print("Enter User ID (-1 to cancel): ");
