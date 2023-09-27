@@ -194,8 +194,7 @@ public class Cart {
                     throw new Exception();
             } catch (Exception e) {
                 System.out.println("Invalid option, please try again.");
-                System.out.print("Press enter to continue...");
-                sc.nextLine();
+                Screen.pause();
                 continue;
             }
             boolean selected = addedItems.get(choice).getMarkDelete();
@@ -211,9 +210,7 @@ public class Cart {
             }
             if (!hasMarkDelete) {
                 System.out.println("No item selected to remove.");
-                System.out.print("Press enter to continue...");
-                Scanner sc = new Scanner(System.in);
-                sc.nextLine();
+                Screen.pause();
                 break;
             }
             System.out.println("Are you sure you want to remove selected items? (Y/N): ");
@@ -244,15 +241,11 @@ public class Cart {
             }
         } catch (Exception e) {
             System.out.println(e);
-            System.out.print("Press enter to continue...");
-            Scanner sc = new Scanner(System.in);
-            sc.nextLine();
+            Screen.pause();
             return;
         }
         System.out.println("Item(s) removed successfully.");
-        System.out.print("Press enter to continue...");
-        Scanner sc = new Scanner(System.in);
-        sc.nextLine();
+        Screen.pause();
     }
 
     private void clearCartOperation() {
@@ -261,9 +254,7 @@ public class Cart {
         loadCart();
         if (getAddedItems().isEmpty()) {
             System.out.println("Your cart is empty, aborting clear cart operation.");
-            System.out.print("Press enter to continue...");
-            Scanner sc = new Scanner(System.in);
-            sc.nextLine();
+            Screen.pause();
             return;
         }
         System.out.println("Your cart");
@@ -291,15 +282,11 @@ public class Cart {
             clearCart();
         } catch (Exception e) {
             System.out.println(e);
-            System.out.print("Press enter to continue...");
-            Scanner sc = new Scanner(System.in);
-            sc.nextLine();
+            Screen.pause();
             return;
         }
         System.out.println("Cart cleared successfully.");
-        System.out.print("Press enter to continue...");
-        Scanner sc = new Scanner(System.in);
-        sc.nextLine();
+        Screen.pause();
     }
 
     private boolean checkout() {
@@ -308,9 +295,7 @@ public class Cart {
             loadCart();
             if (getAddedItems().isEmpty()) {
                 System.out.println("Your cart is empty, aborting clear cart operation.");
-                System.out.print("Press enter to continue...");
-                Scanner sc = new Scanner(System.in);
-                sc.nextLine();
+                Screen.pause();
                 return false;
             }
             int choice = 0;
@@ -331,8 +316,7 @@ public class Cart {
                     break;
                 } catch (Exception e) {
                     System.out.println("Invalid option, please try again.");
-                    System.out.print("Press enter to continue...");
-                    sc.nextLine();
+                    Screen.pause();
                     continue;
                 }
             }
@@ -354,8 +338,7 @@ public class Cart {
                             }
                         } catch (Exception e) {
                             System.out.println(e);
-                            System.out.print("Press enter to continue...");
-                            sc.nextLine();
+                            Screen.pause();
                             return false;
                         }
                         int paymentChoice = 0;
@@ -381,8 +364,7 @@ public class Cart {
                                 break;
                             } catch (Exception e) {
                                 System.out.println("Invalid option, please try again.");
-                                System.out.print("Press enter to continue...");
-                                sc.nextLine();
+                                Screen.pause();
                                 continue;
                             }
                         }
@@ -422,10 +404,11 @@ public class Cart {
                                                     + addedItems.get(i).getQuantity() + " WHERE productid = '"
                                                     + addedItems.get(i).getProduct().getProductID() + "'");
                                             db.runCommand(
-                                                    "INSERT INTO checkout (checkoutid, memberid, productid, productquantity, paymentmethod, checkoutdatetime) VALUES ('"
+                                                    "INSERT INTO checkout (checkoutid, memberid, productid, productquantity, productsubtotal, paymentmethod, checkoutdatetime) VALUES ('"
                                                             + checkoutID + "', '" + getUserID() + "', '"
                                                             + addedItems.get(i).getProduct().getProductID() + "', "
-                                                            + addedItems.get(i).getProduct().getProductQuantity()
+                                                            + addedItems.get(i).getProduct().getProductQuantity() + ", "
+                                                            + addedItems.get(i).getSubtotal()
                                                             + ", 'Cash On Delivery', NOW())");
                                             db.runCommand("DELETE FROM cart WHERE memberid = '" + getUserID()
                                                     + "' AND productid = '"
@@ -433,13 +416,11 @@ public class Cart {
                                         }
                                     } catch (Exception e) {
                                         System.out.println(e);
-                                        System.out.print("Press enter to continue...");
-                                        sc.nextLine();
+                                        Screen.pause();
                                         return false;
                                     }
                                     System.out.println("Checkout successful.");
-                                    System.out.print("Press enter to continue...");
-                                    sc.nextLine();
+                                    Screen.pause();
                                     return true;
                                 }
                             }
@@ -453,14 +434,12 @@ public class Cart {
                                         int balance = db.getInt("memberbalance");
                                         if (balance < getTotal()) {
                                             System.out.println("Insufficient balance, please top up your balance.");
-                                            System.out.print("Press enter to continue...");
-                                            sc.nextLine();
+                                            Screen.pause();
                                             return false;
                                         }
                                     } catch (Exception e) {
                                         System.out.println(e);
-                                        System.out.print("Press enter to continue...");
-                                        sc.nextLine();
+                                        Screen.pause();
                                         return false;
                                     }
                                     System.out.print("Are you sure you want to checkout all items? (Y/N): ");
@@ -491,10 +470,11 @@ public class Cart {
                                                     + addedItems.get(i).getQuantity() + " WHERE productid = '"
                                                     + addedItems.get(i).getProduct().getProductID() + "'");
                                             db.runCommand(
-                                                    "INSERT INTO checkout (checkoutid, memberid, productid, productquantity, paymentmethod, checkoutdatetime) VALUES ('"
+                                                    "INSERT INTO checkout (checkoutid, memberid, productid, productquantity, productsubtotal, paymentmethod, checkoutdatetime) VALUES ('"
                                                             + checkoutID + "', '" + getUserID() + "', '"
                                                             + addedItems.get(i).getProduct().getProductID() + "', "
-                                                            + addedItems.get(i).getProduct().getProductQuantity()
+                                                            + addedItems.get(i).getProduct().getProductQuantity() + ", "
+                                                            + addedItems.get(i).getSubtotal()
                                                             + ", 'Balance', NOW())");
                                             db.runCommand("DELETE FROM cart WHERE memberid = '" + getUserID()
                                                     + "' AND productid = '"
@@ -505,13 +485,11 @@ public class Cart {
                                         }
                                     } catch (Exception e) {
                                         System.out.println(e);
-                                        System.out.print("Press enter to continue...");
-                                        sc.nextLine();
+                                        Screen.pause();
                                         return false;
                                     }
                                     System.out.println("Checkout successful.");
-                                    System.out.print("Press enter to continue...");
-                                    sc.nextLine();
+                                    Screen.pause();
                                     return true;
                                 }
                             }
@@ -549,13 +527,14 @@ public class Cart {
                                                     + addedItems.get(i).getQuantity() + " WHERE productid = '"
                                                     + addedItems.get(i).getProduct().getProductID() + "'");
                                             db.runCommand(
-                                                    "INSERT INTO checkout (checkoutid, memberid, paymentid, productid, productquantity, paymentmethod, checkoutdatetime) VALUES ('"
+                                                    "INSERT INTO checkout (checkoutid, memberid, paymentid, productid, productquantity, productsubtotal, paymentmethod, checkoutdatetime) VALUES ('"
                                                             + checkoutID + "', '" + getUserID() + "', '"
                                                             + paymentMethods.get(paymentChoice - 3).getPaymentID()
                                                             + "', '"
                                                             + addedItems.get(i).getProduct().getProductID() + "', "
                                                             + addedItems.get(i).getProduct().getProductQuantity()
                                                             + ", '"
+                                                            + addedItems.get(i).getSubtotal() + "', '"
                                                             + paymentMethods.get(paymentChoice - 3).getPaymentMethod()
                                                             + "', NOW())");
                                             db.runCommand("DELETE FROM cart WHERE memberid = '" + getUserID()
@@ -564,13 +543,11 @@ public class Cart {
                                         }
                                     } catch (Exception e) {
                                         System.out.println(e);
-                                        System.out.print("Press enter to continue...");
-                                        sc.nextLine();
+                                        Screen.pause();
                                         return false;
                                     }
                                     System.out.println("Checkout successful.");
-                                    System.out.print("Press enter to continue...");
-                                    sc.nextLine();
+                                    Screen.pause();
                                     return true;
                                 }
                             }
@@ -596,14 +573,12 @@ public class Cart {
                                 throw new Exception();
                             if (addedItems.get(choice).getQuantity() == 0) {
                                 System.out.println("Product is not available to purchase due to product shortage.");
-                                System.out.print("Press enter to continue...");
-                                sc.nextLine();
+                                Screen.pause();
                                 continue;
                             }
                         } catch (Exception e) {
                             System.out.println("Invalid option, please try again.");
-                            System.out.print("Press enter to continue...");
-                            sc.nextLine();
+                            Screen.pause();
                             continue;
                         }
                         boolean selected = addedItems.get(choice).getSelected();
@@ -619,8 +594,7 @@ public class Cart {
                         }
                         if (!hasSelection) {
                             System.out.println("No item selected to checkout.");
-                            System.out.print("Press enter to continue...");
-                            sc.nextLine();
+                            Screen.pause();
                             break;
                         }
                         List<PaymentMethod> paymentMethods = new ArrayList<PaymentMethod>();
@@ -638,8 +612,7 @@ public class Cart {
                             }
                         } catch (Exception e) {
                             System.out.println(e);
-                            System.out.print("Press enter to continue...");
-                            sc.nextLine();
+                            Screen.pause();
                             return false;
                         }
                         int paymentChoice = 0;
@@ -665,8 +638,7 @@ public class Cart {
                                 break;
                             } catch (Exception e) {
                                 System.out.println("Invalid option, please try again.");
-                                System.out.print("Press enter to continue...");
-                                sc.nextLine();
+                                Screen.pause();
                                 continue;
                             }
                         }
@@ -708,10 +680,11 @@ public class Cart {
                                                     + addedItems.get(i).getQuantity() + " WHERE productid = '"
                                                     + addedItems.get(i).getProduct().getProductID() + "'");
                                             db.runCommand(
-                                                    "INSERT INTO checkout (checkoutid, memberid, productid, productquantity, paymentmethod, checkoutdatetime) VALUES ('"
+                                                    "INSERT INTO checkout (checkoutid, memberid, productid, productquantity, productsubtotal, paymentmethod, checkoutdatetime) VALUES ('"
                                                             + checkoutID + "', '" + getUserID() + "', '"
                                                             + addedItems.get(i).getProduct().getProductID() + "', "
-                                                            + addedItems.get(i).getProduct().getProductQuantity()
+                                                            + addedItems.get(i).getProduct().getProductQuantity() + ", "
+                                                            + addedItems.get(i).getSubtotal()
                                                             + ", 'Cash On Delivery', NOW())");
                                             db.runCommand("DELETE FROM cart WHERE memberid = '" + getUserID()
                                                     + "' AND productid = '"
@@ -719,13 +692,11 @@ public class Cart {
                                         }
                                     } catch (Exception e) {
                                         System.out.println(e);
-                                        System.out.print("Press enter to continue...");
-                                        sc.nextLine();
+                                        Screen.pause();
                                         return false;
                                     }
                                     System.out.println("Checkout successful.");
-                                    System.out.print("Press enter to continue...");
-                                    sc.nextLine();
+                                    Screen.pause();
                                     return true;
                                 }
                             }
@@ -739,14 +710,12 @@ public class Cart {
                                         int balance = db.getInt("memberbalance");
                                         if (balance < getTotal()) {
                                             System.out.println("Insufficient balance, please top up your balance.");
-                                            System.out.print("Press enter to continue...");
-                                            sc.nextLine();
+                                            Screen.pause();
                                             return false;
                                         }
                                     } catch (Exception e) {
                                         System.out.println(e);
-                                        System.out.print("Press enter to continue...");
-                                        sc.nextLine();
+                                        Screen.pause();
                                         return false;
                                     }
                                     System.out.print("Are you sure you want to checkout all items? (Y/N): ");
@@ -779,10 +748,11 @@ public class Cart {
                                                     + addedItems.get(i).getQuantity() + " WHERE productid = '"
                                                     + addedItems.get(i).getProduct().getProductID() + "'");
                                             db.runCommand(
-                                                    "INSERT INTO checkout (checkoutid, memberid, productid, productquantity, paymentmethod, checkoutdatetime) VALUES ('"
+                                                    "INSERT INTO checkout (checkoutid, memberid, productid, productquantity, productsubtotal, paymentmethod, checkoutdatetime) VALUES ('"
                                                             + checkoutID + "', '" + getUserID() + "', '"
                                                             + addedItems.get(i).getProduct().getProductID() + "', "
-                                                            + addedItems.get(i).getProduct().getProductQuantity()
+                                                            + addedItems.get(i).getProduct().getProductQuantity() + ", "
+                                                            + addedItems.get(i).getSubtotal()
                                                             + ", 'Balance', NOW())");
                                             db.runCommand("DELETE FROM cart WHERE memberid = '" + getUserID()
                                                     + "' AND productid = '"
@@ -793,13 +763,11 @@ public class Cart {
                                         }
                                     } catch (Exception e) {
                                         System.out.println(e);
-                                        System.out.print("Press enter to continue...");
-                                        sc.nextLine();
+                                        Screen.pause();
                                         return false;
                                     }
                                     System.out.println("Checkout successful.");
-                                    System.out.print("Press enter to continue...");
-                                    sc.nextLine();
+                                    Screen.pause();
                                     return true;
                                 }
                             }
@@ -839,12 +807,13 @@ public class Cart {
                                                     + addedItems.get(i).getQuantity() + " WHERE productid = '"
                                                     + addedItems.get(i).getProduct().getProductID() + "'");
                                             db.runCommand(
-                                                    "INSERT INTO checkout (checkoutid, memberid, paymentid, productid, productquantity, paymentmethod, checkoutdatetime) VALUES ('"
+                                                    "INSERT INTO checkout (checkoutid, memberid, paymentid, productid, productquantity, productsubtotal, paymentmethod, checkoutdatetime) VALUES ('"
                                                             + checkoutID + "', '" + getUserID() + "', '"
                                                             + paymentMethods.get(paymentChoice - 3).getPaymentID()
                                                             + "', '"
                                                             + addedItems.get(i).getProduct().getProductID() + "', "
-                                                            + addedItems.get(i).getProduct().getProductQuantity()
+                                                            + addedItems.get(i).getProduct().getProductQuantity() + ", "
+                                                            + addedItems.get(i).getSubtotal()
                                                             + ", '"
                                                             + paymentMethods.get(paymentChoice - 3).getPaymentMethod()
                                                             + "', NOW())");
@@ -854,13 +823,11 @@ public class Cart {
                                         }
                                     } catch (Exception e) {
                                         System.out.println(e);
-                                        System.out.print("Press enter to continue...");
-                                        sc.nextLine();
+                                        Screen.pause();
                                         return false;
                                     }
                                     System.out.println("Checkout successful.");
-                                    System.out.print("Press enter to continue...");
-                                    sc.nextLine();
+                                    Screen.pause();
                                     return true;
                                 }
                             }
@@ -877,9 +844,7 @@ public class Cart {
             loadCart();
             if (getAddedItems().isEmpty()) {
                 System.out.println("Your cart is empty, returning to member menu...");
-                System.out.print("Press enter to continue...");
-                Scanner sc = new Scanner(System.in);
-                sc.nextLine();
+                Screen.pause();
                 return false;
             }
             System.out.println("Your cart");
@@ -897,8 +862,7 @@ public class Cart {
                     throw new Exception();
             } catch (Exception e) {
                 System.out.println("Invalid option, please try again.");
-                System.out.print("Press enter to continue...");
-                sc.nextLine();
+                Screen.pause();
                 continue;
             }
             switch (choice) {

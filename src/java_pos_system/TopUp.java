@@ -40,8 +40,7 @@ public class TopUp {
             if (!isPaymentMethodAvailable()) {
                 System.out.println("No payment method available.");
                 System.out.println("Please add a payment method first.");
-                System.out.print("Press enter to continue...");
-                sc.nextLine();
+                Screen.pause();
                 return false;
             }
             System.out.println("Top Up");

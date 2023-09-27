@@ -5,10 +5,6 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
 
-//next trip, member order
-
-import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
-
 public class Product {
     private String productID;
     private String productBrand;
@@ -151,7 +147,7 @@ public class Product {
 
     public void displayProductInfo() {
         Screen.cls();
-        
+
         System.out.println("Product ID: " + getProductID());
         System.out.println("1. Product Brand: " + getProductBrand());
         System.out.println("2. Product Name: " + getProductName());
@@ -185,9 +181,7 @@ public class Product {
             return true;
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
-            System.out.println("Press enter to continue...");
-            Scanner sc = new Scanner(System.in);
-            sc.nextLine();
+            Screen.pause();
             return false;
         }
     }
@@ -212,8 +206,7 @@ public class Product {
                     throw new Exception();
             } catch (Exception e) {
                 System.out.println("Invalid choice, please try again.");
-                System.out.print("Press enter to continue...");
-                sc.nextLine();
+                Screen.pause();
                 continue;
             }
             if (choice == -1)
@@ -246,7 +239,7 @@ public class Product {
                     db.runCommand(cmd);
                     if (db.hasResult()) {
                         Screen.cls();
-                        
+
                         System.out.print("    ");
                         for (int i = 0; i < 142; i++)
                             System.out.print("-");
@@ -282,8 +275,7 @@ public class Product {
                                 + " to view full details (-1 to cancel, -2 to change order sequence): ");
                     } else {
                         System.out.println("No product found.");
-                        System.out.print("Press enter to continue...");
-                        sc.nextLine();
+                        Screen.pause();
                         return;
                     }
                     db.closeConnection();
@@ -297,8 +289,7 @@ public class Product {
                         throw new Exception();
                 } catch (Exception e) {
                     System.out.println("Invalid choice, please try again.");
-                    System.out.print("Press enter to continue...");
-                    sc.nextLine();
+                    Screen.pause();
                     continue;
                 }
                 if (choice == -1)
@@ -306,10 +297,9 @@ public class Product {
                 else if (choice == -2)
                     break;
                 Screen.cls();
-                
+
                 System.out.println(prods.get(choice - 1));
-                System.out.print("Press enter to continue...");
-                sc.nextLine();
+                Screen.pause();
             }
         }
     }
@@ -322,7 +312,7 @@ public class Product {
                 db.runCommand("SELECT * FROM product");
                 if (db.hasResult()) {
                     Screen.cls();
-                    
+
                     System.out.print("    ");
                     for (int i = 0; i < 142; i++)
                         System.out.print("-");
@@ -370,8 +360,7 @@ public class Product {
                     throw new Exception();
             } catch (Exception e) {
                 System.out.println("Invalid choice, please try again.");
-                System.out.print("Press enter to continue...");
-                sc.nextLine();
+                Screen.pause();
                 continue;
             }
             if (selectedProd == -1)
@@ -379,7 +368,7 @@ public class Product {
             while (true) {
                 while (true) {
                     Screen.cls();
-                    
+
                     prods.get(selectedProd - 1).displayProductInfo();
                     System.out.print("Which field do you want to edit? (1-6, -1 to cancel): ");
                     try {
@@ -391,8 +380,7 @@ public class Product {
                         break;
                     } catch (Exception e) {
                         System.out.println("Invalid choice, please try again.");
-                        System.out.print("Press enter to continue...");
-                        sc.nextLine();
+                        Screen.pause();
                         continue;
                     }
                 }
@@ -414,8 +402,7 @@ public class Product {
                                 throw new Exception();
                         } catch (Exception e) {
                             System.out.println("Invalid choice, please try again.");
-                            System.out.print("Press enter to continue...");
-                            sc.nextLine();
+                            Screen.pause();
                             break;
                         }
                         prods.get(selectedProd - 1).setProductBrand(brands[choice - 1]);
@@ -444,8 +431,7 @@ public class Product {
                                 throw new Exception();
                         } catch (Exception e) {
                             System.out.println("Invalid choice, please try again.");
-                            System.out.print("Press enter to continue...");
-                            sc.nextLine();
+                            Screen.pause();
                             break;
                         }
                         prods.get(selectedProd - 1).setProductCategory(categories[choice - 1]);
@@ -470,8 +456,7 @@ public class Product {
                                 break;
                             } catch (Exception e) {
                                 System.out.println("Invalid price, please try again.");
-                                System.out.print("Press enter to continue...");
-                                sc.nextLine();
+                                Screen.pause();
                                 break;
                             }
                         }
@@ -489,8 +474,7 @@ public class Product {
                                 break;
                             } catch (Exception e) {
                                 System.out.println("Invalid quantity, please try again.");
-                                System.out.print("Press enter to continue...");
-                                sc.nextLine();
+                                Screen.pause();
                                 break;
                             }
                         }
@@ -507,8 +491,7 @@ public class Product {
                         }
                     } catch (Exception e) {
                         System.out.println("Invalid choice, please try again.");
-                        System.out.print("Press enter to continue...");
-                        sc.nextLine();
+                        Screen.pause();
                         continue;
                     }
                     if (confirm.toUpperCase().equals("Y")) {
@@ -525,8 +508,7 @@ public class Product {
                             break;
                         } catch (Exception e) {
                             System.out.println("Invalid choice, please try again.");
-                            System.out.print("Press enter to continue...");
-                            sc.nextLine();
+                            Screen.pause();
                             continue;
                         }
                     }
@@ -548,8 +530,7 @@ public class Product {
                                     throw new Exception();
                             } catch (Exception e) {
                                 System.out.println("Invalid choice, please try again.");
-                                System.out.print("Press enter to continue...");
-                                sc.nextLine();
+                                Screen.pause();
                                 break;
                             }
                             prods.get(selectedProd - 1).setProductBrand(brands[choice - 1]);
@@ -578,8 +559,7 @@ public class Product {
                                     throw new Exception();
                             } catch (Exception e) {
                                 System.out.println("Invalid choice, please try again.");
-                                System.out.print("Press enter to continue...");
-                                sc.nextLine();
+                                Screen.pause();
                                 break;
                             }
                             prods.get(selectedProd - 1).setProductCategory(categories[choice - 1]);
@@ -604,8 +584,7 @@ public class Product {
                                     break;
                                 } catch (Exception e) {
                                     System.out.println("Invalid price, please try again.");
-                                    System.out.print("Press enter to continue...");
-                                    sc.nextLine();
+                                    Screen.pause();
                                     break;
                                 }
                             }
@@ -623,8 +602,7 @@ public class Product {
                                     break;
                                 } catch (Exception e) {
                                     System.out.println("Invalid quantity, please try again.");
-                                    System.out.print("Press enter to continue...");
-                                    sc.nextLine();
+                                    Screen.pause();
                                     break;
                                 }
                             }
@@ -637,7 +615,7 @@ public class Product {
 
     public boolean performRegisterProductOperation() {
         Screen.cls();
-        
+
         System.out.println("Register product");
         System.out.println("----------------");
         try {
@@ -665,8 +643,7 @@ public class Product {
                 throw new Exception();
         } catch (Exception e) {
             System.out.println("Invalid choice, please try again.");
-            System.out.print("Press enter to continue...");
-            sc.nextLine();
+            Screen.pause();
             return false;
         }
         setProductBrand(brands[choice - 1]);
@@ -690,8 +667,7 @@ public class Product {
                 throw new Exception();
         } catch (Exception e) {
             System.out.println("Invalid choice, please try again.");
-            System.out.print("Press enter to continue...");
-            sc.nextLine();
+            Screen.pause();
             return false;
         }
         setProductCategory(categories[choice - 1]);
@@ -708,8 +684,7 @@ public class Product {
                 break;
             } catch (Exception e) {
                 System.out.println("Invalid price, please try again.");
-                System.out.print("Press enter to continue...");
-                sc.nextLine();
+                Screen.pause();
                 continue;
             }
         }
@@ -724,8 +699,7 @@ public class Product {
                 break;
             } catch (Exception e) {
                 System.out.println("Invalid quantity, please try again.");
-                System.out.print("Press enter to continue...");
-                sc.nextLine();
+                Screen.pause();
                 continue;
             }
         }
@@ -740,8 +714,7 @@ public class Product {
                 }
             } catch (Exception e) {
                 System.out.println("Invalid choice, please try again.");
-                System.out.print("Press enter to continue...");
-                sc.nextLine();
+                Screen.pause();
                 continue;
             }
             if (confirm.toUpperCase().equals("Y")) {
@@ -758,8 +731,7 @@ public class Product {
                     break;
                 } catch (Exception e) {
                     System.out.println("Invalid choice, please try again.");
-                    System.out.print("Press enter to continue...");
-                    sc.nextLine();
+                    Screen.pause();
                     continue;
                 }
             }
@@ -781,8 +753,7 @@ public class Product {
                             throw new Exception();
                     } catch (Exception e) {
                         System.out.println("Invalid choice, please try again.");
-                        System.out.print("Press enter to continue...");
-                        sc.nextLine();
+                        Screen.pause();
                         break;
                     }
                     setProductBrand(brands[choice - 1]);
@@ -810,9 +781,7 @@ public class Product {
                         if (choice > categories.length || choice < 1)
                             throw new Exception();
                     } catch (Exception e) {
-                        System.out.println("Invalid choice, please try again.");
-                        System.out.print("Press enter to continue...");
-                        sc.nextLine();
+                        Screen.pause();
                         break;
                     }
                     if (choice == -1)
@@ -839,8 +808,7 @@ public class Product {
                             break;
                         } catch (Exception e) {
                             System.out.println("Invalid price, please try again.");
-                            System.out.print("Press enter to continue...");
-                            sc.nextLine();
+                            Screen.pause();
                             break;
                         }
                     }
@@ -858,8 +826,7 @@ public class Product {
                             break;
                         } catch (Exception e) {
                             System.out.println("Invalid quantity, please try again.");
-                            System.out.print("Press enter to continue...");
-                            sc.nextLine();
+                            Screen.pause();
                             break;
                         }
                     }
@@ -876,7 +843,7 @@ public class Product {
                 db.runCommand("SELECT * FROM product");
                 if (db.hasResult()) {
                     Screen.cls();
-                    
+
                     System.out.print("    ");
                     for (int i = 0; i < 142; i++)
                         System.out.print("-");
@@ -923,15 +890,14 @@ public class Product {
                     throw new Exception();
             } catch (Exception e) {
                 System.out.println("Invalid choice, please try again.");
-                System.out.print("Press enter to continue...");
-                sc.nextLine();
+                Screen.pause();
                 continue;
             }
             if (selectedProd == -1)
                 return false;
             while (true) {
                 Screen.cls();
-                
+
                 prods.get(selectedProd - 1).displayProductInfo();
                 String confirm = "";
                 try {
@@ -942,8 +908,7 @@ public class Product {
                     }
                 } catch (Exception e) {
                     System.out.println("Invalid choice, please try again.");
-                    System.out.print("Press enter to continue...");
-                    sc.nextLine();
+                    Screen.pause();
                     continue;
                 }
                 if (confirm.toUpperCase().equals("Y")) {
@@ -955,8 +920,7 @@ public class Product {
                         return true;
                     } catch (Exception e) {
                         System.out.println("Error: " + e.getMessage());
-                        System.out.print("Press enter to continue...");
-                        sc.nextLine();
+                        Screen.pause();
                         return false;
                     }
                 }

@@ -140,8 +140,7 @@ class MemberProfile extends Profile {
                         + password + "'");
                 if (!db.hasResult()) {
                     System.out.println("Incorrect password, please try again.");
-                    System.out.print("Press enter to continue...");
-                    sc.nextLine();
+                    Screen.pause();
                     continue;
                 }
                 return true;
@@ -173,7 +172,7 @@ class MemberProfile extends Profile {
 
     public void displayProfile() {
         Screen.cls();
-        
+
         System.out.println("Profile");
         System.out.println("-------");
         System.out.println("   User ID: " + getUserID());
@@ -188,9 +187,7 @@ class MemberProfile extends Profile {
     public void startViewProfileSession() {
         retrieveUserInfo();
         displayProfile();
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Press enter to continue...");
-        sc.nextLine();
+        Screen.pause();
     }
 
     public boolean startEditProfileSession() {
@@ -213,8 +210,7 @@ class MemberProfile extends Profile {
                     break;
                 } catch (Exception e) {
                     System.out.println("Invalid choice, please try again.");
-                    System.out.print("Press enter to continue...");
-                    sc.nextLine();
+                    Screen.pause();
                 }
             }
             switch (choice) {
@@ -230,8 +226,7 @@ class MemberProfile extends Profile {
                             break;
                         } else {
                             System.out.println("Invalid name, please try again.");
-                            System.out.print("Press enter to continue...");
-                            sc.nextLine();
+                            Screen.pause();
                         }
                     }
                 }
@@ -248,8 +243,7 @@ class MemberProfile extends Profile {
                         } else {
                             System.out.println("Incorrect password format, password must be 8-16 characters long, "
                                     + "contain at least one digit, one uppercase letter, and one lowercase letter, please try again.");
-                            System.out.print("Press enter to continue...");
-                            sc.nextLine();
+                            Screen.pause();
                         }
                     }
                 }
@@ -271,8 +265,7 @@ class MemberProfile extends Profile {
                         if (phone.length() < 10 || phone.length() > 12 || !phone.matches("[0-9]+")) {
                             System.out.println(
                                     "Invalid phone number, number length must be between 10 to 12, enter numbers only.");
-                            System.out.print("Press enter to continue...");
-                            sc.nextLine();
+                            Screen.pause();
                             continue;
                         }
                         try {
@@ -280,8 +273,7 @@ class MemberProfile extends Profile {
                             break;
                         } catch (Exception e) {
                             System.out.println("Invalid phone number, please try again.");
-                            System.out.print("Press enter to continue...");
-                            sc.nextLine();
+                            Screen.pause();
                         }
                     }
                 }
@@ -312,8 +304,7 @@ class MemberProfile extends Profile {
                             break;
                         } catch (Exception e) {
                             System.out.println("Invalid email format, please try again.");
-                            System.out.print("Press enter to continue...");
-                            sc.nextLine();
+                            Screen.pause();
                         }
                     }
                 }
@@ -357,15 +348,14 @@ class StaffProfile extends Profile {
             db.runCommand("UPDATE staff SET staffpassword = '" + getUserPassword() + "', staffname = '"
                     + getUserName() + "', staffaddress = '"
                     + getUserAddress() + "', staffphone = '" + getUserPhone() + "', staffemail = '"
-                    + getUserEmail() + "', staffsalary = '" + getUserSalary() + "', staffposition = '" + getUserPosition() + "' WHERE staffid = '"
+                    + getUserEmail() + "', staffsalary = '" + getUserSalary() + "', staffposition = '"
+                    + getUserPosition() + "' WHERE staffid = '"
                     + getUserID() + "'");
             db.closeConnection();
             return true;
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
-            System.out.println("Press enter to continue...");
-            Scanner sc = new Scanner(System.in);
-            sc.nextLine();
+            Screen.pause();
             return false;
         }
     }
@@ -384,8 +374,7 @@ class StaffProfile extends Profile {
                         + password + "'");
                 if (!db.hasResult()) {
                     System.out.println("Incorrect password, please try again.");
-                    System.out.print("Press enter to continue...");
-                    sc.nextLine();
+                    Screen.pause();
                     continue;
                 }
                 return true;
@@ -418,7 +407,7 @@ class StaffProfile extends Profile {
 
     public void displayProfile() {
         Screen.cls();
-        
+
         System.out.println("Profile");
         System.out.println("-------");
         System.out.println("   User ID: " + getUserID());
@@ -435,8 +424,7 @@ class StaffProfile extends Profile {
         retrieveUserInfo();
         displayProfile();
         Scanner sc = new Scanner(System.in);
-        System.out.print("Press enter to continue...");
-        sc.nextLine();
+        Screen.pause();
     }
 
     public boolean startEditProfileSession() {
@@ -459,8 +447,7 @@ class StaffProfile extends Profile {
                     break;
                 } catch (Exception e) {
                     System.out.println("Invalid choice, please try again.");
-                    System.out.print("Press enter to continue...");
-                    sc.nextLine();
+                    Screen.pause();
                 }
             }
             switch (choice) {
@@ -476,8 +463,7 @@ class StaffProfile extends Profile {
                             break;
                         } else {
                             System.out.println("Invalid name, please try again.");
-                            System.out.print("Press enter to continue...");
-                            sc.nextLine();
+                            Screen.pause();
                         }
                     }
                 }
@@ -494,8 +480,7 @@ class StaffProfile extends Profile {
                         } else {
                             System.out.println("Incorrect password format, password must be 8-16 characters long, "
                                     + "contain at least one digit, one uppercase letter, and one lowercase letter, please try again.");
-                            System.out.print("Press enter to continue...");
-                            sc.nextLine();
+                            Screen.pause();
                         }
                     }
                 }
@@ -517,8 +502,7 @@ class StaffProfile extends Profile {
                         if (phone.length() < 10 || phone.length() > 12 || !phone.matches("[0-9]+")) {
                             System.out.println(
                                     "Invalid phone number, number length must be between 10 to 12, enter numbers only.");
-                            System.out.print("Press enter to continue...");
-                            sc.nextLine();
+                            Screen.pause();
                             continue;
                         }
                         try {
@@ -526,8 +510,7 @@ class StaffProfile extends Profile {
                             break;
                         } catch (Exception e) {
                             System.out.println("Invalid phone number, please try again.");
-                            System.out.print("Press enter to continue...");
-                            sc.nextLine();
+                            Screen.pause();
                         }
                     }
                 }
@@ -558,8 +541,7 @@ class StaffProfile extends Profile {
                             break;
                         } catch (Exception e) {
                             System.out.println("Invalid email format, please try again.");
-                            System.out.print("Press enter to continue...");
-                            sc.nextLine();
+                            Screen.pause();
                         }
                     }
                 }

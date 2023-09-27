@@ -21,8 +21,7 @@ public class Main {
                     throw new Exception();
             } catch (Exception e) {
                 System.out.println("Invalid choice, please try again.");
-                System.out.print("Press enter to continue...");
-                sc.nextLine();
+                Screen.pause();
                 continue;
             }
             switch (choice) {
@@ -42,8 +41,7 @@ public class Main {
                                 throw new Exception();
                         } catch (Exception e) {
                             System.out.println("Invalid choice, please try again.");
-                            System.out.print("Press enter to continue...");
-                            sc.nextLine();
+                            Screen.pause();
                             continue;
                         }
                         break;
@@ -53,28 +51,24 @@ public class Main {
                             LoginMember loginMember = new LoginMember();
                             if (loginMember.performLoginOperation()) {
                                 System.out.println("Login successful");
-                                System.out.print("Press enter to continue...");
-                                sc.nextLine();
+                                Screen.pause();
                                 MemberMenu memberMenu = new MemberMenu(loginMember.getUserID(), loginMember.getUserName());
                                 memberMenu.startMemberSession();
                             } else {
                                 System.out.println("Login cancelled");
-                                System.out.print("Press enter to continue...");
-                                sc.nextLine();
+                                Screen.pause();
                             }
                         }
                         case 2 -> {
                             LoginStaff loginStaff = new LoginStaff();
                             if (loginStaff.performLoginOperation()) {
                                 System.out.println("Login successful");
-                                System.out.print("Press enter to continue...");
-                                sc.nextLine();
+                                Screen.pause();
                                 StaffMenu staffMenu = new StaffMenu(loginStaff.getUserID(), loginStaff.getUserName());
                                 staffMenu.startStaffSession();
                             } else {
                                 System.out.println("Login cancelled");
-                                System.out.print("Press enter to continue...");
-                                sc.nextLine();
+                                Screen.pause();
                             }
                         }
                     }
@@ -94,8 +88,7 @@ public class Main {
                                 throw new Exception();
                         } catch (Exception e) {
                             System.out.println("Invalid choice, please try again.");
-                            System.out.print("Press enter to continue...");
-                            sc.nextLine();
+                            Screen.pause();
                             continue;
                         }
                         break;
@@ -110,8 +103,7 @@ public class Main {
                             } else {
                                 System.out.println("Cancelled member registration");
                             }
-                            System.out.print("Press enter to continue...");
-                            sc.nextLine();
+                            Screen.pause();
                         }
                         case 2 -> {
                             RegisterStaff registerStaff = new RegisterStaff();
@@ -120,8 +112,7 @@ public class Main {
                             } else {
                                 System.out.println("Cancelled staff registration");
                             }
-                            System.out.print("Press enter to continue...");
-                            sc.nextLine();
+                            Screen.pause();
                         }
                     }
                 }
@@ -130,16 +121,13 @@ public class Main {
                     
                     System.out.println("POS System is a system that sells phone accessories.");
                     System.out.println("It is developed by:");
-                    System.out.print("Press enter to continue...");
-                    sc.nextLine();
+                    Screen.pause();
                 }
                 case 4 -> {
                     Screen.cls();
                     
                     System.out.println("Thank you for using POS System.");
-                    System.out.print("Press enter to continue...");
-                    sc.nextLine();
-                    System.exit(0);
+                    Screen.pause();
                 }
             }
         }

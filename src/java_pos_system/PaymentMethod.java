@@ -84,7 +84,7 @@ public class PaymentMethod {
 
     private boolean submitPaymentMethod_Card() {
         Screen.cls();
-        
+
         try {
             Database db = new Database();
             db.runCommand("INSERT INTO payment_method VALUES ('" + this.paymentID + "', '" + this.userID + "', '"
@@ -128,8 +128,7 @@ public class PaymentMethod {
                 this.paymentMethod = this.methods[choice - 1];
             } catch (Exception e) {
                 System.out.println("Invalid choice, please try again.");
-                System.out.print("Press enter to continue...");
-                sc.nextLine();
+                Screen.pause();
                 continue;
             }
             while (true) {
@@ -137,8 +136,7 @@ public class PaymentMethod {
                 this.cardNumber = sc.nextLine();
                 if (this.cardNumber.length() != 16) {
                     System.out.println("Invalid card number, please try again.");
-                    System.out.print("Press enter to continue...");
-                    sc.nextLine();
+                    Screen.pause();
                     continue;
                 } else {
                     break;
@@ -154,7 +152,7 @@ public class PaymentMethod {
 
     public void displayPaymentMethods() {
         Screen.cls();
-        
+
         try {
             Database db = new Database();
             db.runCommand("SELECT * FROM payment_method WHERE memberid = '" + this.userID + "'");
@@ -189,7 +187,7 @@ public class PaymentMethod {
 
     public boolean performDeletePaymentMethodOperation() {
         Screen.cls();
-        
+
         if (results == 0) {
             System.out.println("No payment methods registered");
             return false;
@@ -211,8 +209,7 @@ public class PaymentMethod {
                 db.closeConnection();
             } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
-                System.out.print("Press enter to continue...");
-                sc.nextLine();
+                Screen.pause();
                 return false;
             }
             System.out.println("Payment Methods:");
@@ -232,8 +229,7 @@ public class PaymentMethod {
                 }
             } catch (Exception e) {
                 System.out.println("Error: " + e);
-                System.out.print("Press enter to continue...");
-                sc.nextLine();
+                Screen.pause();
                 return false;
             }
             while (true) {
@@ -251,8 +247,7 @@ public class PaymentMethod {
                     }
                 } catch (Exception e) {
                     System.out.println("Invalid choice, please try again.");
-                    System.out.print("Press enter to continue...");
-                    sc.nextLine();
+                    Screen.pause();
                     continue;
                 }
             }
@@ -262,13 +257,11 @@ public class PaymentMethod {
                         + paymentMethodList.get(choice - 1).getPaymentID() + "'");
                 db.closeConnection();
                 System.out.println("Payment method deleted successfully");
-                System.out.print("Press enter to continue...");
-                sc.nextLine();
+                Screen.pause();
                 return true;
             } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
-                System.out.print("Press enter to continue...");
-                sc.nextLine();
+                Screen.pause();
                 return false;
             }
         }
@@ -289,31 +282,26 @@ public class PaymentMethod {
                 }
             } catch (Exception e) {
                 System.out.println("Invalid choice, please try again.");
-                System.out.print("Press enter to continue...");
-                sc.nextLine();
+                Screen.pause();
                 continue;
             }
             switch (choice) {
                 case 1:
                     if (performRegisterPaymentMethodOperation()) {
                         System.out.println("Payment method registered successfully");
-                        System.out.print("Press enter to continue...");
-                        sc.nextLine();
+                        Screen.pause();
                     } else {
                         System.out.println("Payment method registration cancelled");
-                        System.out.print("Press enter to continue...");
-                        sc.nextLine();
+                        Screen.pause();
                     }
                     break;
                 case 2:
                     if (performDeletePaymentMethodOperation()) {
                         System.out.println("Payment method deleted successfully");
-                        System.out.print("Press enter to continue...");
-                        sc.nextLine();
+                        Screen.pause();
                     } else {
                         System.out.println("Payment method deletion cancelled");
-                        System.out.print("Press enter to continue...");
-                        sc.nextLine();
+                        Screen.pause();
                     }
                     break;
             }

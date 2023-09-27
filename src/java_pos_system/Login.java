@@ -58,8 +58,7 @@ class LoginMember extends Login {
                         + "' AND memberpassword = '" + getUserPassword() + "'");
                 if (!db.hasResult()) {
                     System.out.println("Invalid user ID or password");
-                    System.out.print("Press enter to continue...");
-                    sc.nextLine();
+                    Screen.pause();
                     continue;
                 }
                 db.next();
@@ -98,8 +97,7 @@ class LoginStaff extends Login {
                                 + "'");
                 if (!db.hasResult()) {
                     System.out.println("Invalid user ID or password");
-                    System.out.print("Press enter to continue...");
-                    sc.nextLine();
+                    Screen.pause();
                     continue;
                 }
                 db.next();

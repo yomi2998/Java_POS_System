@@ -55,7 +55,7 @@ public class Order {
 
     private void printProducts(List<Product> products) {
         Screen.cls();
-        
+
         System.out.print("    ");
         for (int i = 0; i < 142; i++)
             System.out.print("-");
@@ -81,7 +81,7 @@ public class Order {
 
     private void printSpecificProduct(Product product) {
         Screen.cls();
-        
+
         System.out.println("Product ID: " + product.getProductID());
         System.out.println("Product Brand: " + product.getProductBrand());
         System.out.println("Product Name: " + product.getProductName());
@@ -97,8 +97,7 @@ public class Order {
             List<Product> products = getProducts();
             if (products == null) {
                 System.out.println("Error retrieving products.");
-                System.out.println("Press enter to continue...");
-                sc.nextLine();
+                Screen.pause();
                 return false;
             }
             printProducts(products);
@@ -149,13 +148,11 @@ public class Order {
                         db.runCommand("INSERT INTO cart VALUES ('" + getUserID() + "', '"
                                 + cartItem.getProduct().getProductID() + "', " + cartItem.getQuantity() + ")");
                         System.out.println("Item added to cart.");
-                        System.out.println("Press enter to continue...");
-                        sc.nextLine();
+                        Screen.pause();
                     } catch (Exception e) {
                         System.out.println(e);
                         System.out.println("Error adding item to cart.");
-                        System.out.println("Press enter to continue...");
-                        sc.nextLine();
+                        Screen.pause();
                         return false;
                     }
                     break;
@@ -169,3 +166,4 @@ public class Order {
         }
     }
 }
+

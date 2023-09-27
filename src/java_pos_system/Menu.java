@@ -83,9 +83,7 @@ class MemberMenu extends Menu {
             return true;
         } catch (Exception e) {
             System.out.println("Error: " + e);
-            System.out.println("Press enter key to continue...");
-            Scanner sc = new Scanner(System.in);
-            sc.nextLine();
+            Screen.pause();
             return false;
         }
     }
@@ -115,7 +113,8 @@ class MemberMenu extends Menu {
         System.out.println("4. Edit profile");
         System.out.println("5. Top up");
         System.out.println("6. Payment methods");
-        System.out.println("7. Logout");
+        System.out.println("7. View order");
+        System.out.println("8. Logout");
         System.out.print("Enter your choice: ");
     }
 
@@ -131,8 +130,7 @@ class MemberMenu extends Menu {
                     throw new Exception();
             } catch (Exception e) {
                 System.out.println("Invalid choice, please try again.");
-                System.out.print("Press enter to continue...");
-                sc.nextLine();
+                Screen.pause();
                 continue;
             }
             switch (choice) {
@@ -140,12 +138,10 @@ class MemberMenu extends Menu {
                     Order order = new Order(getUserID());
                     if (order.startOrderItemSession()) {
                         System.out.println("Order successful");
-                        System.out.print("Press enter to continue...");
-                        sc.nextLine();
+                        Screen.pause();
                     } else {
                         System.out.println("Order cancelled");
-                        System.out.print("Press enter to continue...");
-                        sc.nextLine();
+                        Screen.pause();
                     }
                 }
                 case 2 -> {
@@ -160,24 +156,20 @@ class MemberMenu extends Menu {
                     MemberProfile viewProfile = new MemberProfile(getUserID());
                     if (viewProfile.startEditProfileSession()) {
                         System.out.println("Profile updated successfully");
-                        System.out.print("Press enter to continue...");
-                        sc.nextLine();
+                        Screen.pause();
                     } else {
                         System.out.println("Profile update cancelled");
-                        System.out.print("Press enter to continue...");
-                        sc.nextLine();
+                        Screen.pause();
                     }
                 }
                 case 5 -> {
                     TopUp topUp = new TopUp(getUserID());
                     if (topUp.performTopUpOperation()) {
                         System.out.println("Top up successful");
-                        System.out.print("Press enter to continue...");
-                        sc.nextLine();
+                        Screen.pause();
                     } else {
                         System.out.println("Top up cancelled");
-                        System.out.print("Press enter to continue...");
-                        sc.nextLine();
+                        Screen.pause();
                     }
                 }
                 case 6 -> {
@@ -185,9 +177,12 @@ class MemberMenu extends Menu {
                     paymentMethod.startPaymentMethodSession();
                 }
                 case 7 -> {
+                    ViewOrderedItems order = new ViewOrderedItems(getUserID());
+                    order.startViewOrderSession();
+                }
+                case 8 -> {
                     System.out.println("Logout successful");
-                    System.out.print("Press enter to continue...");
-                    sc.nextLine();
+                    Screen.pause();
                     return;
                 }
             }
@@ -284,8 +279,7 @@ class StaffMenu extends Menu {
                     throw new Exception();
             } catch (Exception e) {
                 System.out.println("Invalid choice, please try again.");
-                System.out.print("Press enter to continue...");
-                sc.nextLine();
+                Screen.pause();
                 continue;
             }
             switch (choice) {
@@ -297,12 +291,10 @@ class StaffMenu extends Menu {
                     StaffProfile editProfile = new StaffProfile(getUserID());
                     if (editProfile.startEditProfileSession()) {
                         System.out.println("Profile updated successfully");
-                        System.out.print("Press enter to continue...");
-                        sc.nextLine();
+                        Screen.pause();
                     } else {
                         System.out.println("Profile update cancelled");
-                        System.out.print("Press enter to continue...");
-                        sc.nextLine();
+                        Screen.pause();
                     }
                 }
                 case 3 -> {
@@ -314,13 +306,11 @@ class StaffMenu extends Menu {
                         Product addProduct = new Product();
                         if (addProduct.performRegisterProductOperation()) {
                             System.out.println("Product added successfully");
-                            System.out.print("Press enter to continue...");
-                            sc.nextLine();
+                            Screen.pause();
                             continue;
                         } else {
                             System.out.println("Product add cancelled");
-                            System.out.print("Press enter to continue...");
-                            sc.nextLine();
+                            Screen.pause();
                             break;
                         }
                     }
@@ -330,13 +320,11 @@ class StaffMenu extends Menu {
                         Product editProduct = new Product();
                         if (editProduct.performEditProductOperation()) {
                             System.out.println("Product edited successfully");
-                            System.out.print("Press enter to continue...");
-                            sc.nextLine();
+                            Screen.pause();
                             continue;
                         } else {
                             System.out.println("Product edit cancelled");
-                            System.out.print("Press enter to continue...");
-                            sc.nextLine();
+                            Screen.pause();
                             break;
                         }
                     }
@@ -346,21 +334,18 @@ class StaffMenu extends Menu {
                         Product deleteProduct = new Product();
                         if (deleteProduct.performDeleteProductOperation()) {
                             System.out.println("Product deleted successfully");
-                            System.out.print("Press enter to continue...");
-                            sc.nextLine();
+                            Screen.pause();
                             continue;
                         } else {
                             System.out.println("Product delete cancelled");
-                            System.out.print("Press enter to continue...");
-                            sc.nextLine();
+                            Screen.pause();
                             break;
                         }
                     }
                 }
                 case 7 -> {
                     System.out.println("Logout successful");
-                    System.out.print("Press enter to continue...");
-                    sc.nextLine();
+                    Screen.pause();
                     return;
                 }
             }

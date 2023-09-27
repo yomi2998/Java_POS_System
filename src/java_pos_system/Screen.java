@@ -13,4 +13,13 @@ public class Screen {
             System.out.println(e);
         }
     }
+
+    public static void pause() {
+        try {
+            System.out.println("\nPress enter to continue...");
+            System.in.read();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
 }
