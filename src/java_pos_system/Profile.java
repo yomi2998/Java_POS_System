@@ -421,7 +421,6 @@ class StaffProfile extends Profile {
     public void startViewProfileSession() {
         retrieveUserInfo();
         displayProfile();
-        Scanner sc = new Scanner(System.in);
         Screen.pause();
     }
 

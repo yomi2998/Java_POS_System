@@ -175,13 +175,7 @@ class MemberMenu extends Menu {
                 }
                 case 5 -> {
                     TopUp topUp = new TopUp(getUserID());
-                    if (topUp.performTopUpOperation()) {
-                        System.out.println("Top up successful");
-                        Screen.pause();
-                    } else {
-                        System.out.println("Top up cancelled");
-                        Screen.pause();
-                    }
+                    topUp.startTopupSession();
                 }
                 case 6 -> {
                     PaymentMethod paymentMethod = new PaymentMethod(getUserID());
@@ -282,7 +276,8 @@ class StaffMenu extends Menu {
         System.out.println("6. Delete product");
         System.out.println("7. Manage order");
         System.out.println("8. Member's request");
-        System.out.println("9. Log out");
+        System.out.println("9. Manage member's topup");
+        System.out.println("10. Log out");
         System.out.print("Enter your choice: ");
     }
 
@@ -293,7 +288,7 @@ class StaffMenu extends Menu {
             int choice = 0;
             try {
                 choice = Integer.parseInt(sc.nextLine());
-                if (choice > 9 || choice < 1)
+                if (choice > 10 || choice < 1)
                     throw new Exception();
             } catch (Exception e) {
                 System.out.println("Invalid choice, please try again.");
@@ -370,6 +365,10 @@ class StaffMenu extends Menu {
                     staffSupport.startCheckMessageSession();
                 }
                 case 9 -> {
+                    ManageTopup manageTopUp = new ManageTopup();
+                    manageTopUp.startManageTopupSession();
+                }
+                case 10 -> {
                     System.out.println("Logout successful");
                     Screen.pause();
                     return;

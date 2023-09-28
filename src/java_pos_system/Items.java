@@ -249,8 +249,8 @@ class ViewOrderedItems extends Items {
             System.out.println("Order history:");
             int i = 1;
             for (List<ItemRecord> eachDateItem : itemsDatetimeSorted) {
-                System.out.println("[" + i + "] " + eachDateItem.get(0).getCheckoutDatetime() + " (Total: RM "
-                        + getTotalPrice(i - 1) + ")");
+                System.out.printf("[" + i + "] " + eachDateItem.get(0).getCheckoutDatetime() + " (Total: RM %.2f)\n"
+                        , getTotalPrice(i - 1));
                 i++;
             }
             System.out.println("[0] Back");

@@ -98,13 +98,13 @@ public class Cart {
         int i = 1;
         for (CartItem cartItem : addedItems) {
             if (cartItem.getMarkDelete()) {
-                System.out.printf("\u001B[41m    |%-10s|%-23s|%-50s|%-10s|RM %-17s|\n", i,
+                System.out.printf("\u001B[41m    |%-10s|%-23s|%-50s|%-10s|RM %-17.2f|\n", i,
                         cartItem.getProduct().getProductBrand(),
                         cartItem.getProduct().getProductName(),
                         cartItem.getQuantity(), cartItem.getSubtotal());
                 hasMarkDelete = true;
             } else if (cartItem.getSelected()) {
-                System.out.printf("\u001B[42m    |%-10s|%-23s|%-50s|%-10s|RM %-17s|\n", i,
+                System.out.printf("\u001B[42m    |%-10s|%-23s|%-50s|%-10s|RM %-17.2f|\n", i,
                         cartItem.getProduct().getProductBrand(),
                         cartItem.getProduct().getProductName(),
                         cartItem.getQuantity(), cartItem.getSubtotal());
@@ -112,7 +112,7 @@ public class Cart {
             } else if (cartItem.getReminder()) {
                 System.out.printf(
                         (cartItem.getQuantity() == 0 ? "\u001B[31m" : "")
-                                + "    |%-10s|%-3s%-20s|%-50s|%-10s|RM %-17s|\n",
+                                + "    |%-10s|%-3s%-20s|%-50s|%-10s|RM %-17.2f|\n",
                         i,
                         cartItem.getReminder() ? "[!]" : "", cartItem.getProduct().getProductBrand(),
                         cartItem.getProduct().getProductName(),
@@ -122,7 +122,7 @@ public class Cart {
                     hasZeroQuantity = true;
                 }
             } else {
-                System.out.printf("\u001B[0m    |%-10s|%-23s|%-50s|%-10s|RM %-17s|\n", i,
+                System.out.printf("\u001B[0m    |%-10s|%-23s|%-50s|%-10s|RM %-17.2f|\n", i,
                         cartItem.getProduct().getProductBrand(),
                         cartItem.getProduct().getProductName(),
                         cartItem.getQuantity(), cartItem.getSubtotal());
@@ -185,8 +185,8 @@ public class Cart {
             boolean selected = addedItems.get(choice).getMarkDelete();
             addedItems.get(choice).setMarkDelete(!selected);
         }
+        boolean hasMarkDelete = false;
         while (true) {
-            boolean hasMarkDelete = false;
             for (CartItem cart : addedItems) {
                 if (cart.getMarkDelete()) {
                     hasMarkDelete = true;
@@ -205,6 +205,7 @@ public class Cart {
                 if (confirm.equalsIgnoreCase("Y")) {
                     break;
                 } else if (confirm.equalsIgnoreCase("N")) {
+                    hasMarkDelete = false;
                     break;
                 } else {
                     throw new Exception();
@@ -217,7 +218,7 @@ public class Cart {
         try {
             Database db = new Database();
             for (int i = 0; i < addedItems.size(); ++i) {
-                if (addedItems.get(i).getMarkDelete()) {
+                if (hasMarkDelete && addedItems.get(i).getMarkDelete()) {
                     db.runCommand("DELETE FROM cart WHERE memberid = '" + getUserID() + "' AND productid = '"
                             + addedItems.get(i).getProduct().getProductID() + "'");
                     addedItems.remove(i);
@@ -229,8 +230,10 @@ public class Cart {
             Screen.pause();
             return;
         }
-        System.out.println("Item(s) removed successfully.");
-        Screen.pause();
+        if (hasMarkDelete) {
+            System.out.println("Item(s) removed successfully.");
+            Screen.pause();
+        }
     }
 
     private void clearCartOperation() {

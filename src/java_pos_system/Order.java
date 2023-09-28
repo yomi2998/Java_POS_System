@@ -86,7 +86,7 @@ public class Order {
         System.out.println("Product Brand: " + product.getProductBrand());
         System.out.println("Product Name: " + product.getProductName());
         System.out.println("Product Category: " + product.getProductCategory());
-        System.out.println("Product Price: RM " + product.getProductPrice());
+        System.out.printf("Product Price: RM %.2f", product.getProductPrice());
         System.out.println("Product Quantity: " + product.getProductQuantity());
         System.out.println("Product Description: " + product.getProductDescription());
     }

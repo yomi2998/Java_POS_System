@@ -131,7 +131,7 @@ public class PaymentMethod {
                 continue;
             }
             while (true) {
-                System.out.print("Enter card number: ");
+                System.out.print("Enter card number (-1 to cancel): ");
                 this.cardNumber = sc.nextLine();
                 if (this.cardNumber.length() != 16) {
                     System.out.println("Invalid card number, please try again.");
@@ -141,10 +141,34 @@ public class PaymentMethod {
                     break;
                 }
             }
-            System.out.print("Enter expiry date (MM/YY): ");
-            this.expiryDate = sc.nextLine();
-            System.out.print("Enter CVV: ");
+            while (true) {
+                String expiryDateRegex = "^(0[1-9]|1[0-2])\\/?([0-9]{2})$";
+                System.out.print("Enter expiry date (MM/YY) (-1 to cancel): ");
+                this.expiryDate = sc.nextLine();
+                if (this.expiryDate.equals("-1")) {
+                    return false;
+                } else
+                if (!this.expiryDate.matches(expiryDateRegex)) {
+                    System.out.println("Invalid expiry date, please try again.");
+                    Screen.pause();
+                    continue;
+                } else {
+                    break;
+                }
+            }
+            while(true) {
+            System.out.print("Enter CVV (-1 to cancel): ");
             this.cvv = sc.nextLine();
+            if (this.cvv.equals("-1")) {
+                return false;
+            } else if (this.cvv.length() != 3 || !this.cvv.matches("[0-9]+")) {
+                System.out.println("Invalid CVV, please try again.");
+                Screen.pause();
+                continue;
+            } else {
+                break;
+            }
+        }
             return submitPaymentMethod_Card();
         }
     }
