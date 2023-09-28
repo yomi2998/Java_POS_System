@@ -93,6 +93,118 @@ public abstract class Profile {
         }
         return hasDigit && hasUpper && hasLower;
     }
+
+    public boolean validateEmail(String email) {
+        int alias = email.indexOf('@');
+        int dot = email.indexOf('.');
+        if (alias == -1 || dot == -1) {
+            return false;
+        }
+        return alias < dot;
+    }
+
+    public boolean validatePhone(String phone) {
+        if (phone.length() < 10) {
+            return false;
+        } else if (phone.length() > 12) {
+            return false;
+        }
+        for (int i = 0; i < phone.length(); i++) {
+            if (!Character.isDigit(phone.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean askPassword() {
+        Scanner sc = new Scanner(System.in);
+        while (true)
+            try {
+                System.out.print("Enter Password (-1 to cancel): ");
+                String pass = sc.nextLine();
+                if (pass.equals("-1")) {
+                    return false;
+                }
+                if (!validatePassword(pass)) {
+                    throw new Exception();
+                }
+                setUserPassword(pass);
+                return true;
+            } catch (Exception e) {
+                System.out.println(
+                        "Password must be 8-16 characters long, contain at least one digit, one uppercase and one lowercase letter.");
+            }
+    }
+
+    public boolean askName() {
+        Scanner sc = new Scanner(System.in);
+        while (true)
+            try {
+                System.out.print("Enter Name (-1 to cancel): ");
+                String name = sc.nextLine();
+                if (name.equals("-1")) {
+                    return false;
+                }
+                if (!validateName(name)) {
+                    throw new Exception();
+                }
+                setUserName(name);
+                return true;
+            } catch (Exception e) {
+                System.out.println("Name must be in format: Firstname Lastname");
+            }
+    }
+
+    public boolean askAddress() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter Address (-1 to cancel): ");
+        String address = sc.nextLine();
+        if (address.equals("-1")) {
+            return false;
+        }
+        setUserAddress(address);
+        return true;
+    }
+
+    public boolean askPhone() {
+        Scanner sc = new Scanner(System.in);
+        while (true)
+            try {
+                System.out.print("Enter Phone Number (-1 to cancel): ");
+                String phone = sc.nextLine();
+                if (phone.equals("-1")) {
+                    return false;
+                }
+                if (!validatePhone(phone)) {
+                    throw new Exception();
+                }
+                setUserPhone(phone);
+                return true;
+            } catch (Exception e) {
+                System.out.println(
+                        "Phone number must be between 10 to 12 digits long, enter digits only.");
+            }
+    }
+
+    public boolean askEmail() {
+        Scanner sc = new Scanner(System.in);
+        while (true)
+            try {
+                System.out.print("Enter e-mail (-1 to cancel): ");
+                String email = sc.nextLine();
+                if (email.equals("-1")) {
+                    return false;
+                }
+                if (!validateEmail(email)) {
+                    throw new Exception();
+                }
+                setUserEmail(email);
+                return true;
+            } catch (Exception e) {
+                System.out.println("Incorrect e-mail format! Please try again.");
+            }
+    }
 }
 
 class MemberProfile extends Profile {
@@ -214,37 +326,10 @@ class MemberProfile extends Profile {
             }
             switch (choice) {
                 case 1 -> {
-                    while (true) {
-                        System.out.print("Enter your name (-1 to cancel): ");
-                        String name = sc.nextLine();
-                        if (name.equals("-1")) {
-                            break;
-                        }
-                        if (validateName(name)) {
-                            setUserName(name);
-                            break;
-                        } else {
-                            System.out.println("Invalid name, please try again.");
-                            Screen.pause();
-                        }
-                    }
+                    askName();
                 }
                 case 2 -> {
-                    while (true) {
-                        System.out.print("Enter your password (-1 to cancel): ");
-                        String password = sc.nextLine();
-                        if (password.equals("-1")) {
-                            break;
-                        }
-                        if (validatePassword(password)) {
-                            setUserPassword(password);
-                            break;
-                        } else {
-                            System.out.println("Incorrect password format, password must be 8-16 characters long, "
-                                    + "contain at least one digit, one uppercase letter, and one lowercase letter, please try again.");
-                            Screen.pause();
-                        }
-                    }
+                    askPassword();
                 }
                 case 3 -> {
                     System.out.print("Enter your address (-1 to cancel): ");
@@ -255,57 +340,10 @@ class MemberProfile extends Profile {
                     setUserAddress(address);
                 }
                 case 4 -> {
-                    while (true) {
-                        System.out.print("Enter your phone number (-1 to cancel): ");
-                        String phone = sc.nextLine();
-                        if (phone.equals("-1")) {
-                            break;
-                        }
-                        if (phone.length() < 10 || phone.length() > 12 || !phone.matches("[0-9]+")) {
-                            System.out.println(
-                                    "Invalid phone number, number length must be between 10 to 12, enter numbers only.");
-                            Screen.pause();
-                            continue;
-                        }
-                        try {
-                            setUserPhone(phone);
-                            break;
-                        } catch (Exception e) {
-                            System.out.println("Invalid phone number, please try again.");
-                            Screen.pause();
-                        }
-                    }
+                    askPhone();
                 }
                 case 5 -> {
-                    while (true) {
-                        System.out.print("Enter your email (-1 to cancel): ");
-                        try {
-                            String email = sc.nextLine();
-                            if (email.equals("-1")) {
-                                break;
-                            }
-                            int alias = 0;
-                            int dot = 0;
-                            if (!email.contains("@")) {
-                                throw new Exception();
-                            } else {
-                                alias = email.indexOf("@");
-                            }
-                            if (!email.contains(".")) {
-                                throw new Exception();
-                            } else {
-                                dot = email.indexOf(".");
-                            }
-                            if (alias > dot) {
-                                throw new Exception();
-                            }
-                            setUserEmail(email);
-                            break;
-                        } catch (Exception e) {
-                            System.out.println("Invalid email format, please try again.");
-                            Screen.pause();
-                        }
-                    }
+                    askEmail();
                 }
                 case 99 -> {
                     if (confirmPassword() && updateUserInfo())

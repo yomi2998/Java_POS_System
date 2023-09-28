@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Message {
-    String message;
-    String time;
-    String name;
-    String id;
+    private String message;
+    private String time;
+    private String name;
+    private String id;
 
     public Message(String message, String time, String name, String id) {
         this.message = message;

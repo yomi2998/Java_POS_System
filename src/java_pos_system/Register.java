@@ -94,6 +94,117 @@ public abstract class Register {
         return hasDigit && hasUpper && hasLower;
     }
 
+    public boolean validateEmail(String email) {
+        int alias = email.indexOf('@');
+        int dot = email.indexOf('.');
+        if (alias == -1 || dot == -1) {
+            return false;
+        }
+        return alias < dot;
+    }
+
+    public boolean validatePhone(String phone) {
+        if (phone.length() < 10) {
+            return false;
+        } else if (phone.length() > 12) {
+            return false;
+        }
+        for (int i = 0; i < phone.length(); i++) {
+            if (!Character.isDigit(phone.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean askPassword() {
+        Scanner sc = new Scanner(System.in);
+        while (true)
+            try {
+                System.out.print("Enter Password (-1 to cancel): ");
+                String pass = sc.nextLine();
+                if (pass.equals("-1")) {
+                    return false;
+                }
+                if (!validatePassword(pass)) {
+                    throw new Exception();
+                }
+                setUserPassword(pass);
+                return true;
+            } catch (Exception e) {
+                System.out.println(
+                        "Password must be 8-16 characters long, contain at least one digit, one uppercase and one lowercase letter.");
+            }
+    }
+
+    public boolean askName() {
+        Scanner sc = new Scanner(System.in);
+        while (true)
+            try {
+                System.out.print("Enter Name (-1 to cancel): ");
+                String name = sc.nextLine();
+                if (name.equals("-1")) {
+                    return false;
+                }
+                if (!validateName(name)) {
+                    throw new Exception();
+                }
+                setName(name);
+                return true;
+            } catch (Exception e) {
+                System.out.println("Name must be in format: Firstname Lastname");
+            }
+    }
+
+    public boolean askAddress() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter Address (-1 to cancel): ");
+        String address = sc.nextLine();
+        if (address.equals("-1")) {
+            return false;
+        }
+        setAddress(address);
+        return true;
+    }
+
+    public boolean askPhone() {
+        Scanner sc = new Scanner(System.in);
+        while (true)
+            try {
+                System.out.print("Enter Phone Number (-1 to cancel): ");
+                String phone = sc.nextLine();
+                if (phone.equals("-1")) {
+                    return false;
+                }
+                if (!validatePhone(phone)) {
+                    throw new Exception();
+                }
+                setPhoneNumber(phone);
+                return true;
+            } catch (Exception e) {
+                System.out.println(
+                        "Phone number must be between 10 to 12 digits long, enter digits only.");
+            }
+    }
+
+    public boolean askEmail() {
+        Scanner sc = new Scanner(System.in);
+        while (true)
+            try {
+                System.out.print("Enter e-mail (-1 to cancel): ");
+                String email = sc.nextLine();
+                if (email.equals("-1")) {
+                    return false;
+                }
+                if (!validateEmail(email)) {
+                    throw new Exception();
+                }
+                setEmail(email);
+                return true;
+            } catch (Exception e) {
+                System.out.println("Incorrect e-mail format! Please try again.");
+            }
+    }
 }
 
 class RegisterMember extends Register {
@@ -107,9 +218,9 @@ class RegisterMember extends Register {
         RegisterMember.balance = balance;
     }
 
-    private void printFullMemberInfo() {
+    public void printFullMemberInfo() {
         Screen.cls();
-        
+
         System.out.println("Registration details");
         System.out.println("--------------------");
         System.out.println("ID: " + getUserID());
@@ -145,199 +256,48 @@ class RegisterMember extends Register {
             System.exit(0);
         }
         System.out.println("Your ID is: " + getUserID());
-        while (true)
-            try {
-                System.out.print("Enter Password (-1 to cancel): ");
-                setUserPassword(sc.nextLine());
-                if (getUserPassword().equals("-1")) {
-                    return false;
-                }
-                if (!validatePassword(getUserPassword())) {
-                    throw new Exception();
-                }
-                break;
-            } catch (Exception e) {
-                System.out.println(
-                        "Password must be 8-16 characters long, contain at least one digit, one uppercase and one lowercase letter.");
-            }
-        while (true)
-            try {
-                System.out.print("Enter Name (-1 to cancel): ");
-                setName(sc.nextLine());
-                if (getName().equals("-1")) {
-                    return false;
-                }
-                if (!validateName(getName())) {
-                    throw new Exception();
-                }
-                break;
-            } catch (Exception e) {
-                System.out.println(
-                        "Name must be in format: Firstname Lastname, enter letters only, numbers will be rejected.");
-            }
-        System.out.print("Enter Address: ");
-        setAddress(sc.nextLine());
-        while (true)
-            try {
-                System.out.print("Enter Phone Number (-1 to cancel): ");
-                setPhoneNumber(sc.nextLine());
-                if (getPhoneNumber().equals("-1")) {
-                    return false;
-                }
-                if (getPhoneNumber().length() < 10) {
-                    throw new Exception();
-                } else if (getPhoneNumber().length() > 12) {
-                    throw new Exception();
-                }
-                for (int i = 0; i < getPhoneNumber().length(); i++) {
-                    if (!Character.isDigit(getPhoneNumber().charAt(i))) {
-                        throw new Exception();
-                    }
-                }
-                break;
-            } catch (Exception e) {
-                System.out.println("Phone number must be between 10 to 12 digits long, enter digits only.");
-            }
-        while (true)
-            try {
-                System.out.print("Enter e-mail (-1 to cancel): ");
-                setEmail(sc.nextLine());
-                if (getEmail().equals("-1")) {
-                    return false;
-                }
-                int alias = 0;
-                int dot = 0;
-                if (!getEmail().contains("@")) {
-                    throw new Exception();
-                } else {
-                    alias = getEmail().indexOf("@");
-                }
-                if (!getEmail().contains(".")) {
-                    throw new Exception();
-                } else {
-                    dot = getEmail().indexOf(".");
-                }
-                if (alias > dot) {
-                    throw new Exception();
-                }
-                break;
-            } catch (Exception e) {
-                System.out.println("Incorrect e-mail format! Please try again.");
-            }
+        if (!askPassword() || !askName() || !askAddress() || !askPhone() || !askEmail()) {
+            return false;
+        }
         while (true) {
             printFullMemberInfo();
             System.out.print("Confirm registration? (Y/N): ");
             String confirm = sc.nextLine();
             if (confirm.equalsIgnoreCase("Y")) {
                 return submitMemberRegistration();
-            } else {
-                System.out.print("Which information do you want to change? (1-5, -1 to cancel): ");
+            }
+            else if (!confirm.equalsIgnoreCase("N")) {
+                System.out.println("Invalid choice, please try again.");
+                Screen.pause();
+                continue;
+            }
+                System.out.print("Which information do you want to change? (1-5, -1 to cancel, -2 to abort): ");
                 int choice = Integer.parseInt(sc.nextLine());
                 switch (choice) {
                     case -1:
+                        break;
+                    case -2:
                         return false;
                     case 1:
-                        while (true)
-                            try {
-                                System.out.print("Enter Password (-1 to cancel modification): ");
-                                String pass = sc.nextLine();
-                                if (pass.equals("-1")) {
-                                    break;
-                                }
-                                if (!validatePassword(pass)) {
-                                    throw new Exception();
-                                }
-                                setUserPassword(pass);
-                                break;
-                            } catch (Exception e) {
-                                System.out.println(
-                                        "Password must be 8-16 characters long, contain at least one digit, one uppercase and one lowercase letter.");
-                            }
+                        askPassword();
                         break;
                     case 2:
-                        while (true)
-                            try {
-                                System.out.print("Enter Name (-1 to cancel modification): ");
-                                String name = sc.nextLine();
-                                if (name.equals("-1")) {
-                                    break;
-                                }
-                                if (!validateName(name)) {
-                                    throw new Exception();
-                                }
-                                setName(name);
-                                break;
-                            } catch (Exception e) {
-                                System.out.println("Name must be in format: Firstname Lastname");
-                            }
+                        askName();
                         break;
                     case 3:
-                        System.out.print("Enter Address (-1 to cancel modification): ");
-                        String address = sc.nextLine();
-                        if (address.equals("-1")) {
-                            break;
-                        }
-                        setAddress(address);
+                        askAddress();
                         break;
                     case 4:
-                        while (true)
-                            try {
-                                System.out.print("Enter Phone Number (-1 to cancel modification): ");
-                                String phone = sc.nextLine();
-                                if (phone.equals("-1")) {
-                                    break;
-                                }
-                                if (phone.length() < 10) {
-                                    throw new Exception();
-                                } else if (phone.length() > 12) {
-                                    throw new Exception();
-                                }
-                                for (int i = 0; i < phone.length(); i++) {
-                                    if (!Character.isDigit(phone.charAt(i))) {
-                                        throw new Exception();
-                                    }
-                                }
-                                setPhoneNumber(phone);
-                                break;
-                            } catch (Exception e) {
-                                System.out.println(
-                                        "Phone number must be between 10 to 12 digits long, enter digits only.");
-                            }
+                        askPhone();
                         break;
                     case 5:
-                        while (true)
-                            try {
-                                System.out.print("Enter e-mail (-1 to cancel modification): ");
-                                String email = sc.nextLine();
-                                if (email.equals("-1")) {
-                                    break;
-                                }
-                                int alias = 0;
-                                int dot = 0;
-                                if (!email.contains("@")) {
-                                    throw new Exception();
-                                } else {
-                                    alias = email.indexOf("@");
-                                }
-                                if (!email.contains(".")) {
-                                    throw new Exception();
-                                } else {
-                                    dot = email.indexOf(".");
-                                }
-                                if (alias > dot) {
-                                    throw new Exception();
-                                }
-                                setEmail(email);
-                                break;
-                            } catch (Exception e) {
-                                System.out.println("Incorrect e-mail format! Please try again.");
-                            }
+                        askEmail();
                         break;
                 }
             }
         }
     }
-}
+
 
 class RegisterStaff extends Register {
     private double salary;
@@ -361,7 +321,7 @@ class RegisterStaff extends Register {
 
     public void printFullStaffInfo() {
         Screen.cls();
-        
+
         System.out.println("Registration details");
         System.out.println("--------------------");
         System.out.println("ID: " + getUserID());
@@ -388,6 +348,36 @@ class RegisterStaff extends Register {
         }
     }
 
+    public boolean askSalary() {
+        Scanner sc = new Scanner(System.in);
+        while (true)
+            try {
+                System.out.print("Enter Salary (-1 to cancel): ");
+                double salary = Double.parseDouble(sc.nextLine());
+                if (salary == -1) {
+                    return false;
+                }
+                if (salary <= 0) {
+                    throw new Exception();
+                }
+                setSalary(salary);
+                return true;
+            } catch (Exception e) {
+                System.out.println("Salary must be a number, and must not less than 0.");
+            }
+    }
+
+    public boolean askPosition() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter Position (-1 to cancel): ");
+        String position = sc.nextLine();
+        if (position.equals("-1")) {
+            return false;
+        }
+        setPosition(position);
+        return true;
+    }
+
     public boolean performRegisterOperation() {
         Screen.cls();
         Title.print("Register - staff");
@@ -400,104 +390,8 @@ class RegisterStaff extends Register {
             System.exit(0);
         }
         System.out.println("Your ID is: " + getUserID());
-        while (true)
-            try {
-                System.out.print("Enter Password (-1 to cancel): ");
-                setUserPassword(sc.nextLine());
-                if (getUserPassword().equals("-1")) {
-                    return false;
-                }
-                if (!validatePassword(getUserPassword())) {
-                    throw new Exception();
-                }
-                break;
-            } catch (Exception e) {
-                System.out.println(
-                        "Password must be 8-16 characters long, contain at least one digit, one uppercase and one lowercase letter.");
-            }
-        while (true)
-            try {
-                System.out.print("Enter Name (-1 to cancel): ");
-                setName(sc.nextLine());
-                if (getName().equals("-1")) {
-                    return false;
-                }
-                if (!validateName(getName())) {
-                    throw new Exception();
-                }
-                break;
-            } catch (Exception e) {
-                System.out.println("Name must be in format: Firstname Lastname");
-            }
-        System.out.print("Enter Address (-1 to cancel): ");
-        setAddress(sc.nextLine());
-        if (getAddress().equals("-1")) {
-            return false;
-        }
-        while (true)
-            try {
-                System.out.print("Enter Phone Number (-1 to cancel): ");
-                setPhoneNumber(sc.nextLine());
-                if (getPhoneNumber().equals("-1")) {
-                    return false;
-                }
-                if (getPhoneNumber().length() < 10) {
-                    throw new Exception();
-                } else if (getPhoneNumber().length() > 12) {
-                    throw new Exception();
-                }
-                for (int i = 0; i < getPhoneNumber().length(); i++) {
-                    if (!Character.isDigit(getPhoneNumber().charAt(i))) {
-                        throw new Exception();
-                    }
-                }
-                break;
-            } catch (Exception e) {
-                System.out.println("Phone number must be between 10 to 12 digits long, enter digits only.");
-            }
-        while (true)
-            try {
-                System.out.print("Enter e-mail (-1 to cancel): ");
-                setEmail(sc.nextLine());
-                if (getEmail().equals("-1")) {
-                    return false;
-                }
-                int alias = 0;
-                int dot = 0;
-                if (!getEmail().contains("@")) {
-                    throw new Exception();
-                } else {
-                    alias = getEmail().indexOf("@");
-                }
-                if (!getEmail().contains(".")) {
-                    throw new Exception();
-                } else {
-                    dot = getEmail().indexOf(".");
-                }
-                if (alias > dot) {
-                    throw new Exception();
-                }
-                break;
-            } catch (Exception e) {
-                System.out.println("Incorrect e-mail format! Please try again.");
-            }
-        while (true)
-            try {
-                System.out.print("Enter Salary (-1 to cancel): ");
-                setSalary(Double.parseDouble(sc.nextLine()));
-                if (getSalary() == -1) {
-                    return false;
-                }
-                if (getSalary() <= 0) {
-                    throw new Exception();
-                }
-                break;
-            } catch (Exception e) {
-                System.out.println("Salary must be a number, and must not less than 0.");
-            }
-        System.out.print("Enter Position (-1 to cancel): ");
-        setPosition(sc.nextLine());
-        if (getPosition().equals("-1")) {
+        if (!askPassword() || !askName() || !askAddress() || !askPhone() || !askEmail() || !askSalary()
+                || !askPosition()) {
             return false;
         }
         while (true) {
@@ -507,136 +401,40 @@ class RegisterStaff extends Register {
             if (confirm.equalsIgnoreCase("Y")) {
                 Screen.cls();
                 return submitStaffRegistration();
-            } else {
-                System.out.print("Which information do you want to change? (1-7, -1 to cancel): ");
+            } else if(!confirm.equalsIgnoreCase("N")) {
+                System.out.println("Invalid choice, please try again.");
+                Screen.pause();
+                continue;
+            }
+                System.out.print("Which information do you want to change? (1-7, -1 to cancel, -2 to abort): ");
                 int choice = Integer.parseInt(sc.nextLine());
                 switch (choice) {
                     case -1:
+                        break;
+                    case -2:
                         return false;
                     case 1:
-                        while (true)
-                            try {
-                                System.out.print("Enter Password (-1 to cancel modification): ");
-                                String pass = sc.nextLine();
-                                if (pass.equals("-1")) {
-                                    break;
-                                }
-                                if (!validatePassword(pass)) {
-                                    throw new Exception();
-                                }
-                                setUserPassword(pass);
-                                break;
-                            } catch (Exception e) {
-                                System.out.println(
-                                        "Password must be 8-16 characters long, contain at least one digit, one uppercase and one lowercase letter.");
-                            }
+                        askPassword();
                         break;
                     case 2:
-                        while (true)
-                            try {
-                                System.out.print("Enter Name (-1 to cancel modification): ");
-                                String name = sc.nextLine();
-                                if (name.equals("-1")) {
-                                    break;
-                                }
-                                if (!validateName(name)) {
-                                    throw new Exception();
-                                }
-                                setName(name);
-                                break;
-                            } catch (Exception e) {
-                                System.out.println("Name must be in format: Firstname Lastname");
-                            }
+                        askName();
                         break;
                     case 3:
-                        System.out.print("Enter Address (-1 to cancel modification): ");
-                        String address = sc.nextLine();
-                        if (address.equals("-1")) {
-                            break;
-                        }
-                        setAddress(address);
+                        askAddress();
                         break;
                     case 4:
-                        while (true)
-                            try {
-                                System.out.print("Enter Phone Number (-1 to cancel modification): ");
-                                String phone = sc.nextLine();
-                                if (phone.equals("-1")) {
-                                    break;
-                                }
-                                if (phone.length() < 10) {
-                                    throw new Exception();
-                                } else if (phone.length() > 12) {
-                                    throw new Exception();
-                                }
-                                for (int i = 0; i < phone.length(); i++) {
-                                    if (!Character.isDigit(phone.charAt(i))) {
-                                        throw new Exception();
-                                    }
-                                }
-                                setPhoneNumber(phone);
-                                break;
-                            } catch (Exception e) {
-                                System.out.println(
-                                        "Phone number must be between 10 to 12 digits long, enter digits only.");
-                            }
+                        askPhone();
                         break;
                     case 5:
-                        while (true)
-                            try {
-                                System.out.print("Enter e-mail (-1 to cancel modification): ");
-                                String email = sc.nextLine();
-                                if (email.equals("-1")) {
-                                    break;
-                                }
-                                int alias = 0;
-                                int dot = 0;
-                                if (!email.contains("@")) {
-                                    throw new Exception();
-                                } else {
-                                    alias = email.indexOf("@");
-                                }
-                                if (!email.contains(".")) {
-                                    throw new Exception();
-                                } else {
-                                    dot = email.indexOf(".");
-                                }
-                                if (alias > dot) {
-                                    throw new Exception();
-                                }
-                                setEmail(email);
-                                break;
-                            } catch (Exception e) {
-                                System.out.println("Incorrect e-mail format! Please try again.");
-                            }
+                        askEmail();
                         break;
                     case 6:
-                        while (true)
-                            try {
-                                System.out.print("Enter Salary (-1 to cancel modification): ");
-                                double salary = Double.parseDouble(sc.nextLine());
-                                if (salary == -1) {
-                                    break;
-                                }
-                                if (salary <= 0) {
-                                    throw new Exception();
-                                }
-                                setSalary(salary);
-                                break;
-                            } catch (Exception e) {
-                                System.out.println("Salary must be a number, and must not less than 0.");
-                            }
+                        askSalary();
                         break;
                     case 7:
-                        System.out.print("Enter Position (-1 to cancel modification): ");
-                        String position = sc.nextLine();
-                        if (position.equals("-1")) {
-                            break;
-                        }
-                        setPosition(position);
+                        askPosition();
                         break;
                 }
             }
         }
     }
-}

@@ -2,14 +2,7 @@ package java_pos_system;
 
 import java.util.Scanner;
 
-interface UserInterface {
-    public String getUserID();
-    public String getUserName();
-    public void setUserID(String userID);
-    public void setUserName(String userName);
-}
-
-public abstract class Menu implements UserInterface {
+public abstract class Menu {
     private String userID;
     private String userName;
     private String userAddress;
@@ -73,7 +66,7 @@ class MemberMenu extends Menu {
         return this.userBalance;
     }
 
-    private boolean retrieveUserInfo() {
+    public boolean retrieveUserInfo() {
         Database db = new Database();
         try {
             db.runCommand("SELECT * FROM member WHERE memberid = '" + getUserID() + "'");
@@ -95,7 +88,7 @@ class MemberMenu extends Menu {
         }
     }
 
-    private int getMessageCount() {
+    public int getMessageCount() {
         try {
             Database db = new Database();
             int messageCount = 0;
@@ -112,7 +105,7 @@ class MemberMenu extends Menu {
         }
     }
 
-    private void displayMemberMenu() {
+    public void displayMemberMenu() {
         Screen.cls();
         
         Title.print(String.format("Welcome, " + getUserName() + "\nYour balance: RM%.2f", getUserBalance()));
@@ -242,7 +235,7 @@ class StaffMenu extends Menu {
         return this.userPosition;
     }
 
-    private boolean retrieveUserInfo() {
+    public boolean retrieveUserInfo() {
         Database db = new Database();
         try {
             db.runCommand("SELECT * FROM staff WHERE staffid = '" + getUserID() + "'");

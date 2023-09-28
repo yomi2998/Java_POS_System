@@ -13,7 +13,7 @@ public class Product {
     private String productDescription;
     private double productPrice;
     private int productQuantity;
-    private String brands[] = { // phone accessories
+    private String brands[] = {
             "Apple",
             "Samsung",
             "Xiaomi",

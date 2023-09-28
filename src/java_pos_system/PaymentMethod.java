@@ -82,7 +82,7 @@ public class PaymentMethod {
         this.cvv = cvv;
     }
 
-    private boolean submitPaymentMethod_Card() {
+    public boolean submitPaymentMethod_Card() {
         Screen.cls();
 
         try {
@@ -137,9 +137,21 @@ public class PaymentMethod {
                     System.out.println("Invalid card number, please try again.");
                     Screen.pause();
                     continue;
-                } else {
-                    break;
                 }
+                try {
+                    Database db = new Database();
+                    db.runCommand("SELECT * FROM payment_method WHERE cardnumber = '" + this.cardNumber + "'");
+                    if (db.hasResult()) {
+                        System.out.println("Card number already registered, please try again.");
+                        Screen.pause();
+                        continue;
+                    }
+                } catch (Exception e) {
+                    System.out.println("Error: " + e.getMessage());
+                    Screen.pause();
+                    return false;
+                }
+                break;
             }
             while (true) {
                 String expiryDateRegex = "^(0[1-9]|1[0-2])\\/?([0-9]{2})$";

@@ -24,10 +24,6 @@ public class Cart {
         addedItems.remove(index);
     }
 
-    public void removeCartItem(CartItem cartItem) {
-        addedItems.remove(cartItem);
-    }
-
     public void clearCart() {
         addedItems.clear();
     }
@@ -61,7 +57,7 @@ public class Cart {
         setUserID(memberID);
     }
 
-    private void loadCart() {
+    public void loadCart() {
         try {
             clearCart();
             Database db = new Database();
@@ -78,7 +74,7 @@ public class Cart {
         }
     }
 
-    private void printCartTable() {
+    public void printCartTable() {
         boolean hasReminder = false;
         boolean hasZeroQuantity = false;
         boolean hasSelection = false;
@@ -158,7 +154,7 @@ public class Cart {
         System.out.println();
     }
 
-    private void removeSpecificItem() {
+    public void removeSpecificItem() {
         while (true) {
             Scanner sc = new Scanner(System.in);
             int choice = 0;
@@ -236,7 +232,7 @@ public class Cart {
         }
     }
 
-    private void clearCartOperation() {
+    public void clearCartOperation() {
         Screen.cls();
         Title.print("Clear cart");
         loadCart();
@@ -277,7 +273,7 @@ public class Cart {
         Screen.pause();
     }
 
-    private boolean checkout() {
+    public boolean checkout() {
         while (true) {
             Screen.cls();
             Title.print("Checkout");

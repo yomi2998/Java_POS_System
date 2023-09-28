@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Order {
     private String userID;
-    private List<CartItem> addedItems = new ArrayList<CartItem>();
+    private List<Product> products;
 
     public String getUserID() {
         return userID;
@@ -16,19 +16,11 @@ public class Order {
         this.userID = userID;
     }
 
-    public List<CartItem> getAddedItems() {
-        return addedItems;
-    }
-
-    public void setAddedItems(List<CartItem> addedItems) {
-        this.addedItems = addedItems;
-    }
-
     public Order(String memberID) {
         setUserID(memberID);
     }
 
-    private List<Product> getProducts() {
+    public void getProducts() {
         List<Product> products = new ArrayList<Product>();
         try {
             Database db = new Database();
@@ -48,12 +40,13 @@ public class Order {
                 }
         } catch (Exception e) {
             System.out.println(e);
-            return null;
+            products = null;
+            return;
         }
-        return products;
+        return;
     }
 
-    private void printProducts(List<Product> products) {
+    public void printProducts() {
         Screen.cls();
 
         System.out.print("    ");
@@ -79,7 +72,7 @@ public class Order {
         System.out.println();
     }
 
-    private void printSpecificProduct(Product product) {
+    public void printSpecificProduct(Product product) {
         Screen.cls();
 
         System.out.println("Product ID: " + product.getProductID());
@@ -94,13 +87,13 @@ public class Order {
     public boolean startOrderItemSession() {
         while (true) {
             Scanner sc = new Scanner(System.in);
-            List<Product> products = getProducts();
+            getProducts();
             if (products == null) {
                 System.out.println("Error retrieving products.");
                 Screen.pause();
                 return false;
             }
-            printProducts(products);
+            printProducts();
             int productIndex = 0;
             while (true)
                 try {
@@ -141,12 +134,10 @@ public class Order {
                 System.out.print("Confirm add to cart? (Y/N): ");
                 String confirm = sc.nextLine();
                 if (confirm.equalsIgnoreCase("Y")) {
-                    CartItem cartItem = new CartItem(products.get(productIndex), quantity);
-                    getAddedItems().add(cartItem);
                     try {
                         Database db = new Database();
                         db.runCommand("INSERT INTO cart VALUES ('" + getUserID() + "', '"
-                                + cartItem.getProduct().getProductID() + "', " + cartItem.getQuantity() + ")");
+                                + products.get(productIndex).getProductID() + "', " + quantity + ")");
                         System.out.println("Item added to cart.");
                         Screen.pause();
                     } catch (Exception e) {

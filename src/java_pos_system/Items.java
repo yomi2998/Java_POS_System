@@ -166,7 +166,7 @@ class ViewOrderedItems extends Items {
         return totalPrice;
     }
 
-    private boolean retrieveOrderedItems() {
+    public boolean retrieveOrderedItems() {
         try {
             itemsDatetimeSorted.clear();
             Database db = new Database();
@@ -205,7 +205,7 @@ class ViewOrderedItems extends Items {
         return true;
     }
 
-    private void printSelectedTable(List<ItemRecord> item) {
+    public void printSelectedTable(List<ItemRecord> item) {
         System.out.print("    ");
         for (int i = 0; i < 125; i++)
             System.out.print("-");

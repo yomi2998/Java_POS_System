@@ -2,6 +2,8 @@ package java_pos_system;
 
 import java.util.Scanner;
 
+import javax.xml.crypto.Data;
+
 public class Main {
     public static void main(String[] args) {
         while (true) {
@@ -106,6 +108,37 @@ public class Main {
                             Screen.pause();
                         }
                         case 2 -> {
+                            boolean canRegister = false;
+                            while (true) {
+                                String actualCode = "";
+                                try {
+                                    Database db = new Database();
+                                    db.runCommand("SELECT * FROM registercode");
+                                    while (db.next()) {
+                                        actualCode = db.getString("staff");
+                                    }
+                                } catch (Exception e) {
+                                    break;
+                                }
+                                Screen.cls();
+                                Title.print("Staff Registration");
+                                System.out.print("Enter registration code (-1 to cancel): ");
+                                String regCode = sc.nextLine();
+                                if (regCode.equals("-1")) {
+                                    break;
+                                }
+                                if (regCode.equals(actualCode)) {
+                                    canRegister = true;
+                                    break;
+                                } else {
+                                    System.out.println("Invalid registration code, please try again.");
+                                    Screen.pause();
+                                }
+
+                            }
+                            if (!canRegister) {
+                                break;
+                            }
                             RegisterStaff registerStaff = new RegisterStaff();
                             if (registerStaff.performRegisterOperation()) {
                                 System.out.println("Staff registered successfully");

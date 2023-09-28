@@ -350,6 +350,9 @@ public class TopUp {
 }
 
 class ManageTopup {
+    ManageTopup() {
+        
+    }
     public void startManageTopupSession() {
         while(true) {
             Screen.cls();
