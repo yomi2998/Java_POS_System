@@ -118,6 +118,8 @@ public class Main {
                                         actualCode = db.getString("staff");
                                     }
                                 } catch (Exception e) {
+                                    System.out.println("Error getting registration code, please try again.");
+                                    Screen.pause();
                                     break;
                                 }
                                 Screen.cls();

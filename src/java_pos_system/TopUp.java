@@ -363,7 +363,7 @@ class ManageTopup {
                 String userID = sc.nextLine();
                 if(userID.equals("-1"))
                     return;
-                TopUp topUp = new TopUp(userID, true);
+                TopUp topUp = new TopUp(userID.toUpperCase(), true);
                 topUp.viewTopupHistory();
             } catch (Exception e) {
                 System.out.println("Invalid choice, please try again.");

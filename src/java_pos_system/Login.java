@@ -41,7 +41,7 @@ class LoginMember extends Login {
             Screen.cls();
             Title.print("Login - member");
             Scanner sc = new Scanner(System.in);
-            System.out.print("Enter User ID (-1 to cancel): ");
+            System.out.print("Enter User ID or user email (-1 to cancel): ");
             setUserID(sc.nextLine());
             if (getUserID().equals("-1")) {
                 return false;
@@ -57,12 +57,17 @@ class LoginMember extends Login {
                 db.runCommand("SELECT * FROM member WHERE memberid = '" + getUserID()
                         + "' AND memberpassword = '" + getUserPassword() + "'");
                 if (!db.hasResult()) {
-                    System.out.println("Invalid user ID or password");
-                    Screen.pause();
-                    continue;
+                    db.runCommand("SELECT * FROM member WHERE memberemail = '" + getUserID()
+                            + "' AND memberpassword = '" + getUserPassword() + "'");
+                    if (!db.hasResult()) {
+                        System.out.println("Invalid user ID/email or password");
+                        Screen.pause();
+                        continue;
+                    }
                 }
                 db.next();
                 setUserName(db.getString("membername"));
+                setUserID(db.getString("memberid"));
                 return true;
             } catch (Exception e) {
                 System.out.println(e);
@@ -79,7 +84,7 @@ class LoginStaff extends Login {
             Screen.cls();
             Title.print("Login - staff");
             Scanner sc = new Scanner(System.in);
-            System.out.print("Enter User ID (-1 to cancel): ");
+            System.out.print("Enter User ID or user email (-1 to cancel): ");
             setUserID(sc.nextLine());
             if (getUserID().equals("-1")) {
                 return false;
@@ -93,15 +98,21 @@ class LoginStaff extends Login {
             try {
                 Database db = new Database();
                 db.runCommand(
-                        "SELECT * FROM staff WHERE staffid = '" + getUserID() + "' AND staffpassword = '" + getUserPassword()
+                        "SELECT * FROM staff WHERE staffid = '" + getUserID() + "' AND staffpassword = '"
+                                + getUserPassword()
                                 + "'");
                 if (!db.hasResult()) {
-                    System.out.println("Invalid user ID or password");
-                    Screen.pause();
-                    continue;
+                    db.runCommand("SELECT * FROM staff WHERE staffemail = '" + getUserID() + "' AND staffpassword = '"
+                            + getUserPassword() + "'");
+                    if (!db.hasResult()) {
+                        System.out.println("Invalid user ID/email or password");
+                        Screen.pause();
+                        continue;
+                    }
                 }
                 db.next();
                 setUserName(db.getString("staffname"));
+                setUserID(db.getString("staffid"));
                 return true;
             } catch (Exception e) {
                 System.out.println(e);

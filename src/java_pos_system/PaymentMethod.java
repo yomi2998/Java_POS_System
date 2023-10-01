@@ -133,6 +133,9 @@ public class PaymentMethod {
             while (true) {
                 System.out.print("Enter card number (-1 to cancel): ");
                 this.cardNumber = sc.nextLine();
+                if(this.cardNumber.equals("-1")) {
+                    return false;
+                }
                 if (this.cardNumber.length() != 16) {
                     System.out.println("Invalid card number, please try again.");
                     Screen.pause();

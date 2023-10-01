@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Order {
     private String userID;
-    private List<Product> products;
+    private List<Product> products = new ArrayList<>();
 
     public String getUserID() {
         return userID;
@@ -21,8 +21,8 @@ public class Order {
     }
 
     public void getProducts() {
-        List<Product> products = new ArrayList<Product>();
         try {
+            products.clear();
             Database db = new Database();
             db.runCommand("SELECT * FROM product");
             if (db.hasResult())
@@ -79,7 +79,7 @@ public class Order {
         System.out.println("Product Brand: " + product.getProductBrand());
         System.out.println("Product Name: " + product.getProductName());
         System.out.println("Product Category: " + product.getProductCategory());
-        System.out.printf("Product Price: RM %.2f", product.getProductPrice());
+        System.out.printf("Product Price: RM %.2f\n", product.getProductPrice());
         System.out.println("Product Quantity: " + product.getProductQuantity());
         System.out.println("Product Description: " + product.getProductDescription());
     }
